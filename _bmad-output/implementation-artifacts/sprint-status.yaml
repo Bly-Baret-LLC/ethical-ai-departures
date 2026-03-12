@@ -1,0 +1,139 @@
+# generated: 2026-03-12
+# project: warning-collective
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created, ready for development
+#   - in-progress: Developer actively working on implementation
+#   - review: Implementation complete, ready for review
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Mark epic as 'in-progress' when starting work on its first story
+# - SM typically creates next story ONLY after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then Dev runs code-review (fresh context, ideally different LLM)
+
+generated: 2026-03-12
+project: warning-collective
+project_key: NOKEY
+tracking_system: file-system
+story_location: _bmad-output/implementation-artifacts
+
+development_status:
+  # Epic 1: The Ticker & Homepage Experience (7 stories)
+  epic-1: in-progress
+  1-1-initialize-project-and-design-system-foundation: review
+  1-2-departure-profiles-database-schema-and-seed-data: backlog
+  1-3-ticker-block-component: backlog
+  1-4-stats-bridge-component: backlog
+  1-5-latest-activity-slot: backlog
+  1-6-homepage-layout-assembly: backlog
+  1-7-real-time-ticker-updates-via-supabase-realtime: backlog
+  epic-1-retrospective: optional
+
+  # Epic 2: Researcher Profiles & Discovery (7 stories)
+  epic-2: backlog
+  2-1-profile-card-component: backlog
+  2-2-browse-profiles-page-with-card-grid: backlog
+  2-3-filter-panel-component: backlog
+  2-4-table-toggle-view: backlog
+  2-5-profile-search: backlog
+  2-6-profile-detail-page: backlog
+  2-7-source-preview-tooltip: backlog
+  epic-2-retrospective: optional
+
+  # Epic 3: Journalist Tooling, SEO & Sharing (8 stories)
+  epic-3: backlog
+  3-1-filtered-data-export: backlog
+  3-2-share-buttons-and-permalink-urls: backlog
+  3-3-press-page-and-media-kit: backlog
+  3-4-journalist-email-notification-signup: backlog
+  3-5-dynamic-og-images: backlog
+  3-6-company-aggregate-pages: backlog
+  3-7-json-ld-structured-data-and-seo: backlog
+  3-8-print-stylesheet: backlog
+  epic-3-retrospective: optional
+
+  # Epic 4: Editorial Transparency & Trust (4 stories)
+  epic-4: backlog
+  4-1-about-page: backlog
+  4-2-editorial-standards-page: backlog
+  4-3-public-corrections-log: backlog
+  4-4-funding-transparency-and-contact: backlog
+  epic-4-retrospective: optional
+
+  # Epic 5: Editorial Dashboard & Content Management (5 stories)
+  epic-5: backlog
+  5-1-editor-authentication: backlog
+  5-2-editorial-review-queue: backlog
+  5-3-profile-editor: backlog
+  5-4-prediction-management: backlog
+  5-5-content-seeding-tool: backlog
+  epic-5-retrospective: optional
+
+  # Epic 6: Predictions Tracker & Insider Voting (7 stories)
+  epic-6: backlog
+  6-1-predictions-display-page: backlog
+  6-2-insider-gate-and-self-identification: backlog
+  6-3-prediction-vote-casting-and-display: backlog
+  6-4-vote-rate-limiting-and-anomaly-detection: backlog
+  6-5-prediction-resolution-workflow: backlog
+  6-6-track-record-scorecard-and-credibility-index: backlog
+  6-7-predictions-rss-feed: backlog
+  epic-6-retrospective: optional
+
+  # Epic 7: AI Agent Pipeline (7 stories)
+  epic-7: backlog
+  7-1-agent-infrastructure-and-shared-utilities: backlog
+  7-2-scout-agent: backlog
+  7-3-verification-agent: backlog
+  7-4-synthesis-agent: backlog
+  7-5-predictions-tracker-agent: backlog
+  7-6-orchestrator-agent-and-n8n-workflow: backlog
+  7-7-agent-quality-monitoring-dashboard: backlog
+  epic-7-retrospective: optional
+
+  # Epic 8: Theme Synthesis & Calls for Change (4 stories)
+  epic-8: backlog
+  8-1-living-theme-map: backlog
+  8-2-calls-for-change-and-policy-proposals-page: backlog
+  8-3-proposal-community-voting: backlog
+  8-4-state-of-the-alarm-summary: backlog
+  epic-8-retrospective: optional
+
+  # Epic 9: Community Engagement Layer (4 stories)
+  epic-9: backlog
+  9-1-fan-letters-notes-of-support: backlog
+  9-2-kudos-counter: backlog
+  9-3-moderated-discussion-threads: backlog
+  9-4-spam-and-abuse-filtering: backlog
+  epic-9-retrospective: optional
+
+  # Epic 10: Anonymous Signal Feature (4 stories)
+  epic-10: backlog
+  10-1-anonymous-signal-submission-form: backlog
+  10-2-aggregate-signal-counter-display: backlog
+  10-3-trust-documentation-and-verification: backlog
+  10-4-privacy-audit-preparation: backlog
+  epic-10-retrospective: optional
+
+  # Epic 11: Embeddable Widgets & Distribution (2 stories)
+  epic-11: backlog
+  11-1-embeddable-ticker-widget: backlog
+  11-2-embeddable-statistics-cards: backlog
+  epic-11-retrospective: optional

@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Warning Collective — Design Directions</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --surface-primary: #fafaf9;
+    --surface-secondary: #f5f5f4;
+    --text-primary: #1e293b;
+    --text-secondary: #78716c;
+    --text-inverse: #fafaf9;
+    --surface-inverse: #1e293b;
+    --accent-amber: #b45309;
+    --state-hover: #44403c;
+    --state-disabled: #d6d3d1;
+    --status-verified: #065f46;
+    --status-error: #9f1239;
+    --accent-info: #1e40af;
+    --border-light: #e7e5e4;
+    --surface-card: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #f5f5f4;
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  /* ===== SELECTOR BAR ===== */
+  .selector-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--surface-inverse);
+    border-bottom: 2px solid var(--accent-amber);
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .selector-bar h1 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: var(--text-inverse);
+    font-size: 16px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0.7;
+  }
+
+  .direction-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .direction-tab {
+    padding: 8px 20px;
+    border: 1px solid rgba(250,250,249,0.2);
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-inverse);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .direction-tab:hover {
+    border-color: var(--accent-amber);
+    color: var(--accent-amber);
+  }
+
+  .direction-tab.active {
+    background: var(--accent-amber);
+    border-color: var(--accent-amber);
+    color: white;
+  }
+
+  .selector-bar .eval-hint {
+    margin-left: auto;
+    color: rgba(250,250,249,0.5);
+    font-size: 12px;
+  }
+
+  /* ===== DIRECTION CONTAINER ===== */
+  .direction {
+    display: none;
+    margin-top: 72px;
+  }
+
+  .direction.active {
+    display: block;
+  }
+
+  /* ===== DIRECTION HEADER ===== */
+  .direction-header {
+    background: var(--surface-card);
+    border-bottom: 1px solid var(--border-light);
+    padding: 32px 48px;
+  }
+
+  .direction-header h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .direction-header .subtitle {
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+
+  .direction-header .traits {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .trait {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .trait-layout { background: #eff6ff; color: var(--accent-info); }
+  .trait-density { background: #fef3c7; color: var(--accent-amber); }
+  .trait-audience { background: #f0fdf4; color: var(--status-verified); }
+  .trait-nav { background: #fdf2f8; color: var(--status-error); }
+
+  /* ===== MOCKUP FRAME ===== */
+  .mockup-frame {
+    max-width: 1280px;
+    margin: 32px auto;
+    background: var(--surface-card);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.06);
+  }
+
+  /* ===== SHARED ELEMENTS ===== */
+  .mock-nav {
+    display: flex;
+    align-items: center;
+    padding: 16px 32px;
+    border-bottom: 1px solid var(--border-light);
+    gap: 32px;
+  }
+
+  .mock-nav .logo {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+
+  .mock-nav .nav-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+
+  .mock-nav .nav-links li {
+    font-size: 14px;
+    color: var(--text-secondary);
+    cursor: default;
+  }
+
+  .mock-nav .nav-links li.active-link {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .mock-nav .nav-links li:hover {
+    color: var(--accent-amber);
+  }
+
+  .mock-nav .nav-right {
+    margin-left: auto;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .btn-amber {
+    padding: 8px 16px;
+    background: var(--accent-amber);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: default;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .btn-outline {
+    padding: 8px 16px;
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: default;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ===== TICKER BLOCK (SHARED) ===== */
+  .ticker-block {
+    background: var(--surface-inverse);
+    color: var(--text-inverse);
+    text-align: center;
+    padding: 64px 32px;
+  }
+
+  .ticker-number {
+    font-family: 'Inter', sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
+    font-size: 84px;
+    line-height: 1.0;
+    margin-bottom: 12px;
+  }
+
+  .ticker-context {
+    font-size: 16px;
+    opacity: 0.8;
+    max-width: 480px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  .ticker-meta {
+    margin-top: 16px;
+    font-size: 13px;
+    opacity: 0.5;
+  }
+
+  .trust-signal {
+    margin-top: 20px;
+    font-size: 13px;
+    opacity: 0.6;
+    font-style: italic;
+  }
+
+  /* ===== PROFILE CARD ===== */
+  .profile-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 24px;
+    transition: box-shadow 0.2s;
+  }
+
+  .profile-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+
+  .profile-card .name {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .profile-card .role {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+
+  .profile-card .quote {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    border-left: 3px solid var(--accent-amber);
+    padding-left: 16px;
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+
+  .profile-card .source-link {
+    font-size: 12px;
+    color: var(--accent-info);
+    text-decoration: underline;
+    cursor: default;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 6px;
+    margin-top: 8px;
+  }
+
+  .tag-concern {
+    background: #fef3c7;
+    color: var(--accent-amber);
+  }
+
+  .tag-company {
+    background: #eff6ff;
+    color: var(--accent-info);
+  }
+
+  .tag-change {
+    background: #f0fdf4;
+    color: var(--status-verified);
+  }
+
+  /* ===== FILTER ELEMENTS ===== */
+  .filter-bar {
+    display: flex;
+    gap: 12px;
+    padding: 16px 0;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-chip {
+    padding: 6px 14px;
+    border: 1px solid var(--border-light);
+    border-radius: 100px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: default;
+    background: var(--surface-card);
+  }
+
+  .filter-chip.active-filter {
+    border-color: var(--accent-amber);
+    color: var(--accent-amber);
+    background: #fffbeb;
+  }
+
+  .filter-count {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-left: auto;
+  }
+
+  /* ===== PREDICTION BAR ===== */
+  .prediction-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+
+  .prediction-quote {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .prediction-by {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+
+  .vote-bar-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .vote-bar {
+    flex: 1;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--state-disabled);
+    overflow: hidden;
+    display: flex;
+  }
+
+  .vote-bar .agree {
+    background: var(--status-verified);
+    width: 78%;
+    height: 100%;
+  }
+
+  .vote-bar .disagree {
+    background: var(--status-error);
+    width: 22%;
+    height: 100%;
+  }
+
+  .vote-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .insider-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 500;
+    background: #eff6ff;
+    color: var(--accent-info);
+    border-radius: 4px;
+    margin-left: 8px;
+  }
+
+  /* ===== TABLE ROW (compact) ===== */
+  .profile-row {
+    display: grid;
+    grid-template-columns: 200px 140px 120px 1fr 100px;
+    align-items: center;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--border-light);
+    font-size: 14px;
+    gap: 16px;
+  }
+
+  .profile-row:nth-child(even) {
+    background: var(--surface-secondary);
+  }
+
+  .profile-row .row-name {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .profile-row .row-company {
+    color: var(--accent-info);
+    font-size: 13px;
+  }
+
+  .profile-row .row-year {
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+
+  .profile-row .row-concern {
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+
+  .profile-row .row-action {
+    text-align: right;
+    color: var(--accent-amber);
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .table-header {
+    display: grid;
+    grid-template-columns: 200px 140px 120px 1fr 100px;
+    padding: 10px 24px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--border-light);
+    gap: 16px;
+  }
+
+  .table-header span.sorted {
+    color: var(--accent-amber);
+  }
+
+  /* ===== SIDEBAR FILTER ===== */
+  .sidebar-filter {
+    width: 240px;
+    padding: 24px;
+    border-right: 1px solid var(--border-light);
+    background: var(--surface-secondary);
+    min-height: 500px;
+  }
+
+  .sidebar-filter h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .sidebar-filter .filter-option {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 14px;
+    color: var(--text-primary);
+    cursor: default;
+  }
+
+  .sidebar-filter .filter-option .count {
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+
+  .sidebar-filter .filter-option.checked {
+    color: var(--accent-amber);
+    font-weight: 500;
+  }
+
+  .filter-section {
+    margin-bottom: 24px;
+  }
+
+  /* ===== DIRECTION-SPECIFIC ===== */
+
+  /* Direction A: The Monument */
+  .monument-ticker {
+    padding: 96px 32px;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .monument-ticker .ticker-number {
+    font-size: 96px;
+    margin-bottom: 16px;
+  }
+
+  .monument-scroll-cue {
+    margin-top: 32px;
+    opacity: 0.4;
+    font-size: 24px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.2; }
+  }
+
+  .monument-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 48px;
+  }
+
+  .monument-section-title {
+    padding: 0 48px;
+    padding-top: 48px;
+  }
+
+  .monument-section-title h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .monument-section-title p {
+    color: var(--text-secondary);
+    font-size: 15px;
+    margin-top: 4px;
+  }
+
+  /* Direction B: The Newsroom */
+  .newsroom-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .newsroom-ticker {
+    padding: 48px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .newsroom-feed {
+    padding: 32px;
+    background: var(--surface-primary);
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  .newsroom-feed h3 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-secondary);
+  }
+
+  .feed-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  .feed-item .feed-name {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .feed-item .feed-detail {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  .feed-item .feed-quote {
+    font-size: 14px;
+    margin-top: 8px;
+    color: var(--text-primary);
+    line-height: 1.5;
+  }
+
+  .newsroom-body {
+    padding: 32px 48px;
+  }
+
+  .newsroom-body .layout-with-sidebar {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 0;
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .newsroom-table {
+    min-height: 400px;
+  }
+
+  /* Direction C: The Narrative */
+  .narrative-ticker {
+    padding: 48px 32px 32px;
+    text-align: center;
+  }
+
+  .narrative-ticker .ticker-number {
+    font-size: 80px;
+  }
+
+  .narrative-featured {
+    padding: 0 48px 48px;
+  }
+
+  .featured-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .featured-card .featured-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-amber);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .featured-card .featured-name {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .featured-card .featured-role {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  .featured-card .featured-quote {
+    font-size: 18px;
+    line-height: 1.7;
+    border-left: 3px solid var(--accent-amber);
+    padding-left: 20px;
+    font-style: italic;
+  }
+
+  .featured-right .featured-section {
+    margin-bottom: 24px;
+  }
+
+  .featured-right .section-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .narrative-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 0 48px 48px;
+  }
+
+  .narrative-grid-header {
+    padding: 0 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .narrative-grid-header h2 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  /* Direction D: The Dashboard */
+  .dashboard-ticker-bar {
+    background: var(--surface-inverse);
+    color: var(--text-inverse);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 24px 48px;
+    gap: 32px;
+  }
+
+  .stat-block {
+    text-align: center;
+  }
+
+  .stat-block .stat-number {
+    font-family: 'Inter', sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
+    font-size: 36px;
+    line-height: 1.1;
+  }
+
+  .stat-block .stat-label {
+    font-size: 12px;
+    opacity: 0.6;
+    margin-top: 4px;
+  }
+
+  .stat-block.primary .stat-number {
+    font-size: 48px;
+  }
+
+  .dashboard-body {
+    display: grid;
+    grid-template-columns: 240px 1fr 300px;
+    min-height: 500px;
+  }
+
+  .dashboard-main {
+    padding: 24px;
+    border-right: 1px solid var(--border-light);
+  }
+
+  .dashboard-sidebar-right {
+    padding: 24px;
+    background: var(--surface-secondary);
+  }
+
+  .dashboard-sidebar-right h4 {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  /* ===== COMPARISON VIEW ===== */
+  .comparison-bar {
+    background: var(--surface-card);
+    border-top: 1px solid var(--border-light);
+    padding: 24px 48px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    display: none;
+  }
+
+  .comparison-bar.visible {
+    display: block;
+  }
+
+  .comparison-table {
+    width: 100%;
+    font-size: 14px;
+    border-collapse: collapse;
+  }
+
+  .comparison-table th {
+    text-align: left;
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .comparison-table td {
+    padding: 6px 16px;
+    vertical-align: top;
+  }
+
+  .comparison-table tr:nth-child(even) {
+    background: var(--surface-secondary);
+  }
+
+  .toggle-compare {
+    position: fixed;
+    bottom: 16px;
+    right: 32px;
+    z-index: 1001;
+    padding: 10px 20px;
+    background: var(--surface-inverse);
+    color: var(--text-inverse);
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+
+  .toggle-compare:hover {
+    background: var(--state-hover);
+  }
+
+  /* ===== RESPONSIVE NOTE ===== */
+  .responsive-note {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 16px 24px;
+    margin: 24px 48px;
+    font-size: 13px;
+    color: var(--accent-amber);
+  }
+</style>
+</head>
+<body>
+
+<!-- SELECTOR BAR -->
+<div class="selector-bar">
+  <h1>Design Directions</h1>
+  <div class="direction-tabs">
+    <button class="direction-tab active" onclick="showDirection('a')">A: The Monument</button>
+    <button class="direction-tab" onclick="showDirection('b')">B: The Newsroom</button>
+    <button class="direction-tab" onclick="showDirection('c')">C: The Narrative</button>
+    <button class="direction-tab" onclick="showDirection('d')">D: The Dashboard</button>
+  </div>
+  <span class="eval-hint">Click tabs to compare directions</span>
+</div>
+
+<!-- DIRECTION A: THE MONUMENT -->
+<div class="direction active" id="dir-a">
+  <div class="direction-header">
+    <h2>Direction A: The Monument</h2>
+    <p class="subtitle">The number owns the first screen. Full-viewport ticker hero, then scroll to discover. One stat per viewport — let the number speak.</p>
+    <div class="traits">
+      <span class="trait trait-layout">Full-viewport hero</span>
+      <span class="trait trait-density">Medium density cards</span>
+      <span class="trait trait-audience">General public first</span>
+      <span class="trait trait-nav">Minimal navigation</span>
+    </div>
+  </div>
+
+  <div class="mockup-frame">
+    <!-- Nav -->
+    <div class="mock-nav">
+      <span class="logo">The Warning Collective</span>
+      <ul class="nav-links">
+        <li class="active-link">Home</li>
+        <li>Profiles</li>
+        <li>Predictions</li>
+        <li>About</li>
+        <li>Editorial Standards</li>
+      </ul>
+    </div>
+
+    <!-- Full-viewport Ticker -->
+    <div class="ticker-block monument-ticker">
+      <div class="ticker-number">73</div>
+      <div class="ticker-context">AI researchers and engineers have left major companies over safety concerns</div>
+      <div class="ticker-meta">Last departure: March 8, 2026 &middot; +3 this month</div>
+      <div class="trust-signal">Reviewed by the Advisory Board &middot; Dr. Sarah Chen, Stanford HAI</div>
+      <div class="monument-scroll-cue">&darr;</div>
+    </div>
+
+    <!-- Profile Grid -->
+    <div class="monument-section-title">
+      <h2>The People Behind the Number</h2>
+      <p>73 researchers. Their reasons. Their predictions. What they asked for.</p>
+    </div>
+
+    <div style="padding: 16px 48px 0;">
+      <div class="filter-bar">
+        <span class="filter-chip active-filter">All Companies</span>
+        <span class="filter-chip">Anthropic (12)</span>
+        <span class="filter-chip">OpenAI (18)</span>
+        <span class="filter-chip">Google DeepMind (15)</span>
+        <span class="filter-chip">Meta AI (9)</span>
+        <span class="filter-count">Showing 73 of 73</span>
+      </div>
+    </div>
+
+    <div class="monument-grid">
+      <div class="profile-card">
+        <div class="name">Dr. Elena Rodriguez</div>
+        <div class="role">Senior Research Scientist &middot; OpenAI &middot; 2025</div>
+        <div class="quote">"The safety team's recommendations were systematically deprioritized in favor of deployment speed."</div>
+        <span class="source-link">Source: The Verge, Nov 2025</span>
+        <div>
+          <span class="tag tag-concern">Safety Deprioritization</span>
+          <span class="tag tag-change">Independent safety board</span>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="name">James Okafor</div>
+        <div class="role">ML Engineer &middot; Google DeepMind &middot; 2025</div>
+        <div class="quote">"We had evidence of emergent capabilities that weren't being disclosed to the safety review board."</div>
+        <span class="source-link">Source: Wired, Dec 2025</span>
+        <div>
+          <span class="tag tag-concern">Transparency Failures</span>
+          <span class="tag tag-change">Mandatory capability disclosure</span>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="name">Dr. Mei-Lin Park</div>
+        <div class="role">Research Lead &middot; Anthropic &middot; 2026</div>
+        <div class="quote">"I couldn't reconcile the public safety messaging with internal resource allocation decisions."</div>
+        <span class="source-link">Source: MIT Technology Review, Jan 2026</span>
+        <div>
+          <span class="tag tag-concern">Safety Washing</span>
+          <span class="tag tag-change">Public safety audit requirements</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIRECTION B: THE NEWSROOM -->
+<div class="direction" id="dir-b">
+  <div class="direction-header">
+    <h2>Direction B: The Newsroom</h2>
+    <p class="subtitle">Split-screen entry — ticker on the left, latest departures on the right. Below: full filterable table with persistent sidebar. Built for journalists.</p>
+    <div class="traits">
+      <span class="trait trait-layout">Split-screen hero</span>
+      <span class="trait trait-density">High density table</span>
+      <span class="trait trait-audience">Journalists first</span>
+      <span class="trait trait-nav">Full navigation</span>
+    </div>
+  </div>
+
+  <div class="mockup-frame">
+    <!-- Nav -->
+    <div class="mock-nav">
+      <span class="logo">The Warning Collective</span>
+      <ul class="nav-links">
+        <li class="active-link">Home</li>
+        <li>Profiles</li>
+        <li>Predictions</li>
+        <li>Calls for Change</li>
+        <li>About</li>
+        <li>Editorial Standards</li>
+        <li>Press</li>
+      </ul>
+      <div class="nav-right">
+        <button class="btn-outline">Export</button>
+        <button class="btn-outline">Subscribe</button>
+      </div>
+    </div>
+
+    <!-- Split Hero -->
+    <div class="newsroom-split">
+      <div class="ticker-block newsroom-ticker">
+        <div class="ticker-number">73</div>
+        <div class="ticker-context">safety-motivated departures from major AI companies</div>
+        <div class="ticker-meta">Across 8 companies &middot; 2023&ndash;2026</div>
+        <div class="trust-signal">Advisory Board reviewed &middot; All claims source-verified</div>
+      </div>
+      <div class="newsroom-feed">
+        <h3>Latest Departures</h3>
+        <div class="feed-item">
+          <div class="feed-name">Dr. Mei-Lin Park <span class="tag tag-company" style="font-size:11px;margin:0;">Anthropic</span></div>
+          <div class="feed-detail">Research Lead &middot; March 2026</div>
+          <div class="feed-quote">"I couldn't reconcile the public safety messaging with internal resource allocation."</div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-name">Carlos Vega <span class="tag tag-company" style="font-size:11px;margin:0;">Meta AI</span></div>
+          <div class="feed-detail">Senior Engineer &middot; February 2026</div>
+          <div class="feed-quote">"They shipped the model despite our team flagging unresolved alignment issues."</div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-name">Dr. Aisha Patel <span class="tag tag-company" style="font-size:11px;margin:0;">OpenAI</span></div>
+          <div class="feed-detail">Safety Researcher &middot; January 2026</div>
+          <div class="feed-quote">"The gap between what we know internally and what the public is told is unconscionable."</div>
+        </div>
+        <div class="feed-item">
+          <div class="feed-name">Thomas Liu <span class="tag tag-company" style="font-size:11px;margin:0;">DeepMind</span></div>
+          <div class="feed-detail">ML Researcher &middot; December 2025</div>
+          <div class="feed-quote">"Publication of safety-critical findings was blocked three times."</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter + Table -->
+    <div class="newsroom-body">
+      <div class="layout-with-sidebar">
+        <div class="sidebar-filter">
+          <div class="filter-section">
+            <h4>Company</h4>
+            <div class="filter-option checked">OpenAI <span class="count">18</span></div>
+            <div class="filter-option">Google DeepMind <span class="count">15</span></div>
+            <div class="filter-option">Anthropic <span class="count">12</span></div>
+            <div class="filter-option">Meta AI <span class="count">9</span></div>
+            <div class="filter-option">Microsoft AI <span class="count">7</span></div>
+            <div class="filter-option">xAI <span class="count">6</span></div>
+            <div class="filter-option">Amazon AGI <span class="count">4</span></div>
+            <div class="filter-option">Apple ML <span class="count">2</span></div>
+          </div>
+          <div class="filter-section">
+            <h4>Year</h4>
+            <div class="filter-option">2026 <span class="count">14</span></div>
+            <div class="filter-option">2025 <span class="count">31</span></div>
+            <div class="filter-option">2024 <span class="count">19</span></div>
+            <div class="filter-option">2023 <span class="count">9</span></div>
+          </div>
+          <div class="filter-section">
+            <h4>Concern Category</h4>
+            <div class="filter-option">Safety Deprioritization <span class="count">22</span></div>
+            <div class="filter-option">Transparency Failures <span class="count">18</span></div>
+            <div class="filter-option">Safety Washing <span class="count">11</span></div>
+            <div class="filter-option">Rushed Deployment <span class="count">9</span></div>
+            <div class="filter-option">Research Suppression <span class="count">8</span></div>
+            <div class="filter-option">Governance Gaps <span class="count">5</span></div>
+          </div>
+          <div style="margin-top: 16px;">
+            <button class="btn-amber" style="width:100%;">Export CSV</button>
+            <button class="btn-outline" style="width:100%;margin-top:8px;">Copy Permalink</button>
+          </div>
+        </div>
+        <div class="newsroom-table">
+          <div class="table-header">
+            <span class="sorted">Name &darr;</span>
+            <span>Company</span>
+            <span>Year</span>
+            <span>Primary Concern</span>
+            <span>View</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">Dr. Elena Rodriguez</span>
+            <span class="row-company">OpenAI</span>
+            <span class="row-year">2025</span>
+            <span class="row-concern">Safety Deprioritization</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">James Okafor</span>
+            <span class="row-company">Google DeepMind</span>
+            <span class="row-year">2025</span>
+            <span class="row-concern">Transparency Failures</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">Dr. Mei-Lin Park</span>
+            <span class="row-company">Anthropic</span>
+            <span class="row-year">2026</span>
+            <span class="row-concern">Safety Washing</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">Carlos Vega</span>
+            <span class="row-company">Meta AI</span>
+            <span class="row-year">2026</span>
+            <span class="row-concern">Rushed Deployment</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">Dr. Aisha Patel</span>
+            <span class="row-company">OpenAI</span>
+            <span class="row-year">2026</span>
+            <span class="row-concern">Transparency Failures</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">Thomas Liu</span>
+            <span class="row-company">Google DeepMind</span>
+            <span class="row-year">2025</span>
+            <span class="row-concern">Research Suppression</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">Dr. Rachel Kim</span>
+            <span class="row-company">Anthropic</span>
+            <span class="row-year">2025</span>
+            <span class="row-concern">Governance Gaps</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">Marcus Johnson</span>
+            <span class="row-company">xAI</span>
+            <span class="row-year">2025</span>
+            <span class="row-concern">Safety Deprioritization</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIRECTION C: THE NARRATIVE -->
+<div class="direction" id="dir-c">
+  <div class="direction-header">
+    <h2>Direction C: The Narrative</h2>
+    <p class="subtitle">Ticker as prominent bar (not full viewport), then a featured profile as an editorial moment, then the grid. Magazine-meets-database. Emotional entry, structured depth.</p>
+    <div class="traits">
+      <span class="trait trait-layout">Ticker bar + featured profile</span>
+      <span class="trait trait-density">Mixed density</span>
+      <span class="trait trait-audience">Balanced audiences</span>
+      <span class="trait trait-nav">Minimal + content-driven</span>
+    </div>
+  </div>
+
+  <div class="mockup-frame">
+    <!-- Nav -->
+    <div class="mock-nav">
+      <span class="logo">The Warning Collective</span>
+      <ul class="nav-links">
+        <li class="active-link">Home</li>
+        <li>Profiles</li>
+        <li>Predictions</li>
+        <li>About</li>
+        <li>Editorial Standards</li>
+      </ul>
+      <div class="nav-right">
+        <button class="btn-outline">Press</button>
+      </div>
+    </div>
+
+    <!-- Ticker Bar (not full viewport) -->
+    <div class="ticker-block narrative-ticker">
+      <div class="ticker-number">73</div>
+      <div class="ticker-context">AI researchers and engineers have left major companies over safety concerns</div>
+      <div class="ticker-meta">Spanning 8 companies &middot; 2023&ndash;2026 &middot; +3 since your last visit</div>
+      <div class="trust-signal">Advisory Board reviewed &middot; Dr. Sarah Chen, Stanford HAI</div>
+    </div>
+
+    <!-- Featured Profile -->
+    <div class="narrative-featured">
+      <div class="featured-card">
+        <div class="featured-left">
+          <div class="featured-label">Latest Departure</div>
+          <div class="featured-name">Dr. Mei-Lin Park</div>
+          <div class="featured-role">Research Lead at Anthropic &middot; 6 years &middot; Left March 2026</div>
+          <div class="featured-quote">"I couldn't reconcile the public safety messaging with internal resource allocation decisions. When the third budget review cut safety headcount while doubling capability investment, I knew."</div>
+          <div style="margin-top:16px;">
+            <span class="source-link">Source: MIT Technology Review, Jan 2026</span>
+          </div>
+        </div>
+        <div class="featured-right">
+          <div class="featured-section">
+            <div class="section-label">Concern Category</div>
+            <span class="tag tag-concern">Safety Washing</span>
+            <span class="tag tag-concern">Resource Misallocation</span>
+          </div>
+          <div class="featured-section">
+            <div class="section-label">Called For</div>
+            <span class="tag tag-change">Public safety audit requirements</span>
+            <span class="tag tag-change">Independent safety board</span>
+          </div>
+          <div class="featured-section">
+            <div class="section-label">Prediction</div>
+            <div class="prediction-card" style="border:none;padding:0;">
+              <div class="prediction-quote" style="font-size:14px;">"Within 18 months, a major lab will have an alignment failure serious enough to trigger regulatory action."</div>
+              <div class="vote-bar-container" style="margin-top:8px;">
+                <span class="vote-label">82% agree</span>
+                <div class="vote-bar">
+                  <div class="agree"></div>
+                  <div class="disagree"></div>
+                </div>
+                <span class="vote-label">18%</span>
+                <span class="insider-badge">47 insider votes</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Grid -->
+    <div class="narrative-grid-header">
+      <h2>All Profiles</h2>
+      <div class="filter-bar" style="padding:0;margin:0;">
+        <span class="filter-chip active-filter">All</span>
+        <span class="filter-chip">OpenAI</span>
+        <span class="filter-chip">DeepMind</span>
+        <span class="filter-chip">Anthropic</span>
+        <span class="filter-chip">Meta AI</span>
+        <span class="filter-count">73 profiles</span>
+      </div>
+    </div>
+    <div class="narrative-grid">
+      <div class="profile-card">
+        <div class="name">Dr. Elena Rodriguez</div>
+        <div class="role">Senior Research Scientist &middot; OpenAI &middot; 2025</div>
+        <div class="quote">"The safety team's recommendations were systematically deprioritized."</div>
+        <div>
+          <span class="tag tag-concern">Safety Deprioritization</span>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="name">James Okafor</div>
+        <div class="role">ML Engineer &middot; Google DeepMind &middot; 2025</div>
+        <div class="quote">"Evidence of emergent capabilities wasn't being disclosed to the safety board."</div>
+        <div>
+          <span class="tag tag-concern">Transparency Failures</span>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="name">Carlos Vega</div>
+        <div class="role">Senior Engineer &middot; Meta AI &middot; 2026</div>
+        <div class="quote">"They shipped despite our team flagging unresolved alignment issues."</div>
+        <div>
+          <span class="tag tag-concern">Rushed Deployment</span>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="name">Dr. Aisha Patel</div>
+        <div class="role">Safety Researcher &middot; OpenAI &middot; 2026</div>
+        <div class="quote">"The gap between internal knowledge and public messaging is unconscionable."</div>
+        <div>
+          <span class="tag tag-concern">Transparency Failures</span>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="name">Thomas Liu</div>
+        <div class="role">ML Researcher &middot; Google DeepMind &middot; 2025</div>
+        <div class="quote">"Publication of safety-critical findings was blocked three times."</div>
+        <div>
+          <span class="tag tag-concern">Research Suppression</span>
+        </div>
+      </div>
+      <div class="profile-card">
+        <div class="name">Dr. Rachel Kim</div>
+        <div class="role">Policy Lead &middot; Anthropic &middot; 2025</div>
+        <div class="quote">"Governance existed on paper. In practice, commercial pressure won every debate."</div>
+        <div>
+          <span class="tag tag-concern">Governance Gaps</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DIRECTION D: THE DASHBOARD -->
+<div class="direction" id="dir-d">
+  <div class="direction-header">
+    <h2>Direction D: The Dashboard</h2>
+    <p class="subtitle">Stats bar with key metrics, three-column layout (filters | table | predictions sidebar). Power-user tool from the first pixel. Data density maximized.</p>
+    <div class="traits">
+      <span class="trait trait-layout">Stats bar + three-column</span>
+      <span class="trait trait-density">Maximum density</span>
+      <span class="trait trait-audience">Power users first</span>
+      <span class="trait trait-nav">Utility-focused</span>
+    </div>
+  </div>
+
+  <div class="mockup-frame">
+    <!-- Nav -->
+    <div class="mock-nav">
+      <span class="logo">The Warning Collective</span>
+      <ul class="nav-links">
+        <li class="active-link">Profiles</li>
+        <li>Predictions</li>
+        <li>Calls for Change</li>
+        <li>Trends</li>
+        <li>About</li>
+        <li>Editorial Standards</li>
+        <li>Press</li>
+      </ul>
+      <div class="nav-right">
+        <button class="btn-amber">Export Data</button>
+        <button class="btn-outline">Subscribe</button>
+        <button class="btn-outline">API</button>
+      </div>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="dashboard-ticker-bar">
+      <div class="stat-block primary">
+        <div class="stat-number">73</div>
+        <div class="stat-label">Total Departures</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-number">8</div>
+        <div class="stat-label">Companies</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-number">14</div>
+        <div class="stat-label">In 2026</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-number">67%</div>
+        <div class="stat-label">Senior+ Roles</div>
+      </div>
+    </div>
+
+    <!-- Three-column body -->
+    <div class="dashboard-body">
+      <!-- Left: Filters -->
+      <div class="sidebar-filter">
+        <div class="filter-section">
+          <h4>Company</h4>
+          <div class="filter-option checked">OpenAI <span class="count">18</span></div>
+          <div class="filter-option">Google DeepMind <span class="count">15</span></div>
+          <div class="filter-option">Anthropic <span class="count">12</span></div>
+          <div class="filter-option">Meta AI <span class="count">9</span></div>
+          <div class="filter-option">Microsoft AI <span class="count">7</span></div>
+          <div class="filter-option">xAI <span class="count">6</span></div>
+          <div class="filter-option">Amazon AGI <span class="count">4</span></div>
+          <div class="filter-option">Apple ML <span class="count">2</span></div>
+        </div>
+        <div class="filter-section">
+          <h4>Year</h4>
+          <div class="filter-option">2026 <span class="count">14</span></div>
+          <div class="filter-option">2025 <span class="count">31</span></div>
+          <div class="filter-option">2024 <span class="count">19</span></div>
+          <div class="filter-option">2023 <span class="count">9</span></div>
+        </div>
+        <div class="filter-section">
+          <h4>Concern</h4>
+          <div class="filter-option">Safety Deprioritization <span class="count">22</span></div>
+          <div class="filter-option">Transparency <span class="count">18</span></div>
+          <div class="filter-option">Safety Washing <span class="count">11</span></div>
+          <div class="filter-option">Rushed Deploy <span class="count">9</span></div>
+          <div class="filter-option">Research Suppression <span class="count">8</span></div>
+          <div class="filter-option">Governance <span class="count">5</span></div>
+        </div>
+        <div class="filter-section">
+          <h4>Seniority</h4>
+          <div class="filter-option">VP+ <span class="count">8</span></div>
+          <div class="filter-option">Director/Lead <span class="count">21</span></div>
+          <div class="filter-option">Senior <span class="count">30</span></div>
+          <div class="filter-option">Mid-level <span class="count">14</span></div>
+        </div>
+        <div style="margin-top:16px;">
+          <button class="btn-amber" style="width:100%;font-size:12px;">Export CSV</button>
+          <button class="btn-outline" style="width:100%;margin-top:6px;font-size:12px;">Export JSON</button>
+          <button class="btn-outline" style="width:100%;margin-top:6px;font-size:12px;">Copy Permalink</button>
+        </div>
+      </div>
+
+      <!-- Center: Table -->
+      <div class="dashboard-main">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <span style="font-size:14px;color:var(--text-secondary);">Showing 18 of 73 profiles (OpenAI filter active)</span>
+          <div style="display:flex;gap:8px;">
+            <button class="btn-outline" style="font-size:12px;padding:4px 12px;">Cards</button>
+            <button class="btn-amber" style="font-size:12px;padding:4px 12px;">Table</button>
+          </div>
+        </div>
+        <div style="border:1px solid var(--border-light);border-radius:8px;overflow:hidden;">
+          <div class="table-header">
+            <span class="sorted">Name &darr;</span>
+            <span>Company</span>
+            <span>Year</span>
+            <span>Primary Concern</span>
+            <span>View</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">Dr. Elena Rodriguez</span>
+            <span class="row-company">OpenAI</span>
+            <span class="row-year">2025</span>
+            <span class="row-concern">Safety Deprioritization</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">Dr. Aisha Patel</span>
+            <span class="row-company">OpenAI</span>
+            <span class="row-year">2026</span>
+            <span class="row-concern">Transparency Failures</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">Dr. Wei Zhang</span>
+            <span class="row-company">OpenAI</span>
+            <span class="row-year">2025</span>
+            <span class="row-concern">Safety Deprioritization</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">Lisa Nakamura</span>
+            <span class="row-company">OpenAI</span>
+            <span class="row-year">2024</span>
+            <span class="row-concern">Research Suppression</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">David Chen</span>
+            <span class="row-company">OpenAI</span>
+            <span class="row-year">2024</span>
+            <span class="row-concern">Governance Gaps</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+          <div class="profile-row">
+            <span class="row-name">Sarah Thompson</span>
+            <span class="row-company">OpenAI</span>
+            <span class="row-year">2025</span>
+            <span class="row-concern">Rushed Deployment</span>
+            <span class="row-action">View &rarr;</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Predictions Sidebar -->
+      <div class="dashboard-sidebar-right">
+        <h4>Trending Predictions</h4>
+        <div class="prediction-card" style="margin-bottom:16px;">
+          <div class="prediction-quote" style="font-size:14px;">"A major lab will have an alignment failure triggering regulation within 18 months."</div>
+          <div class="prediction-by">— Dr. Mei-Lin Park, Anthropic</div>
+          <div class="vote-bar-container">
+            <span class="vote-label" style="font-size:11px;">82%</span>
+            <div class="vote-bar">
+              <div class="agree"></div>
+              <div class="disagree"></div>
+            </div>
+            <span class="vote-label" style="font-size:11px;">18%</span>
+          </div>
+          <div style="margin-top:6px;"><span class="insider-badge">47 insider votes</span></div>
+        </div>
+        <div class="prediction-card" style="margin-bottom:16px;">
+          <div class="prediction-quote" style="font-size:14px;">"At least 3 more senior safety researchers will leave OpenAI by mid-2026."</div>
+          <div class="prediction-by">— Dr. Elena Rodriguez, OpenAI</div>
+          <div class="vote-bar-container">
+            <span class="vote-label" style="font-size:11px;">91%</span>
+            <div class="vote-bar">
+              <div class="agree" style="width:91%;"></div>
+              <div class="disagree" style="width:9%;"></div>
+            </div>
+            <span class="vote-label" style="font-size:11px;">9%</span>
+          </div>
+          <div style="margin-top:6px;"><span class="insider-badge">62 insider votes</span> <span class="tag tag-change" style="font-size:11px;margin:0;">Partially confirmed</span></div>
+        </div>
+        <div class="prediction-card">
+          <div class="prediction-quote" style="font-size:14px;">"The EU will mandate independent safety audits for frontier models by 2027."</div>
+          <div class="prediction-by">— James Okafor, DeepMind</div>
+          <div class="vote-bar-container">
+            <span class="vote-label" style="font-size:11px;">74%</span>
+            <div class="vote-bar">
+              <div class="agree" style="width:74%;"></div>
+              <div class="disagree" style="width:26%;"></div>
+            </div>
+            <span class="vote-label" style="font-size:11px;">26%</span>
+          </div>
+          <div style="margin-top:6px;"><span class="insider-badge">38 insider votes</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON TOGGLE -->
+<button class="toggle-compare" onclick="toggleComparison()">Compare All Directions</button>
+
+<!-- COMPARISON TABLE -->
+<div class="comparison-bar" id="comparison">
+  <table class="comparison-table">
+    <tr>
+      <th style="width:140px;">Dimension</th>
+      <th>A: Monument</th>
+      <th>B: Newsroom</th>
+      <th>C: Narrative</th>
+      <th>D: Dashboard</th>
+    </tr>
+    <tr>
+      <td style="font-weight:600;">Best for</td>
+      <td>General public, social shares</td>
+      <td>Journalists, researchers</td>
+      <td>All three audiences equally</td>
+      <td>Power users, data export</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;">Ticker treatment</td>
+      <td>Full-viewport hero (50vh)</td>
+      <td>Split-screen (50% width)</td>
+      <td>Prominent bar (25-30%)</td>
+      <td>Stats bar with 4 metrics</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;">Browse mode</td>
+      <td>3-column card grid</td>
+      <td>Table rows + sidebar filter</td>
+      <td>Featured profile + card grid</td>
+      <td>Table + cards toggle</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;">Emotional impact</td>
+      <td>Highest — the number speaks</td>
+      <td>Medium — data-forward</td>
+      <td>High — human story first</td>
+      <td>Low — utility-first</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;">Journalist UX</td>
+      <td>Requires scroll to reach tools</td>
+      <td>Immediate — built for them</td>
+      <td>Good — filters accessible</td>
+      <td>Best — everything visible</td>
+    </tr>
+    <tr>
+      <td style="font-weight:600;">Mobile fit</td>
+      <td>Excellent — natural scroll</td>
+      <td>Challenging — table on mobile</td>
+      <td>Good — stacks naturally</td>
+      <td>Poor — too dense for mobile</td>
+    </tr>
+  </table>
+</div>
+
+<div style="height: 120px;"></div>
+
+<script>
+function showDirection(id) {
+  document.querySelectorAll('.direction').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.direction-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('dir-' + id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleComparison() {
+  const el = document.getElementById('comparison');
+  el.classList.toggle('visible');
+  const btn = document.querySelector('.toggle-compare');
+  btn.textContent = el.classList.contains('visible') ? 'Hide Comparison' : 'Compare All Directions';
+}
+</script>
+
+</body>
+</html>
