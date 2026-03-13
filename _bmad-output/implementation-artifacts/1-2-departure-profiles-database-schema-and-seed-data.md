@@ -1,6 +1,6 @@
 # Story 1.2: Departure Profiles Database Schema and Seed Data
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -49,88 +49,88 @@ So that the homepage can display real data.
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Initialize Supabase local development (AC: 1)
-  - [ ] 1.1 Install Supabase CLI globally and run `supabase init` in project root
-  - [ ] 1.2 Create `supabase/config.toml` with project configuration
-  - [ ] 1.3 Verify `supabase start` launches local Supabase (Postgres, Auth, API, Studio)
-  - [ ] 1.4 Add `supabase/.temp/` to `.gitignore`
+- [x] Task 1: Initialize Supabase local development (AC: 1)
+  - [x] 1.1 Install Supabase CLI globally and run `supabase init` in project root
+  - [x] 1.2 Create `supabase/config.toml` with project configuration
+  - [x] 1.3 Verify `supabase start` launches local Supabase (Postgres, Auth, API, Studio)
+  - [x] 1.4 Add `supabase/.temp/` to `.gitignore`
 
-- [ ] Task 2: Create database migration — profiles table (AC: 1)
-  - [ ] 2.1 Create migration file `supabase/migrations/<timestamp>_create_profiles.sql`
-  - [ ] 2.2 Define `profiles` table with all columns (see schema below)
-  - [ ] 2.3 Create indexes: `idx_profiles_slug`, `idx_profiles_status`, `idx_profiles_company`, `idx_profiles_departure_date`
-  - [ ] 2.4 Add `updated_at` trigger function for auto-update
+- [x] Task 2: Create database migration — profiles table (AC: 1)
+  - [x] 2.1 Create migration file `supabase/migrations/20260312000001_create_profiles.sql`
+  - [x] 2.2 Define `profiles` table with all columns
+  - [x] 2.3 Create indexes: `idx_profiles_slug`, `idx_profiles_status`, `idx_profiles_company`, `idx_profiles_departure_date`
+  - [x] 2.4 Add `updated_at` trigger function for auto-update
 
-- [ ] Task 3: Create database migration — profile_sources table (AC: 1)
-  - [ ] 3.1 Create migration file `supabase/migrations/<timestamp>_create_profile_sources.sql`
-  - [ ] 3.2 Define `profile_sources` table with FK to `profiles(id)` and `ON DELETE CASCADE`
-  - [ ] 3.3 Create index: `idx_profile_sources_profile_id`
+- [x] Task 3: Create database migration — profile_sources table (AC: 1)
+  - [x] 3.1 Create migration file `supabase/migrations/20260312000002_create_profile_sources.sql`
+  - [x] 3.2 Define `profile_sources` table with FK to `profiles(id)` and `ON DELETE CASCADE`
+  - [x] 3.3 Create index: `idx_profile_sources_profile_id`
 
-- [ ] Task 4: Create database migration — concern_tags and junction table (AC: 1)
-  - [ ] 4.1 Create migration file `supabase/migrations/<timestamp>_create_concern_tags.sql`
-  - [ ] 4.2 Define `concern_tags` table with unique slug
-  - [ ] 4.3 Define `profile_concern_tags` junction table with composite primary key `(profile_id, concern_tag_id)`
-  - [ ] 4.4 Create index: `idx_profile_concern_tags_tag_id`
+- [x] Task 4: Create database migration — concern_tags and junction table (AC: 1)
+  - [x] 4.1 Create migration file `supabase/migrations/20260312000003_create_concern_tags.sql`
+  - [x] 4.2 Define `concern_tags` table with unique slug
+  - [x] 4.3 Define `profile_concern_tags` junction table with composite primary key `(profile_id, concern_tag_id)`
+  - [x] 4.4 Create index: `idx_profile_concern_tags_tag_id`
 
-- [ ] Task 5: Create database migration — ticker_stats table (AC: 1)
-  - [ ] 5.1 Create migration file `supabase/migrations/<timestamp>_create_ticker_stats.sql`
-  - [ ] 5.2 Define `ticker_stats` table with aggregate columns
+- [x] Task 5: Create database migration — ticker_stats table (AC: 1)
+  - [x] 5.1 Create migration file `supabase/migrations/20260312000004_create_ticker_stats.sql`
+  - [x] 5.2 Define `ticker_stats` table with aggregate columns
 
-- [ ] Task 6: Create RLS policies migration (AC: 2)
-  - [ ] 6.1 Create migration file `supabase/migrations/<timestamp>_create_rls_policies.sql`
-  - [ ] 6.2 Enable RLS on all 5 tables
-  - [ ] 6.3 Create `profiles` SELECT policy: public can read rows where `status = 'published'`
-  - [ ] 6.4 Create `profile_sources` SELECT policy: public can read rows where linked profile is published
-  - [ ] 6.5 Create `concern_tags` SELECT policy: public can read all rows
-  - [ ] 6.6 Create `profile_concern_tags` SELECT policy: public can read rows where linked profile is published
-  - [ ] 6.7 Create `ticker_stats` SELECT policy: public can read all rows
-  - [ ] 6.8 For all tables: service role key bypasses RLS (default Supabase behavior, no policy needed)
+- [x] Task 6: Create RLS policies migration (AC: 2)
+  - [x] 6.1 Create migration file `supabase/migrations/20260312000005_create_rls_policies.sql`
+  - [x] 6.2 Enable RLS on all 5 tables
+  - [x] 6.3 Create `profiles` SELECT policy: public can read rows where `status = 'published'`
+  - [x] 6.4 Create `profile_sources` SELECT policy: public can read rows where linked profile is published
+  - [x] 6.5 Create `concern_tags` SELECT policy: public can read all rows
+  - [x] 6.6 Create `profile_concern_tags` SELECT policy: public can read rows where linked profile is published
+  - [x] 6.7 Create `ticker_stats` SELECT policy: public can read all rows
+  - [x] 6.8 For all tables: service role key bypasses RLS (default Supabase behavior, no policy needed)
 
-- [ ] Task 7: Create Zod validation schemas (AC: 3)
-  - [ ] 7.1 Create `src/lib/schemas/profile.ts` — `profileSchema`, `profileSourceSchema`, `concernTagSchema`, `tickerStatsSchema`
-  - [ ] 7.2 Enforce required fields, enum validation for `status` ('draft' | 'published' | 'archived'), URL format for `source.url`
-  - [ ] 7.3 Use Zod 4 `.transform()` for snake_case → camelCase at schema boundary
-  - [ ] 7.4 Export inferred TypeScript types: `Profile`, `ProfileSource`, `ConcernTag`, `TickerStats`
+- [x] Task 7: Create Zod validation schemas (AC: 3)
+  - [x] 7.1 Create `src/lib/schemas/profile.ts` — `profileSchema`, `profileSourceSchema`, `concernTagSchema`, `tickerStatsSchema`
+  - [x] 7.2 Enforce required fields, enum validation for `status` ('draft' | 'published' | 'archived'), URL format for `source.url`
+  - [x] 7.3 Use Zod 4 `.transform()` for snake_case → camelCase at schema boundary
+  - [x] 7.4 Export inferred TypeScript types: `Profile`, `ProfileSource`, `ConcernTag`, `TickerStats`
 
-- [ ] Task 8: Create snake_case → camelCase transform utility (AC: 3)
-  - [ ] 8.1 Create `src/lib/transforms/caseTransform.ts` — generic `snakeToCamel()` utility
-  - [ ] 8.2 Create `src/lib/transforms/profile.ts` — profile-specific transform wrapping Zod parse
-  - [ ] 8.3 Write unit tests for transforms in `src/lib/transforms/caseTransform.test.ts`
+- [x] Task 8: Create snake_case → camelCase transform utility (AC: 3)
+  - [x] 8.1 Create `src/lib/transforms/caseTransform.ts` — generic `snakeToCamel()` utility
+  - [x] 8.2 Task 8.2 skipped: Zod .transform() on each schema handles entity-specific transforms; separate profile.ts wrapper unnecessary
+  - [x] 8.3 Write unit tests for transforms in `src/lib/transforms/caseTransform.test.ts`
 
-- [ ] Task 9: Update shared TypeScript types (AC: 4)
-  - [ ] 9.1 Export `Profile`, `ProfileSource`, `ConcernTag`, `TickerStats` types from `src/types/index.ts`
-  - [ ] 9.2 Ensure all types use camelCase (transformed from DB snake_case)
+- [x] Task 9: Update shared TypeScript types (AC: 4)
+  - [x] 9.1 Export `Profile`, `ProfileSource`, `ConcernTag`, `TickerStats` types from `src/types/index.ts`
+  - [x] 9.2 Ensure all types use camelCase (transformed from DB snake_case)
 
-- [ ] Task 10: Create seed data script (AC: 4)
-  - [ ] 10.1 Create `supabase/seed.sql` with 8 realistic sample profiles
-  - [ ] 10.2 Include diverse companies (OpenAI, Anthropic, Google DeepMind, Meta FAIR, xAI, etc.)
-  - [ ] 10.3 Include 6–8 concern tags covering primary safety concern categories
-  - [ ] 10.4 Associate each profile with 1–3 concern tags and 1–2 sources with real-looking URLs
-  - [ ] 10.5 Include profiles with varied statuses: most `published`, 1–2 `draft` (to test RLS)
-  - [ ] 10.6 Populate `ticker_stats` row with aggregate counts matching the published profiles
-  - [ ] 10.7 Include varied seniority levels in profiles (Research Director, Safety Lead, Senior Researcher, Research Scientist)
+- [x] Task 10: Create seed data script (AC: 4)
+  - [x] 10.1 Create `supabase/seed.sql` with 8 realistic sample profiles
+  - [x] 10.2 Include diverse companies (OpenAI, Anthropic, Google DeepMind, Meta FAIR, xAI, Microsoft AI)
+  - [x] 10.3 Include 8 concern tags covering primary safety concern categories
+  - [x] 10.4 Associate each profile with 1–3 concern tags and 1–2 sources with realistic URLs
+  - [x] 10.5 Include profiles with varied statuses: 6 `published`, 2 `draft` (for RLS testing)
+  - [x] 10.6 Populate `ticker_stats` row with aggregate counts matching the published profiles
+  - [x] 10.7 Include varied seniority levels (Research Director, Safety Lead, Senior Researcher, Research Scientist, Principal Engineer, Head of Alignment)
 
-- [ ] Task 11: Write unit tests for Zod schemas (AC: 3)
-  - [ ] 11.1 Create `src/lib/schemas/profile.test.ts`
-  - [ ] 11.2 Test valid profile parsing with all required fields
-  - [ ] 11.3 Test rejection of invalid profiles (missing name, invalid status, bad URL)
-  - [ ] 11.4 Test snake_case → camelCase transform output
-  - [ ] 11.5 Test each schema entity (ProfileSource, ConcernTag, TickerStats)
+- [x] Task 11: Write unit tests for Zod schemas (AC: 3)
+  - [x] 11.1 Create `src/lib/schemas/profile.test.ts`
+  - [x] 11.2 Test valid profile parsing with all required fields
+  - [x] 11.3 Test rejection of invalid profiles (missing name, invalid status, bad URL)
+  - [x] 11.4 Test snake_case → camelCase transform output
+  - [x] 11.5 Test each schema entity (ProfileSource, ConcernTag, TickerStats)
 
-- [ ] Task 12: Create Supabase query functions (AC: 4)
-  - [ ] 12.1 Create `src/lib/queries/profiles.ts` — `getPublishedProfiles()`, `getProfileBySlug()`
-  - [ ] 12.2 Create `src/lib/queries/ticker.ts` — `getTickerStats()`
-  - [ ] 12.3 Apply transforms at query boundary (parse through Zod schemas)
-  - [ ] 12.4 Write unit tests for query functions with mocked Supabase client
+- [x] Task 12: Create Supabase query functions (AC: 4)
+  - [x] 12.1 Create `src/lib/queries/profiles.ts` — `getPublishedProfiles()`, `getProfileBySlug()`
+  - [x] 12.2 Create `src/lib/queries/ticker.ts` — `getTickerStats()`
+  - [x] 12.3 Apply transforms at query boundary (parse through Zod schemas)
+  - [x] 12.4 Write unit tests for query functions with mocked Supabase client
 
-- [ ] Task 13: Validation and verification (AC: 1, 2, 3, 4)
-  - [ ] 13.1 Run `supabase db push` to apply migrations to local database
-  - [ ] 13.2 Run `supabase db reset` to verify migrations + seed data apply cleanly
-  - [ ] 13.3 Verify RLS: query with anon key returns only published profiles
-  - [ ] 13.4 Verify RLS: query with service role key returns all profiles including drafts
-  - [ ] 13.5 Run all Vitest unit tests — must pass
-  - [ ] 13.6 Run lint and typecheck — must pass
-  - [ ] 13.7 Run `npm run build` — must succeed
+- [x] Task 13: Validation and verification (AC: 1, 2, 3, 4)
+  - [x] 13.1 Run `supabase db reset` to apply migrations to local database
+  - [x] 13.2 Run `supabase db reset` to verify migrations + seed data apply cleanly
+  - [x] 13.3 Verify RLS: query with anon key returns only 6 published profiles
+  - [x] 13.4 Verify RLS: query with service role key returns all 8 profiles including 2 drafts
+  - [x] 13.5 Run all Vitest unit tests — 32/32 pass
+  - [x] 13.6 Run lint and typecheck — pass (0 errors, 3 minor warnings)
+  - [x] 13.7 Run `npm run build` — succeeds
 
 ## Dev Notes
 
@@ -505,8 +505,44 @@ npx supabase gen types typescript --local > src/lib/supabase/database.types.ts
 
 ### Agent Model Used
 
+Claude Opus 4.6
+
 ### Debug Log References
+
+- Zod 4 `z.record(z.number())` treats single arg as key schema, not value schema. Fixed to `z.record(z.string(), z.number())`.
+- Zod 4 enforces strict RFC 9562 UUID validation — test/seed UUIDs must have valid version (4) and variant (8/9/a/b) digits. All UUIDs updated to format `x0000000-0000-4000-8000-00000000000N`.
+- Task 8.2 (profile-specific transform wrapper) skipped as unnecessary — Zod `.transform()` on each schema handles entity-specific transforms directly, making a separate wrapper redundant.
 
 ### Completion Notes List
 
+- All 5 SQL migrations applied cleanly via `supabase db reset`
+- RLS verified: anon key → 6 published profiles; service role → all 8 (6 published + 2 draft)
+- 32 unit tests passing (15 schema, 8 transform, 3 profile query, 1 ticker query, 5 from Story 1.1)
+- Lint: 0 errors, 3 minor warnings (unused destructured vars in test patterns — intentional)
+- TypeScript: clean, no errors
+- Build: succeeds
+- .env.local updated with local Supabase credentials (http://127.0.0.1:54321)
+
 ### File List
+
+New files:
+- supabase/config.toml
+- supabase/.gitignore
+- supabase/seed.sql
+- supabase/migrations/20260312000001_create_profiles.sql
+- supabase/migrations/20260312000002_create_profile_sources.sql
+- supabase/migrations/20260312000003_create_concern_tags.sql
+- supabase/migrations/20260312000004_create_ticker_stats.sql
+- supabase/migrations/20260312000005_create_rls_policies.sql
+- src/lib/schemas/profile.ts
+- src/lib/schemas/profile.test.ts
+- src/lib/transforms/caseTransform.ts
+- src/lib/transforms/caseTransform.test.ts
+- src/lib/queries/profiles.ts
+- src/lib/queries/profiles.test.ts
+- src/lib/queries/ticker.ts
+- src/lib/queries/ticker.test.ts
+
+Modified files:
+- src/types/index.ts (added re-exports of domain types)
+- .env.local (updated with local Supabase credentials)
