@@ -73,6 +73,7 @@ describe("profileSchema", () => {
   })
 
   it("rejects missing required name", () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { name: _name, ...row } = validProfileRow
     expect(() => profileRowSchema.parse(row)).toThrow()
   })
@@ -109,6 +110,7 @@ describe("profileSourceSchema", () => {
   })
 
   it("rejects missing required url", () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { url: _url, ...row } = validSourceRow
     expect(() => profileSourceRowSchema.parse(row)).toThrow()
   })
@@ -165,6 +167,7 @@ describe("tickerStatsSchema", () => {
   })
 
   it("defaults seniority_breakdown to empty object", () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { seniority_breakdown: _breakdown, ...row } = validTickerStatsRow
     const result = tickerStatsSchema.parse(row)
     expect(result.seniorityBreakdown).toEqual({})

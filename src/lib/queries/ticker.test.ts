@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest"
+import { describe, it, expect, vi, beforeEach } from "vitest"
 
 const mockTickerData = {
   id: "d0000000-0000-4000-8000-000000000001",
@@ -8,17 +8,26 @@ const mockTickerData = {
   updated_at: "2025-11-20T00:00:00Z",
 }
 
+let singleResponse: { data: unknown | null; error: unknown } = {
+  data: mockTickerData,
+  error: null,
+}
+
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn().mockResolvedValue({
     from: () => ({
       select: () => ({
-        single: () => ({ data: mockTickerData, error: null }),
+        single: () => singleResponse,
       }),
     }),
   }),
 }))
 
 import { getTickerStats } from "./ticker"
+
+beforeEach(() => {
+  singleResponse = { data: mockTickerData, error: null }
+})
 
 describe("getTickerStats", () => {
   it("returns ticker stats with camelCase keys", async () => {
@@ -31,5 +40,17 @@ describe("getTickerStats", () => {
       "Research Director": 1,
     })
     expect(stats.updatedAt).toBe("2025-11-20T00:00:00Z")
+  })
+
+  it("throws on Supabase error", async () => {
+    singleResponse = {
+      data: null,
+      error: { message: "connection refused", code: "PGRST000" },
+    }
+
+    await expect(getTickerStats()).rejects.toEqual({
+      message: "connection refused",
+      code: "PGRST000",
+    })
   })
 })

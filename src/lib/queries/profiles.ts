@@ -7,13 +7,14 @@ export async function getPublishedProfiles() {
   const { data, error } = await supabase
     .from("profiles")
     .select("*")
+    .eq("status", "published")
     .order("departure_date", { ascending: false })
 
   if (error) throw error
   return data.map((row) => profileSchema.parse(row))
 }
 
-/** Fetch a single profile by slug */
+/** Fetch a single profile by slug. Returns null if not found. */
 export async function getProfileBySlug(slug: string) {
   const supabase = await createClient()
   const { data, error } = await supabase
@@ -22,6 +23,9 @@ export async function getProfileBySlug(slug: string) {
     .eq("slug", slug)
     .single()
 
-  if (error) throw error
+  if (error) {
+    if (error.code === "PGRST116") return null
+    throw error
+  }
   return profileSchema.parse(data)
 }

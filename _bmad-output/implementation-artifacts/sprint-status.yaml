@@ -38,7 +38,7 @@ development_status:
   # Epic 1: The Ticker & Homepage Experience (7 stories)
   epic-1: in-progress
   1-1-initialize-project-and-design-system-foundation: done
-  1-2-departure-profiles-database-schema-and-seed-data: review
+  1-2-departure-profiles-database-schema-and-seed-data: done
   1-3-ticker-block-component: backlog
   1-4-stats-bridge-component: backlog
   1-5-latest-activity-slot: backlog

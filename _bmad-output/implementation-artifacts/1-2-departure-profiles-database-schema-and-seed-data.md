@@ -1,6 +1,6 @@
 # Story 1.2: Departure Profiles Database Schema and Seed Data
 
-Status: review
+Status: done
 
 ## Story
 

@@ -6,34 +6,6 @@ const mockEq = vi.fn()
 const mockSingle = vi.fn()
 const mockFrom = vi.fn()
 
-vi.mock("@/lib/supabase/server", () => ({
-  createClient: vi.fn().mockResolvedValue({
-    from: (...args: unknown[]) => {
-      mockFrom(...args)
-      return {
-        select: (...sArgs: unknown[]) => {
-          mockSelect(...sArgs)
-          return {
-            order: (...oArgs: unknown[]) => {
-              mockOrder(...oArgs)
-              return { data: mockData, error: null }
-            },
-            eq: (...eArgs: unknown[]) => {
-              mockEq(...eArgs)
-              return {
-                single: (...siArgs: unknown[]) => {
-                  mockSingle(...siArgs)
-                  return { data: mockSingleData, error: null }
-                },
-              }
-            },
-          }
-        },
-      }
-    },
-  }),
-}))
-
 const mockData = [
   {
     id: "b0000000-0000-4000-8000-000000000001",
@@ -50,20 +22,59 @@ const mockData = [
   },
 ]
 
-const mockSingleData = mockData[0]
+// Configurable responses — tests can override these before calling functions
+let listResponse: { data: unknown[] | null; error: unknown } = {
+  data: mockData,
+  error: null,
+}
+let singleResponse: { data: unknown | null; error: unknown } = {
+  data: mockData[0],
+  error: null,
+}
+
+vi.mock("@/lib/supabase/server", () => ({
+  createClient: vi.fn().mockResolvedValue({
+    from: (...args: unknown[]) => {
+      mockFrom(...args)
+      return {
+        select: (...sArgs: unknown[]) => {
+          mockSelect(...sArgs)
+          return {
+            eq: (...eqArgs: unknown[]) => {
+              mockEq(...eqArgs)
+              return {
+                order: (...oArgs: unknown[]) => {
+                  mockOrder(...oArgs)
+                  return listResponse
+                },
+                single: (...siArgs: unknown[]) => {
+                  mockSingle(...siArgs)
+                  return singleResponse
+                },
+              }
+            },
+          }
+        },
+      }
+    },
+  }),
+}))
 
 import { getPublishedProfiles, getProfileBySlug } from "./profiles"
 
 beforeEach(() => {
   vi.clearAllMocks()
+  listResponse = { data: mockData, error: null }
+  singleResponse = { data: mockData[0], error: null }
 })
 
 describe("getPublishedProfiles", () => {
-  it("queries profiles table ordered by departure_date descending", async () => {
+  it("queries profiles with status=published ordered by departure_date", async () => {
     const profiles = await getPublishedProfiles()
 
     expect(mockFrom).toHaveBeenCalledWith("profiles")
     expect(mockSelect).toHaveBeenCalledWith("*")
+    expect(mockEq).toHaveBeenCalledWith("status", "published")
     expect(mockOrder).toHaveBeenCalledWith("departure_date", {
       ascending: false,
     })
@@ -81,6 +92,18 @@ describe("getPublishedProfiles", () => {
     expect(profile.createdAt).toBe("2025-11-20T00:00:00Z")
     expect(profile.updatedAt).toBe("2025-11-20T00:00:00Z")
   })
+
+  it("throws on Supabase error", async () => {
+    listResponse = {
+      data: null,
+      error: { message: "connection refused", code: "PGRST000" },
+    }
+
+    await expect(getPublishedProfiles()).rejects.toEqual({
+      message: "connection refused",
+      code: "PGRST000",
+    })
+  })
 })
 
 describe("getProfileBySlug", () => {
@@ -90,7 +113,29 @@ describe("getProfileBySlug", () => {
     expect(mockFrom).toHaveBeenCalledWith("profiles")
     expect(mockEq).toHaveBeenCalledWith("slug", "elena-rodriguez")
     expect(mockSingle).toHaveBeenCalled()
-    expect(profile.slug).toBe("elena-rodriguez")
-    expect(profile.company).toBe("OpenAI")
+    expect(profile?.slug).toBe("elena-rodriguez")
+    expect(profile?.company).toBe("OpenAI")
+  })
+
+  it("returns null when profile not found", async () => {
+    singleResponse = {
+      data: null,
+      error: { message: "Row not found", code: "PGRST116" },
+    }
+
+    const result = await getProfileBySlug("nonexistent-slug")
+    expect(result).toBeNull()
+  })
+
+  it("throws on database error", async () => {
+    singleResponse = {
+      data: null,
+      error: { message: "connection refused", code: "PGRST000" },
+    }
+
+    await expect(getProfileBySlug("elena-rodriguez")).rejects.toEqual({
+      message: "connection refused",
+      code: "PGRST000",
+    })
   })
 })
