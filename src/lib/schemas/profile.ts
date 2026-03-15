@@ -84,10 +84,90 @@ export const tickerStatsSchema = tickerStatsRowSchema.transform((row) => ({
   updatedAt: row.updated_at,
 }))
 
+// --- Profile with concern tags (joined query result) ---
+
+export const profileWithTagsRowSchema = profileRowSchema.extend({
+  profile_concern_tags: z.array(z.object({
+    concern_tags: z.object({
+      id: z.string().uuid(),
+      name: z.string(),
+      slug: z.string(),
+    }),
+  })).default([]),
+})
+
+export const profileWithTagsSchema = profileWithTagsRowSchema.transform((row) => ({
+  id: row.id,
+  slug: row.slug,
+  name: row.name,
+  photoUrl: row.photo_url,
+  company: row.company,
+  role: row.role,
+  departureDate: row.departure_date,
+  statedReason: row.stated_reason,
+  status: row.status,
+  createdAt: row.created_at,
+  updatedAt: row.updated_at,
+  concernTags: row.profile_concern_tags.map((pct) => ({
+    id: pct.concern_tags.id,
+    name: pct.concern_tags.name,
+    slug: pct.concern_tags.slug,
+  })),
+}))
+
+// --- Profile detail (with tags + sources, for detail page) ---
+
+export const profileDetailRowSchema = profileRowSchema.extend({
+  profile_concern_tags: z.array(z.object({
+    concern_tags: z.object({
+      id: z.string().uuid(),
+      name: z.string(),
+      slug: z.string(),
+    }),
+  })).default([]),
+  profile_sources: z.array(z.object({
+    id: z.string().uuid(),
+    url: z.string(),
+    title: z.string().nullable(),
+    platform: z.string().nullable(),
+    published_date: z.string().nullable(),
+  })).default([]),
+})
+
+export const profileDetailSchema = profileDetailRowSchema.transform((row) => ({
+  id: row.id,
+  slug: row.slug,
+  name: row.name,
+  photoUrl: row.photo_url,
+  company: row.company,
+  role: row.role,
+  departureDate: row.departure_date,
+  statedReason: row.stated_reason,
+  status: row.status,
+  createdAt: row.created_at,
+  updatedAt: row.updated_at,
+  concernTags: row.profile_concern_tags.map((pct) => ({
+    id: pct.concern_tags.id,
+    name: pct.concern_tags.name,
+    slug: pct.concern_tags.slug,
+  })),
+  sources: row.profile_sources.map((s) => ({
+    id: s.id,
+    url: s.url,
+    title: s.title,
+    platform: s.platform,
+    publishedDate: s.published_date,
+  })),
+}))
+
+export type ProfileDetail = z.output<typeof profileDetailSchema>
+
 // --- Exported TypeScript types (camelCase) ---
 
 export type ProfileRow = z.input<typeof profileSchema>
 export type Profile = z.output<typeof profileSchema>
+
+export type ProfileWithTags = z.output<typeof profileWithTagsSchema>
 
 export type ProfileSourceRow = z.input<typeof profileSourceSchema>
 export type ProfileSource = z.output<typeof profileSourceSchema>

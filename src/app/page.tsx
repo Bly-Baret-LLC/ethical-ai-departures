@@ -1,21 +1,36 @@
+import { LatestActivitySlot } from "@/components/custom/LatestActivitySlot"
+import { ProfilePreview } from "@/components/custom/ProfilePreview"
+import { StatsBridge } from "@/components/custom/StatsBridge"
+import { TickerBlock } from "@/components/custom/TickerBlock"
+import { VisitTracker } from "@/components/custom/VisitTracker"
+
+// Matches TICKER_REVALIDATE_SECONDS — inlined because Next.js requires
+// statically analyzable segment config values (cannot use imported variables).
+export const revalidate = 60
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://thewarningcollective.org"
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "The Warning Collective",
+  url: siteUrl,
+  description:
+    "Tracking safety-motivated departures from AI companies. A public accountability resource for journalists, researchers, and the concerned public.",
+}
+
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-surface-primary">
-      <div className="bg-surface-inverse px-6 py-24 text-center">
-        <h1 className="font-serif text-[5rem] font-extrabold leading-none text-text-inverse tabular-nums">
-          0
-        </h1>
-        <p className="mt-4 text-base text-text-inverse/80">
-          AI researchers have left major companies over safety concerns
-        </p>
-      </div>
-      <div className="mx-auto max-w-5xl px-6 py-16">
-        <h2 className="text-2xl font-semibold">The Warning Collective</h2>
-        <p className="mt-4 text-text-secondary">
-          A public accountability resource tracking safety-motivated departures
-          from AI companies.
-        </p>
-      </div>
+    <main id="main-content" className="min-h-screen bg-surface-primary">
+      <VisitTracker />
+      <TickerBlock />
+      <StatsBridge />
+      <LatestActivitySlot />
+      <ProfilePreview />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+      />
     </main>
   )
 }

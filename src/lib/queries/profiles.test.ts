@@ -19,6 +19,18 @@ const mockData = [
     status: "published",
     created_at: "2025-11-20T00:00:00Z",
     updated_at: "2025-11-20T00:00:00Z",
+    profile_concern_tags: [
+      { concern_tags: { id: "c0000000-0000-4000-8000-000000000001", name: "Safety Deprioritization", slug: "safety-deprioritization" } },
+    ],
+    profile_sources: [
+      {
+        id: "d0000000-0000-4000-8000-000000000001",
+        url: "https://example.com/article",
+        title: "Why I Left OpenAI",
+        platform: "Blog",
+        published_date: "2025-11-16",
+      },
+    ],
   },
 ]
 
@@ -36,24 +48,24 @@ vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn().mockResolvedValue({
     from: (...args: unknown[]) => {
       mockFrom(...args)
+      const eqChain: Record<string, unknown> = {
+        order: (...oArgs: unknown[]) => {
+          mockOrder(...oArgs)
+          return listResponse
+        },
+        single: (...siArgs: unknown[]) => {
+          mockSingle(...siArgs)
+          return singleResponse
+        },
+      }
+      eqChain.eq = (...eqArgs: unknown[]) => {
+        mockEq(...eqArgs)
+        return eqChain
+      }
       return {
         select: (...sArgs: unknown[]) => {
           mockSelect(...sArgs)
-          return {
-            eq: (...eqArgs: unknown[]) => {
-              mockEq(...eqArgs)
-              return {
-                order: (...oArgs: unknown[]) => {
-                  mockOrder(...oArgs)
-                  return listResponse
-                },
-                single: (...siArgs: unknown[]) => {
-                  mockSingle(...siArgs)
-                  return singleResponse
-                },
-              }
-            },
-          }
+          return { eq: eqChain.eq }
         },
       }
     },
@@ -73,7 +85,7 @@ describe("getPublishedProfiles", () => {
     const profiles = await getPublishedProfiles()
 
     expect(mockFrom).toHaveBeenCalledWith("profiles")
-    expect(mockSelect).toHaveBeenCalledWith("*")
+    expect(mockSelect).toHaveBeenCalledWith(expect.stringContaining("profile_concern_tags"))
     expect(mockEq).toHaveBeenCalledWith("status", "published")
     expect(mockOrder).toHaveBeenCalledWith("departure_date", {
       ascending: false,
@@ -83,7 +95,7 @@ describe("getPublishedProfiles", () => {
     expect(profiles[0].departureDate).toBe("2025-11-15")
   })
 
-  it("transforms snake_case to camelCase", async () => {
+  it("transforms snake_case to camelCase including concern tags", async () => {
     const profiles = await getPublishedProfiles()
     const profile = profiles[0]
 
@@ -91,6 +103,9 @@ describe("getPublishedProfiles", () => {
     expect(profile.statedReason).toBe("Safety concerns deprioritized.")
     expect(profile.createdAt).toBe("2025-11-20T00:00:00Z")
     expect(profile.updatedAt).toBe("2025-11-20T00:00:00Z")
+    expect(profile.concernTags).toEqual([
+      { id: "c0000000-0000-4000-8000-000000000001", name: "Safety Deprioritization", slug: "safety-deprioritization" },
+    ])
   })
 
   it("throws on Supabase error", async () => {
@@ -107,14 +122,34 @@ describe("getPublishedProfiles", () => {
 })
 
 describe("getProfileBySlug", () => {
-  it("queries profiles table by slug", async () => {
+  it("queries published profiles by slug with tags and sources", async () => {
     const profile = await getProfileBySlug("elena-rodriguez")
 
     expect(mockFrom).toHaveBeenCalledWith("profiles")
+    expect(mockSelect).toHaveBeenCalledWith(expect.stringContaining("profile_concern_tags"))
+    expect(mockSelect).toHaveBeenCalledWith(expect.stringContaining("profile_sources"))
     expect(mockEq).toHaveBeenCalledWith("slug", "elena-rodriguez")
+    expect(mockEq).toHaveBeenCalledWith("status", "published")
     expect(mockSingle).toHaveBeenCalled()
     expect(profile?.slug).toBe("elena-rodriguez")
     expect(profile?.company).toBe("OpenAI")
+  })
+
+  it("transforms concern tags and sources to camelCase", async () => {
+    const profile = await getProfileBySlug("elena-rodriguez")
+
+    expect(profile?.concernTags).toEqual([
+      { id: "c0000000-0000-4000-8000-000000000001", name: "Safety Deprioritization", slug: "safety-deprioritization" },
+    ])
+    expect(profile?.sources).toEqual([
+      {
+        id: "d0000000-0000-4000-8000-000000000001",
+        url: "https://example.com/article",
+        title: "Why I Left OpenAI",
+        platform: "Blog",
+        publishedDate: "2025-11-16",
+      },
+    ])
   })
 
   it("returns null when profile not found", async () => {

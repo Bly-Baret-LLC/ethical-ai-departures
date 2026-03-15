@@ -1,31 +1,43 @@
 import { createClient } from "@/lib/supabase/server"
-import { profileSchema } from "@/lib/schemas/profile"
+import { profileWithTagsSchema, profileDetailSchema } from "@/lib/schemas/profile"
 
-/** Fetch all published profiles, ordered by most recent departure */
+/** Fetch all published profiles with concern tags, ordered by most recent departure */
 export async function getPublishedProfiles() {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from("profiles")
-    .select("*")
+    .select(`
+      *,
+      profile_concern_tags(
+        concern_tags(id, name, slug)
+      )
+    `)
     .eq("status", "published")
     .order("departure_date", { ascending: false })
 
   if (error) throw error
-  return data.map((row) => profileSchema.parse(row))
+  return data.map((row) => profileWithTagsSchema.parse(row))
 }
 
-/** Fetch a single profile by slug. Returns null if not found. */
+/** Fetch a single profile by slug with concern tags and sources. Returns null if not found. */
 export async function getProfileBySlug(slug: string) {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from("profiles")
-    .select("*")
+    .select(`
+      *,
+      profile_concern_tags(
+        concern_tags(id, name, slug)
+      ),
+      profile_sources(id, url, title, platform, published_date)
+    `)
     .eq("slug", slug)
+    .eq("status", "published")
     .single()
 
   if (error) {
     if (error.code === "PGRST116") return null
     throw error
   }
-  return profileSchema.parse(data)
+  return profileDetailSchema.parse(data)
 }

@@ -15,4 +15,5 @@ export const STORAGE_KEYS = {
   TICKER_EXPLAINER_DISMISSED: `${STORAGE_PREFIX}ticker-explainer-dismissed`,
   LAST_COUNT: `${STORAGE_PREFIX}last-count`,
   HAS_VISITED: `${STORAGE_PREFIX}has-visited`,
+  LAST_VISIT_DATE: `${STORAGE_PREFIX}last-visit-date`,
 } as const
