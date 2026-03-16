@@ -15,7 +15,6 @@ function easeOutExpo(t: number): number {
 export function AnimatedCount({ value, className, animate = false }: AnimatedCountProps) {
   const [display, setDisplay] = useState(value)
   const hasAnimated = useRef(false)
-  const targetDigits = String(value).length
 
   useEffect(() => {
     if (hasAnimated.current) return
@@ -39,21 +38,23 @@ export function AnimatedCount({ value, className, animate = false }: AnimatedCou
     requestAnimationFrame(tick)
   }, [value])
 
-  // Pad with invisible zeros so width never changes during count-up
-  const displayStr = String(display)
-  const padCount = targetDigits - displayStr.length
-
   return (
-    <span
-      className={`${className ?? ""} inline-block tabular-nums${animate ? " digit-roll-in" : ""}`}
-      aria-live="polite"
-    >
-      {padCount > 0 && (
-        <span className="invisible" aria-hidden="true">
-          {"0".repeat(padCount)}
+    <span className="relative inline-block tabular-nums">
+      {/* Invisible final value holds the width constant */}
+      <span className="invisible" aria-hidden="true">
+        <span
+          className={`${className ?? ""} inline-block tabular-nums${animate ? " digit-roll-in" : ""}`}
+        >
+          {value}
         </span>
-      )}
-      {display}
+      </span>
+      {/* Visible animated value overlaid on top */}
+      <span
+        className={`${className ?? ""} absolute left-0 top-0 inline-block tabular-nums${animate ? " digit-roll-in" : ""}`}
+        aria-live="polite"
+      >
+        {display}
+      </span>
     </span>
   )
 }
