@@ -112,6 +112,51 @@ export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
           </div>
         </div>
 
+        {/* Active filter chips */}
+        {hasActiveFilters && (
+          <div className="mb-4 flex flex-wrap gap-2">
+            {filters.concern.map((slug) => {
+              const label = concerns.find((c) => c.value === slug)?.label ?? slug
+              return (
+                <button
+                  key={`concern-${slug}`}
+                  type="button"
+                  onClick={() => toggleFilter("concern", slug)}
+                  className="inline-flex items-center gap-1 rounded-full bg-accent-amber/10 px-3 py-1 text-sm font-medium text-accent-amber hover:bg-accent-amber/20"
+                >
+                  {label}
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              )
+            })}
+            {filters.company.map((val) => {
+              const label = companies.find((c) => c.value === val)?.label ?? val
+              return (
+                <button
+                  key={`company-${val}`}
+                  type="button"
+                  onClick={() => toggleFilter("company", val)}
+                  className="inline-flex items-center gap-1 rounded-full bg-accent-amber/10 px-3 py-1 text-sm font-medium text-accent-amber hover:bg-accent-amber/20"
+                >
+                  {label}
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              )
+            })}
+            {filters.year.map((val) => (
+              <button
+                key={`year-${val}`}
+                type="button"
+                onClick={() => toggleFilter("year", val)}
+                className="inline-flex items-center gap-1 rounded-full bg-accent-amber/10 px-3 py-1 text-sm font-medium text-accent-amber hover:bg-accent-amber/20"
+              >
+                {val}
+                <span aria-hidden="true">&times;</span>
+              </button>
+            ))}
+          </div>
+        )}
+
         {/* Content: empty state, card grid, or table */}
         {filtered.length === 0 ? (
           <div className="rounded-lg border border-border-light bg-surface-card px-6 py-12 text-center">
