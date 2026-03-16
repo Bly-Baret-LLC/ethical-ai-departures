@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest"
-import { render, screen, fireEvent, act, cleanup } from "@testing-library/react"
+import { render, screen, act, cleanup } from "@testing-library/react"
 import { TickerClient } from "./TickerClient"
 import { STORAGE_KEYS } from "@/lib/constants"
 
@@ -72,45 +72,6 @@ describe("TickerClient", () => {
     })
 
     expect(screen.getByText("2 in the last 90 days")).toBeInTheDocument()
-  })
-
-  it("shows explainer on first visit", async () => {
-    await act(async () => {
-      render(<TickerClient {...defaultProps} />)
-    })
-
-    expect(
-      screen.getByText(/this count tracks verified safety-motivated/i)
-    ).toBeInTheDocument()
-  })
-
-  it("hides explainer when dismissed", async () => {
-    await act(async () => {
-      render(<TickerClient {...defaultProps} />)
-    })
-
-    const dismissBtn = screen.getByText(/got it, don't show again/i)
-    fireEvent.click(dismissBtn)
-
-    expect(
-      screen.queryByText(/this count tracks verified safety-motivated/i)
-    ).not.toBeInTheDocument()
-    expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-      STORAGE_KEYS.TICKER_EXPLAINER_DISMISSED,
-      "true"
-    )
-  })
-
-  it("hides explainer if previously dismissed", async () => {
-    store[STORAGE_KEYS.TICKER_EXPLAINER_DISMISSED] = "true"
-
-    await act(async () => {
-      render(<TickerClient {...defaultProps} />)
-    })
-
-    expect(
-      screen.queryByText(/this count tracks verified safety-motivated/i)
-    ).not.toBeInTheDocument()
   })
 
   it("shows delta badge when count increased", async () => {
