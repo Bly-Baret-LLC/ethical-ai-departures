@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
+import { sendContactNotification } from "@/lib/email"
 import { z } from "zod"
 
 const contactInputSchema = z.object({
@@ -27,16 +27,13 @@ export async function submitContactRequest(formData: FormData): Promise<ContactR
   }
 
   try {
-    const supabase = await createClient()
-    const { error } = await supabase.from("contact_requests").insert({
+    await sendContactNotification({
       type: parsed.data.type,
       email: parsed.data.email,
       message: parsed.data.message,
     })
 
-    if (error) throw error
-
-    return { success: true, message: "Your request has been submitted. We'll respond within 5 business days." }
+    return { success: true, message: "Message sent. We'll respond within 5 business days." }
   } catch {
     return { success: false, message: "Something went wrong. Please try again." }
   }

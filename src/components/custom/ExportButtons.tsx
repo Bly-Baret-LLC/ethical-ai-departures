@@ -31,18 +31,18 @@ export function ExportButtons({ profiles, filters }: ExportButtonsProps) {
   if (profiles.length === 0) return null
 
   return (
-    <div className="flex items-center gap-2" role="group" aria-label="Export data">
+    <div className="flex flex-col gap-2" role="group" aria-label="Export data">
       <button
         type="button"
         onClick={handleCsvExport}
-        className="rounded-md border border-border-light px-3 py-1 text-sm text-text-secondary hover:bg-surface-secondary"
+        className="w-full rounded-md border border-border-light px-3 py-1 text-sm text-text-secondary hover:bg-surface-secondary"
       >
         Export CSV
       </button>
       <button
         type="button"
         onClick={handleJsonExport}
-        className="rounded-md border border-border-light px-3 py-1 text-sm text-text-secondary hover:bg-surface-secondary"
+        className="w-full rounded-md border border-border-light px-3 py-1 text-sm text-text-secondary hover:bg-surface-secondary"
       >
         Export JSON
       </button>

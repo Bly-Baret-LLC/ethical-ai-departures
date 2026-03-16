@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { ContactButton } from "@/components/custom/ContactButton"
 
 export const revalidate = 86400 // 24-hour ISR
 
@@ -55,8 +56,8 @@ export default function AboutPage() {
         <p className="mt-3 text-text-secondary">
           Ethical AI Departures is a solo project with input from a handful of
           collaborators who care about AI accountability. Want to get involved?
-          Use the Submit a Departure button to get in touch.
         </p>
+        <ContactButton />
       </section>
 
     </main>

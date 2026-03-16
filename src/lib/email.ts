@@ -30,6 +30,36 @@ function formatPlainText(submission: DepartureSubmission): string {
   return lines.join("\n")
 }
 
+export interface ContactMessage {
+  email: string
+  message: string
+  type: string
+}
+
+export async function sendContactNotification(contact: ContactMessage) {
+  const to = process.env.NOTIFICATION_EMAIL
+  if (!to || !process.env.RESEND_API_KEY) return
+
+  const lines = [
+    `New contact message received:`,
+    ``,
+    `Type: ${contact.type}`,
+    `Email: ${contact.email}`,
+    ``,
+    `Message:`,
+    contact.message,
+    ``,
+    `— Ethical AI Departures`,
+  ]
+
+  await resend.emails.send({
+    from: "Ethical AI Departures <onboarding@resend.dev>",
+    to,
+    subject: `Contact: ${contact.type} from ${contact.email || "anonymous"}`,
+    text: lines.join("\n"),
+  })
+}
+
 export async function sendDepartureNotification(submission: DepartureSubmission) {
   const to = process.env.NOTIFICATION_EMAIL
   if (!to || !process.env.RESEND_API_KEY) return

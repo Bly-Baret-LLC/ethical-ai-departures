@@ -2,6 +2,11 @@ import { describe, it, expect, vi, afterEach } from "vitest"
 import { render, screen, cleanup, fireEvent } from "@testing-library/react"
 import { FilterPanel } from "./FilterPanel"
 import type { FilterOption, FilterState } from "@/hooks/useProfileFilters"
+import type { ProfileWithTags } from "@/lib/schemas/profile"
+
+vi.mock("./ExportButtons", () => ({
+  ExportButtons: () => <div data-testid="export-buttons" />,
+}))
 
 afterEach(() => {
   cleanup()
@@ -30,6 +35,8 @@ const defaultFilters: FilterState = {
   q: "",
 }
 
+const defaultProfiles: ProfileWithTags[] = []
+
 describe("FilterPanel", () => {
   it("renders filter sections", () => {
     render(
@@ -41,6 +48,7 @@ describe("FilterPanel", () => {
         onToggleFilter={vi.fn()}
         onClearAll={vi.fn()}
         hasActiveFilters={false}
+        profiles={defaultProfiles}
       />
     )
 
@@ -59,6 +67,7 @@ describe("FilterPanel", () => {
         onToggleFilter={vi.fn()}
         onClearAll={vi.fn()}
         hasActiveFilters={false}
+        profiles={defaultProfiles}
       />
     )
 
@@ -80,6 +89,7 @@ describe("FilterPanel", () => {
         onToggleFilter={onToggle}
         onClearAll={vi.fn()}
         hasActiveFilters={false}
+        profiles={defaultProfiles}
       />
     )
 
@@ -100,6 +110,7 @@ describe("FilterPanel", () => {
         onToggleFilter={vi.fn()}
         onClearAll={vi.fn()}
         hasActiveFilters={true}
+        profiles={defaultProfiles}
       />
     )
 
@@ -116,6 +127,7 @@ describe("FilterPanel", () => {
         onToggleFilter={vi.fn()}
         onClearAll={vi.fn()}
         hasActiveFilters={false}
+        profiles={defaultProfiles}
       />
     )
 
@@ -132,6 +144,7 @@ describe("FilterPanel", () => {
         onToggleFilter={vi.fn()}
         onClearAll={vi.fn()}
         hasActiveFilters={true}
+        profiles={defaultProfiles}
       />
     )
 

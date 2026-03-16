@@ -2,6 +2,8 @@
 
 import { useState } from "react"
 import type { FilterOption, FilterState } from "@/hooks/useProfileFilters"
+import type { ProfileWithTags } from "@/lib/schemas/profile"
+import { ExportButtons } from "./ExportButtons"
 
 interface FilterSectionProps {
   title: string
@@ -54,6 +56,7 @@ interface FilterPanelProps {
   onToggleFilter: (key: "company" | "year" | "concern", value: string) => void
   onClearAll: () => void
   hasActiveFilters: boolean
+  profiles: ProfileWithTags[]
 }
 
 export function FilterPanel({
@@ -64,6 +67,7 @@ export function FilterPanel({
   onToggleFilter,
   onClearAll,
   hasActiveFilters,
+  profiles,
 }: FilterPanelProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -96,6 +100,14 @@ export function FilterPanel({
         selected={filters.concern}
         onToggle={(v) => onToggleFilter("concern", v)}
       />
+      <div>
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+          Export
+        </h3>
+        <div className="mt-2">
+          <ExportButtons profiles={profiles} filters={filters} />
+        </div>
+      </div>
     </div>
   )
 

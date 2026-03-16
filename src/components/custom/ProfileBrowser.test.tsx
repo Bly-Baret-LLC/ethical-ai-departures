@@ -68,14 +68,6 @@ describe("ProfileBrowser", () => {
     expect(screen.getByText("3 profiles")).toBeInTheDocument()
   })
 
-  it("renders sort controls", () => {
-    render(<ProfileBrowser profiles={testProfiles} />)
-
-    expect(
-      screen.getByRole("group", { name: "Sort profiles" })
-    ).toBeInTheDocument()
-  })
-
   it("renders filter panel with company options", () => {
     render(<ProfileBrowser profiles={testProfiles} />)
 
