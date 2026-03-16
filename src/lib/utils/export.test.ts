@@ -18,6 +18,7 @@ const mockProfiles: ProfileWithTags[] = [
     role: "Safety Lead",
     departureDate: "2025-11-15",
     statedReason: "Safety concerns deprioritized.",
+    departureContext: null,
     status: "published",
     createdAt: "2025-11-20T00:00:00Z",
     updatedAt: "2025-11-20T00:00:00Z",
@@ -34,6 +35,7 @@ const mockProfiles: ProfileWithTags[] = [
     role: "Engineer",
     departureDate: "2025-06-01",
     statedReason: null,
+    departureContext: null,
     status: "published",
     createdAt: "2025-06-05T00:00:00Z",
     updatedAt: "2025-06-05T00:00:00Z",
@@ -117,27 +119,27 @@ describe("profilesToJson", () => {
 
 describe("buildExportFilename", () => {
   it("returns base name with no filters", () => {
-    expect(buildExportFilename(defaultFilters, "csv")).toBe("warning-collective.csv")
+    expect(buildExportFilename(defaultFilters, "csv")).toBe("ethical-ai-departures.csv")
   })
 
   it("includes single company filter", () => {
     const filters = { ...defaultFilters, company: ["OpenAI"] }
-    expect(buildExportFilename(filters, "csv")).toBe("warning-collective-openai.csv")
+    expect(buildExportFilename(filters, "csv")).toBe("ethical-ai-departures-openai.csv")
   })
 
   it("includes single year filter", () => {
     const filters = { ...defaultFilters, year: ["2025"] }
-    expect(buildExportFilename(filters, "json")).toBe("warning-collective-2025.json")
+    expect(buildExportFilename(filters, "json")).toBe("ethical-ai-departures-2025.json")
   })
 
   it("includes combined filters", () => {
     const filters = { ...defaultFilters, company: ["OpenAI"], year: ["2025"] }
-    expect(buildExportFilename(filters, "csv")).toBe("warning-collective-openai-2025.csv")
+    expect(buildExportFilename(filters, "csv")).toBe("ethical-ai-departures-openai-2025.csv")
   })
 
   it("skips multi-value filters", () => {
     const filters = { ...defaultFilters, company: ["OpenAI", "Anthropic"] }
-    expect(buildExportFilename(filters, "csv")).toBe("warning-collective.csv")
+    expect(buildExportFilename(filters, "csv")).toBe("ethical-ai-departures.csv")
   })
 })
 

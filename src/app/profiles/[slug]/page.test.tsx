@@ -25,6 +25,7 @@ const mockProfile = {
       publishedDate: "2025-11-16",
     },
   ],
+  publications: [],
 }
 
 const mockGetProfileBySlug = vi.fn()

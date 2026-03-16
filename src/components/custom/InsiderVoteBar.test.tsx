@@ -4,6 +4,9 @@ import { InsiderVoteBar } from "./InsiderVoteBar"
 
 vi.mock("@/lib/actions/votes", () => ({
   castVote: vi.fn(),
+}))
+
+vi.mock("@/lib/fingerprint", () => ({
   generateFingerprint: vi.fn().mockReturnValue("abc123"),
 }))
 

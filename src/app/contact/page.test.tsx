@@ -22,7 +22,7 @@ describe("ContactPage", () => {
 
   it("renders press email", () => {
     render(<ContactPage />)
-    expect(screen.getByRole("link", { name: /press@thewarningcollective\.org/ })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /press@ethicalaidepartures\.fyi/ })).toBeInTheDocument()
   })
 
   it("renders contact form", () => {

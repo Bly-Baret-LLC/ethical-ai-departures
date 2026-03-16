@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Trust Documentation · Anonymous Signal · The Warning Collective",
+  title: "Trust Documentation · Anonymous Signal · Ethical AI Departures",
 }
 
 export default function TrustPage() {
@@ -63,7 +63,7 @@ export default function TrustPage() {
       <h2>Open Source</h2>
       <p>
         The anonymous signal submission component (form, server action, and database schema)
-        is part of the open-source Warning Collective codebase. You can inspect the full
+        is part of the open-source Ethical AI Departures codebase. You can inspect the full
         implementation to verify our privacy claims.
       </p>
 

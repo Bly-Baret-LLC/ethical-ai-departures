@@ -129,6 +129,7 @@ describe("ProfilePreview", () => {
       role: "Role",
       departureDate: "2025-01-01",
       statedReason: "Reason",
+      departureContext: null,
       status: "published" as const,
       createdAt: "2025-01-01T00:00:00Z",
       updatedAt: "2025-01-01T00:00:00Z",

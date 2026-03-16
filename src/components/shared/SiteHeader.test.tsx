@@ -13,7 +13,7 @@ afterEach(() => {
 describe("SiteHeader", () => {
   it("renders site title as link to home", () => {
     render(<SiteHeader />)
-    const title = screen.getByRole("link", { name: "The Warning Collective" })
+    const title = screen.getByRole("link", { name: "Ethical AI Departures" })
     expect(title).toHaveAttribute("href", "/")
   })
 
@@ -21,7 +21,8 @@ describe("SiteHeader", () => {
     render(<SiteHeader />)
     const nav = screen.getByRole("navigation", { name: "Main navigation" })
     expect(nav).toBeInTheDocument()
-    expect(screen.getByRole("link", { name: "Profiles" })).toHaveAttribute("href", "/profiles")
+    expect(screen.getByRole("link", { name: "Companies" })).toHaveAttribute("href", "/companies")
+    expect(screen.getByRole("link", { name: "Publications" })).toHaveAttribute("href", "/predictions")
     expect(screen.getByRole("link", { name: "Press" })).toHaveAttribute("href", "/press")
   })
 

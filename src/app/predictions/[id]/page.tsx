@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { getPredictionById, getVoteCounts } from "@/lib/queries/predictions"
+import { getPublicationsByPredictionId } from "@/lib/queries/publications"
 import { InsiderVoteBar } from "@/components/custom/InsiderVoteBar"
 
 export const revalidate = 300
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!prediction) return { title: "Prediction Not Found" }
 
   return {
-    title: `${prediction.title} · Predictions · The Warning Collective`,
+    title: `${prediction.title} · Predictions · Ethical AI Departures`,
     description: prediction.description ?? prediction.resolutionCriteria,
   }
 }
@@ -47,7 +48,10 @@ export default async function PredictionDetailPage({ params }: PageProps) {
 
   if (!prediction) notFound()
 
-  const votes = await getVoteCounts(id)
+  const [votes, publications] = await Promise.all([
+    getVoteCounts(id),
+    getPublicationsByPredictionId(id),
+  ])
 
   const isResolved = ["confirmed", "disproven", "partially_resolved"].includes(
     prediction.status
@@ -149,6 +153,70 @@ export default async function PredictionDetailPage({ params }: PageProps) {
               initialDisagree={votes.disagree}
             />
           </div>
+        </div>
+      )}
+
+      {/* Related Publications */}
+      {publications.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-lg font-semibold text-text-primary">
+            Related Publications
+          </h2>
+          <ul className="mt-4 space-y-3">
+            {publications.map((pub) => (
+              <li
+                key={pub.id}
+                className="rounded-lg border border-border-light bg-surface-card px-4 py-3"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    {pub.url ? (
+                      <a
+                        href={pub.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-accent-info hover:underline"
+                      >
+                        {pub.title}
+                        <span className="ml-1 text-xs" aria-hidden="true">
+                          ⤴
+                        </span>
+                      </a>
+                    ) : (
+                      <span className="font-medium text-text-primary">
+                        {pub.title}
+                      </span>
+                    )}
+                    <div className="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-text-secondary">
+                      <Link
+                        href={`/profiles/${pub.profileSlug}`}
+                        className="text-accent-amber hover:underline"
+                      >
+                        {pub.profileName}
+                      </Link>
+                      {pub.publisher && (
+                        <>
+                          <span aria-hidden="true">&middot;</span>
+                          <span>{pub.publisher}</span>
+                        </>
+                      )}
+                      {pub.publishedDate && (
+                        <>
+                          <span aria-hidden="true">&middot;</span>
+                          <time>
+                            {new Date(pub.publishedDate + "T00:00:00").toLocaleDateString(
+                              undefined,
+                              { year: "numeric", month: "short" }
+                            )}
+                          </time>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 

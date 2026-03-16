@@ -10,12 +10,12 @@ test.describe("Homepage", () => {
 
     // Page heading is present
     const heading = page.getByRole("heading", { level: 2 })
-    await expect(heading).toContainText("The Warning Collective")
+    await expect(heading).toContainText("Ethical AI Departures")
   })
 
   test("has correct page title", async ({ page }) => {
     await page.goto("/")
-    await expect(page).toHaveTitle(/The Warning Collective/)
+    await expect(page).toHaveTitle(/Ethical AI Departures/)
   })
 
   test("has lang attribute set to en", async ({ page }) => {

@@ -7,7 +7,7 @@ export const PROFILE_LIST_REVALIDATE_SECONDS = 300
 /** Maximum number of Latest Activity items on desktop */
 export const MAX_LATEST_ACTIVITY = 5
 
-/** localStorage key prefix for all Warning Collective session data */
+/** localStorage key prefix for all Ethical AI Departures session data */
 export const STORAGE_PREFIX = "wc:"
 
 /** localStorage keys */

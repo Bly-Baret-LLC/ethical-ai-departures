@@ -6,7 +6,7 @@ import { SignalForm } from "./SignalForm"
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: "Anonymous Signal · The Warning Collective",
+  title: "Anonymous Signal · Ethical AI Departures",
   description:
     "Anonymously signal that you share safety concerns about AI development. Zero PII collected.",
 }

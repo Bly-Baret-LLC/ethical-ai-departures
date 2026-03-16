@@ -89,7 +89,7 @@ describe("LatestActivitySlot", () => {
     render(jsx!)
 
     expect(
-      screen.getByRole("heading", { name: "Latest Activity" })
+      screen.getByRole("heading", { name: "Latest Departures" })
     ).toBeInTheDocument()
   })
 

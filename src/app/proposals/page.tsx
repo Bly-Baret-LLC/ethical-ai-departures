@@ -5,7 +5,7 @@ import { getProposals, type Proposal } from "@/lib/queries/proposals"
 export const revalidate = 3600
 
 export const metadata: Metadata = {
-  title: "Policy Proposals · The Warning Collective",
+  title: "Policy Proposals · Ethical AI Departures",
   description:
     "Specific policy proposals from departing AI researchers, tagged by type and applicability.",
 }

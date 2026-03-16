@@ -1,7 +1,7 @@
 services:
   agents:
     build: .
-    env_file: ../.env
+    env_file: .env
     environment:
       - PYTHONPATH=/app
     restart: unless-stopped

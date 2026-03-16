@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useCallback, useRef } from "react"
-import { castVote, generateFingerprint, type VoteActionResult } from "@/lib/actions/votes"
+import { castVote, type VoteActionResult } from "@/lib/actions/votes"
+import { generateFingerprint } from "@/lib/fingerprint"
 
 function readInsiderStatus(): boolean {
   try {

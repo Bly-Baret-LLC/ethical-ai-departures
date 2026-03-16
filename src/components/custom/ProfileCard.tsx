@@ -39,33 +39,33 @@ export function ProfileCard({
       <Link
         href={`/profiles/${slug}`}
         aria-label={`${name}, ${role} at ${company}, ${year}`}
-        className="group block rounded-lg border border-border-light bg-surface-card p-6 transition-shadow duration-150 hover:shadow-md"
+        className="group flex h-[192px] flex-col rounded-lg border border-border-light bg-surface-card p-5 transition-shadow duration-150 hover:shadow-md"
       >
+        {/* Top zone — pinned to top */}
         <div className="flex items-start gap-3">
           <Avatar name={name} photoUrl={photoUrl} size={40} />
           <div className="min-w-0 flex-1">
-            <h3 className="truncate font-serif text-lg font-semibold text-text-primary group-hover:text-accent-amber">
+            <h3 className="line-clamp-1 font-serif text-lg font-semibold leading-snug text-text-primary group-hover:text-accent-amber">
               {name}
             </h3>
-            <p className="mt-0.5 text-sm text-text-secondary">
+            <p className="mt-0.5 line-clamp-1 text-sm leading-snug text-text-secondary">
               {role} · {company} · {year}
             </p>
           </div>
         </div>
-        {statedReason && (
-          <blockquote className="mt-3 line-clamp-2 border-l-[3px] border-accent-amber pl-3 text-sm italic text-text-secondary">
-            {statedReason}
-          </blockquote>
-        )}
-        <div className="mt-3 flex items-center justify-between">
-          {primaryTag ? (
+
+        {/* Bottom zone — pinned to bottom via mt-auto */}
+        <div className="mt-auto">
+          {statedReason && (
+            <blockquote className="mb-3 line-clamp-2 border-l-[3px] border-accent-amber pl-3 text-sm italic leading-relaxed text-text-secondary">
+              {statedReason}
+            </blockquote>
+          )}
+          {primaryTag && (
             <span className="rounded-full bg-accent-amber/10 px-2.5 py-0.5 text-xs font-medium text-accent-amber">
               {primaryTag.name}
             </span>
-          ) : (
-            <span />
           )}
-          <span className="text-xs text-text-secondary">0 kudos</span>
         </div>
       </Link>
       <NewBadge createdAt={createdAt} />

@@ -4,8 +4,8 @@ import { getCorrections, type Correction } from "@/lib/queries/corrections"
 export const revalidate = 3600 // 1-hour ISR
 
 export const metadata: Metadata = {
-  title: "Corrections Log · The Warning Collective",
-  description: "Public log of corrections made to Warning Collective profiles.",
+  title: "Corrections Log · Ethical AI Departures",
+  description: "Public log of corrections made to Ethical AI Departures profiles.",
 }
 
 const severityLabel: Record<string, string> = {
@@ -35,7 +35,7 @@ export default async function CorrectionsPage() {
       </h1>
       <p className="mt-2 text-text-secondary">
         We are committed to accuracy. This is a public record of all
-        corrections made to Warning Collective content.
+        corrections made to Ethical AI Departures content.
       </p>
 
       {corrections.length === 0 ? (

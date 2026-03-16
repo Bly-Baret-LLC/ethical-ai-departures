@@ -107,7 +107,7 @@ export async function GET(request: NextRequest) {
               fontWeight: 600,
             }}
           >
-            The Warning Collective
+            Ethical AI Departures
           </div>
         </div>
       ),
@@ -160,7 +160,7 @@ export async function GET(request: NextRequest) {
             marginTop: "40px",
           }}
         >
-          The Warning Collective
+          Ethical AI Departures
         </div>
         <div
           style={{

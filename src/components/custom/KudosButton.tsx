@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { giveKudos } from "@/lib/actions/community"
-import { generateFingerprint } from "@/lib/actions/votes"
+import { generateFingerprint } from "@/lib/fingerprint"
 
 function readKudosGiven(profileId: string): boolean {
   try {

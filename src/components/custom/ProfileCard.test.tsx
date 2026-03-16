@@ -96,12 +96,6 @@ describe("ProfileCard", () => {
     expect(screen.getByText("Safety Deprioritization")).toBeInTheDocument()
   })
 
-  it("renders kudos placeholder", () => {
-    render(<ProfileCard {...defaultProps} />)
-
-    expect(screen.getByText("0 kudos")).toBeInTheDocument()
-  })
-
   it("handles empty concern tags", () => {
     render(<ProfileCard {...defaultProps} concernTags={[]} />)
 
@@ -110,7 +104,7 @@ describe("ProfileCard", () => {
     ).not.toBeInTheDocument()
   })
 
-  it("truncates long names", () => {
+  it("clamps long names to one line", () => {
     render(
       <ProfileCard
         {...defaultProps}
@@ -121,7 +115,7 @@ describe("ProfileCard", () => {
     const nameElement = screen.getByText(
       "Extremely Long Name That Should Be Truncated In The Display"
     )
-    expect(nameElement).toHaveClass("truncate")
+    expect(nameElement).toHaveClass("line-clamp-1")
   })
 
   it("passes createdAt to NewBadge", () => {

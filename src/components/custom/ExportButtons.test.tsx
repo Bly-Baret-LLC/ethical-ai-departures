@@ -24,6 +24,7 @@ const mockProfiles: ProfileWithTags[] = [
     role: "Safety Lead",
     departureDate: "2025-11-15",
     statedReason: "Safety concerns deprioritized.",
+    departureContext: null,
     status: "published",
     createdAt: "2025-11-20T00:00:00Z",
     updatedAt: "2025-11-20T00:00:00Z",
@@ -72,7 +73,7 @@ describe("ExportButtons", () => {
     const [content, filename, mime] = mockDownloadFile.mock.calls[0]
     expect(content).toContain("Name,Company")
     expect(content).toContain("Elena Rodriguez")
-    expect(filename).toBe("warning-collective.csv")
+    expect(filename).toBe("ethical-ai-departures.csv")
     expect(mime).toContain("text/csv")
   })
 
@@ -85,7 +86,7 @@ describe("ExportButtons", () => {
     const [content, filename, mime] = mockDownloadFile.mock.calls[0]
     const parsed = JSON.parse(content)
     expect(parsed[0].name).toBe("Elena Rodriguez")
-    expect(filename).toBe("warning-collective.json")
+    expect(filename).toBe("ethical-ai-departures.json")
     expect(mime).toContain("application/json")
   })
 
@@ -96,7 +97,7 @@ describe("ExportButtons", () => {
     fireEvent.click(screen.getByRole("button", { name: "Export CSV" }))
 
     const [, filename] = mockDownloadFile.mock.calls[0]
-    expect(filename).toBe("warning-collective-openai.csv")
+    expect(filename).toBe("ethical-ai-departures-openai.csv")
   })
 
   it("has accessible group role", () => {

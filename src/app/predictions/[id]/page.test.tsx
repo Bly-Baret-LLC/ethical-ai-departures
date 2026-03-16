@@ -1,13 +1,18 @@
-import { describe, it, expect, vi, afterEach } from "vitest"
+import { describe, it, expect, vi, afterEach, beforeEach } from "vitest"
 import { render, screen, cleanup } from "@testing-library/react"
 
 const mockGetPredictionById = vi.fn()
 const mockGetVoteCounts = vi.fn()
+const mockGetPublicationsByPredictionId = vi.fn()
 const mockNotFound = vi.fn()
 
 vi.mock("@/lib/queries/predictions", () => ({
   getPredictionById: (...args: unknown[]) => mockGetPredictionById(...args),
   getVoteCounts: (...args: unknown[]) => mockGetVoteCounts(...args),
+}))
+
+vi.mock("@/lib/queries/publications", () => ({
+  getPublicationsByPredictionId: (...args: unknown[]) => mockGetPublicationsByPredictionId(...args),
 }))
 
 vi.mock("next/navigation", () => ({
@@ -30,6 +35,10 @@ vi.mock("@/components/custom/InsiderVoteBar", () => ({
 }))
 
 import PredictionDetailPage from "./page"
+
+beforeEach(() => {
+  mockGetPublicationsByPredictionId.mockResolvedValue([])
+})
 
 afterEach(() => {
   cleanup()

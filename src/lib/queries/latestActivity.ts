@@ -9,7 +9,7 @@ export interface ActivityItem {
   createdAt: string
 }
 
-/** Fetch the most recently added published departures for the Latest Activity slot */
+/** Fetch the most recent published departures by departure date for the Latest Activity slot */
 export async function getLatestActivity(
   limit: number = 3
 ): Promise<ActivityItem[]> {
@@ -19,7 +19,7 @@ export async function getLatestActivity(
     .from("profiles")
     .select("slug, name, company, role, departure_date, created_at")
     .eq("status", "published")
-    .order("created_at", { ascending: false })
+    .order("departure_date", { ascending: false })
     .limit(limit)
 
   if (error) throw error

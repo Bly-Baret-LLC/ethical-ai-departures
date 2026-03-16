@@ -16,6 +16,7 @@ function makeProfile(overrides: Partial<ProfileWithTags> = {}): ProfileWithTags 
     role: "Engineer",
     departureDate: "2025-06-15",
     statedReason: null,
+    departureContext: null,
     status: "published",
     createdAt: "2025-06-20T00:00:00Z",
     updatedAt: "2025-06-20T00:00:00Z",

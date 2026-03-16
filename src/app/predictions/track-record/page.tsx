@@ -5,7 +5,7 @@ import { getTrackRecords, type TrackRecord } from "@/lib/queries/predictions"
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: "Track Record & Credibility Index · The Warning Collective",
+  title: "Track Record & Credibility Index · Ethical AI Departures",
   description:
     "How accurate have AI safety researchers' predictions been? Per-researcher scorecards and aggregate credibility index.",
 }

@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { LoginForm } from "./LoginForm"
 
 export const metadata: Metadata = {
-  title: "Editor Login · The Warning Collective",
+  title: "Editor Login · Ethical AI Departures",
 }
 
 interface LoginPageProps {

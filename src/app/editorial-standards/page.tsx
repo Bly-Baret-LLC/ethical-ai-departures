@@ -4,7 +4,7 @@ import Link from "next/link"
 export const revalidate = 86400
 
 export const metadata: Metadata = {
-  title: "Editorial Standards · The Warning Collective",
+  title: "Editorial Standards · Ethical AI Departures",
   description:
     "Our verification methodology, sourcing standards, correction policy, and AI disclosure.",
 }
@@ -22,7 +22,7 @@ export default function EditorialStandardsPage() {
           Verification Methodology
         </h2>
         <p className="mt-3 text-text-secondary leading-relaxed">
-          Every profile published on The Warning Collective is verified through
+          Every profile published on Ethical AI Departures is verified through
           publicly available sources. We require at least one credible,
           linkable source for every factual claim — including the
           individual&apos;s departure, their stated reason, and their role at
@@ -54,7 +54,7 @@ export default function EditorialStandardsPage() {
           AI Agent Disclosure
         </h2>
         <p className="mt-3 text-text-secondary leading-relaxed">
-          The Warning Collective uses AI agents to assist with research and
+          Ethical AI Departures uses AI agents to assist with research and
           data gathering. However, no AI-generated content is published
           without human review and verification. Every profile and data point
           is reviewed by a human editor before publication. AI tools are used
@@ -68,7 +68,7 @@ export default function EditorialStandardsPage() {
           Conflict of Interest Policy
         </h2>
         <p className="mt-3 text-text-secondary leading-relaxed">
-          The Warning Collective operates independently and does not accept
+          Ethical AI Departures operates independently and does not accept
           funding from AI companies tracked on this platform. Team members
           disclose any financial or professional relationships with tracked
           organizations.
@@ -100,7 +100,7 @@ export default function EditorialStandardsPage() {
           Data Subject Rights
         </h2>
         <p className="mt-3 text-text-secondary leading-relaxed">
-          Individuals featured on The Warning Collective have the right to
+          Individuals featured on Ethical AI Departures have the right to
           request corrections to their profile or, in certain circumstances,
           removal. Requests are reviewed within 5 business days. To submit a
           request, please use our{" "}

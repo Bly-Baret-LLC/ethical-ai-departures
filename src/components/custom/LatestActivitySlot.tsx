@@ -18,41 +18,30 @@ export async function LatestActivitySlot() {
     <LatestActivityClient>
       <section
         aria-label="Latest activity"
-        className="mx-auto max-w-5xl px-6 py-16"
+        className="mx-auto max-w-6xl px-6 py-8"
       >
-        <h2 className="font-serif text-2xl font-semibold text-text-primary">
-          Latest Activity
+        <h2 className="font-serif text-xl font-semibold text-text-primary">
+          Latest Departures
         </h2>
-        <div className="mt-6 space-y-4">
-          {items.map((item, i) => (
-            <article
-              key={item.slug}
-              className={
-                i === 0
-                  ? "block"
-                  : i === 1
-                    ? "hidden md:block"
-                    : "hidden lg:block"
-              }
-            >
+        <div className="mt-3 flex gap-3 overflow-x-auto pb-2">
+          {items.map((item) => (
+            <article key={item.slug} className="shrink-0">
               <Link
                 href={`/profiles/${item.slug}`}
-                className="group block rounded-lg border border-stone-200 p-4 transition-shadow hover:shadow-md"
+                className="group block rounded-lg border border-border-light px-4 py-3 transition-shadow hover:shadow-md"
               >
-                <div className="flex items-baseline justify-between gap-4">
-                  <h3 className="font-serif text-lg font-semibold text-text-primary group-hover:text-accent-amber">
-                    {item.name}
-                  </h3>
-                  <time
-                    dateTime={item.departureDate}
-                    className="shrink-0 text-sm text-text-secondary"
-                  >
-                    {formatRelativeDate(item.departureDate)}
-                  </time>
-                </div>
-                <p className="mt-1 text-sm text-text-secondary">
+                <h3 className="font-serif text-base font-semibold text-text-primary group-hover:text-accent-amber whitespace-nowrap">
+                  {item.name}
+                </h3>
+                <p className="mt-0.5 text-sm text-text-secondary whitespace-nowrap">
                   {item.role} · {item.company}
                 </p>
+                <time
+                  dateTime={item.departureDate}
+                  className="mt-1 block text-xs text-text-secondary/60"
+                >
+                  {formatRelativeDate(item.departureDate)}
+                </time>
               </Link>
             </article>
           ))}

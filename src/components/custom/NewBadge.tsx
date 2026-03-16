@@ -23,7 +23,7 @@ export function NewBadge({ createdAt }: NewBadgeProps) {
   if (!isNew) return null
 
   return (
-    <span className="absolute right-3 top-3 rounded-full bg-accent-amber px-2 py-0.5 text-xs font-medium text-surface-primary">
+    <span className="absolute right-[-8px] top-[-8px] rounded-full bg-accent-amber px-2 py-0.5 text-xs font-medium text-surface-primary">
       New
     </span>
   )

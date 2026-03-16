@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server"
 import { signOut } from "@/lib/actions/auth"
 
 export const metadata: Metadata = {
-  title: "Editorial Dashboard · The Warning Collective",
+  title: "Editorial Dashboard · Ethical AI Departures",
 }
 
 interface QueueItem {

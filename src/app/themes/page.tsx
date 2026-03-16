@@ -5,7 +5,7 @@ import { getThemeData, type ThemeData } from "@/lib/queries/themes"
 export const revalidate = 3600
 
 export const metadata: Metadata = {
-  title: "Theme Map · The Warning Collective",
+  title: "Theme Map · Ethical AI Departures",
   description:
     "A visual map of the most common concerns cited by researchers departing AI companies.",
 }

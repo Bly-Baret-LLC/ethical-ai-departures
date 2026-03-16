@@ -53,7 +53,7 @@ describe("Predictions RSS Feed", () => {
   it("includes feed metadata", async () => {
     const response = await GET()
     const xml = await response.text()
-    expect(xml).toContain("The Warning Collective")
+    expect(xml).toContain("Ethical AI Departures")
     expect(xml).toContain("Prediction Resolutions")
   })
 

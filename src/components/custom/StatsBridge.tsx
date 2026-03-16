@@ -18,7 +18,7 @@ export async function StatsBridge() {
   ].filter(Boolean) as string[]
 
   return (
-    <div className="w-full bg-surface-secondary">
+    <div className="w-full border-t border-accent-red/20 bg-surface-secondary">
       <p
         role="status"
         aria-label="Key departure statistics"

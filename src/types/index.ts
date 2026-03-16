@@ -1,5 +1,5 @@
 /**
- * Shared TypeScript types for the Warning Collective.
+ * Shared TypeScript types for the Ethical AI Departures.
  * All types use camelCase (transformed from snake_case at Supabase boundary).
  */
 

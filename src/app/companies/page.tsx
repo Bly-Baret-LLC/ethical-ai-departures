@@ -5,7 +5,7 @@ import { getCompanies } from "@/lib/queries/companies"
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: "Companies · The Warning Collective",
+  title: "Companies · Ethical AI Departures",
   description: "Browse AI companies with tracked safety-motivated departures.",
 }
 

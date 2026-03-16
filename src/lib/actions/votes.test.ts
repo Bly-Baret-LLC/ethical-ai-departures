@@ -41,7 +41,8 @@ vi.mock("next/headers", () => ({
   }),
 }))
 
-import { castVote, generateFingerprint } from "./votes"
+import { castVote } from "./votes"
+import { generateFingerprint } from "../fingerprint"
 
 function makeFormData(fields: Record<string, string>): FormData {
   const fd = new FormData()

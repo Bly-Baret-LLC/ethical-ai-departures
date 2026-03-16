@@ -17,11 +17,11 @@ export async function generateMetadata({
   const company = await getCompanyBySlug(slug)
 
   if (!company) {
-    return { title: "Company Not Found · The Warning Collective" }
+    return { title: "Company Not Found · Ethical AI Departures" }
   }
 
   return {
-    title: `${company.company} Departures · The Warning Collective`,
+    title: `${company.company} Departures · Ethical AI Departures`,
     description: `${company.profiles.length} safety-motivated departure${company.profiles.length !== 1 ? "s" : ""} tracked from ${company.company}.`,
   }
 }

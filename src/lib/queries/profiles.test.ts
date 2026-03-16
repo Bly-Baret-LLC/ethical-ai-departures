@@ -31,6 +31,17 @@ const mockData = [
         published_date: "2025-11-16",
       },
     ],
+    publications: [
+      {
+        id: "e0000000-0000-4000-8000-000000000001",
+        title: "Concrete Problems in AI Safety",
+        url: "https://arxiv.org/abs/1606.06565",
+        publication_type: "paper",
+        publisher: "arXiv",
+        published_date: "2016-06-21",
+        abstract: "Identifies five practical research problems.",
+      },
+    ],
   },
 ]
 
