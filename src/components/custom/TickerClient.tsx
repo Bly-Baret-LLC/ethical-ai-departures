@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react"
+import { useEffect, useMemo, useSyncExternalStore } from "react"
 import { STORAGE_KEYS } from "@/lib/constants"
 import { getStorageItem, setStorageItem, subscribeNoop } from "@/lib/utils/storage"
 import { useTickerSubscription } from "@/hooks/useTickerSubscription"
@@ -15,18 +15,10 @@ interface TickerClientProps {
 
 export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: TickerClientProps) {
   const mounted = useSyncExternalStore(subscribeNoop, () => true, () => false)
-  const [explainerDismissed, setExplainerDismissed] = useState(false)
   const { liveCount } = useTickerSubscription()
 
   // Use live count from Realtime if available, otherwise SSR count
   const displayCount = liveCount ?? totalCount
-
-  // Read dismissed status from localStorage via useSyncExternalStore
-  const dismissedInStorage = useSyncExternalStore(
-    subscribeNoop,
-    () => getStorageItem(STORAGE_KEYS.TICKER_EXPLAINER_DISMISSED),
-    () => "true"
-  )
 
   // Capture the initial stored count at mount time for delta calculation.
   // useMemo ensures this doesn't reset when liveCount changes.
@@ -43,19 +35,11 @@ export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: 
     ? displayCount - initialStoredCount
     : 0
 
-  const showExplainer =
-    mounted && dismissedInStorage === null && !explainerDismissed
-
   // Write-only effect: update localStorage when display count changes
   useEffect(() => {
     setStorageItem(STORAGE_KEYS.LAST_COUNT, String(displayCount))
     setStorageItem(STORAGE_KEYS.HAS_VISITED, "true")
   }, [displayCount])
-
-  function handleDismissExplainer() {
-    setExplainerDismissed(true)
-    setStorageItem(STORAGE_KEYS.TICKER_EXPLAINER_DISMISSED, "true")
-  }
 
   return (
     <div className="relative">
@@ -109,21 +93,6 @@ export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: 
             >
               +{delta} since your last visit
             </span>
-          )}
-          {showExplainer && (
-            <div className="mt-4 max-w-xl px-6 text-center">
-              <p className="text-sm text-text-primary/60">
-                This count tracks verified safety-motivated departures from
-                major AI companies — researchers, engineers, and leaders who
-                left over concerns about how AI is being developed.
-              </p>
-              <button
-                onClick={handleDismissExplainer}
-                className="mt-2 text-xs text-text-primary/40 underline hover:text-text-primary/60"
-              >
-                Got it, don&apos;t show again
-              </button>
-            </div>
           )}
         </div>
       )}
