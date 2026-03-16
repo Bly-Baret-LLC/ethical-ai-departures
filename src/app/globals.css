@@ -283,6 +283,7 @@
 
   /* Ticker number — vertical gradient with lighter center */
   .ticker-gradient {
+    color: #c41e1e;
     background: linear-gradient(
       180deg,
       #a51c1c 0%,

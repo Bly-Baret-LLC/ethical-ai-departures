@@ -8,7 +8,7 @@ interface AnimatedCountProps {
 
 export function AnimatedCount({ value, className, animate = false }: AnimatedCountProps) {
   return (
-    <span className={`${className ?? ""} overflow-hidden`} aria-live="polite">
+    <span className={className ?? ""} aria-live="polite">
       <span
         key={value}
         className={`inline-block tabular-nums${animate ? " digit-roll-in" : ""}`}
