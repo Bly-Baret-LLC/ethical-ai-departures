@@ -6,16 +6,16 @@ interface AnimatedCountProps {
   value: number
   className?: string
   animate?: boolean
-  digits?: number
 }
 
 function easeOutExpo(t: number): number {
   return t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
 }
 
-export function AnimatedCount({ value, className, animate = false, digits }: AnimatedCountProps) {
+export function AnimatedCount({ value, className, animate = false }: AnimatedCountProps) {
   const [display, setDisplay] = useState(value)
   const hasAnimated = useRef(false)
+  const targetDigits = String(value).length
 
   useEffect(() => {
     if (hasAnimated.current) return
@@ -39,12 +39,20 @@ export function AnimatedCount({ value, className, animate = false, digits }: Ani
     requestAnimationFrame(tick)
   }, [value])
 
+  // Pad with invisible zeros so width never changes during count-up
+  const displayStr = String(display)
+  const padCount = targetDigits - displayStr.length
+
   return (
     <span
       className={`${className ?? ""} inline-block tabular-nums${animate ? " digit-roll-in" : ""}`}
-      style={digits ? { minWidth: `${digits}ch` } : undefined}
       aria-live="polite"
     >
+      {padCount > 0 && (
+        <span className="invisible" aria-hidden="true">
+          {"0".repeat(padCount)}
+        </span>
+      )}
       {display}
     </span>
   )

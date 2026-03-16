@@ -54,8 +54,7 @@ export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: 
                 <AnimatedCount
                   value={displayCount}
                   animate={liveCount !== null}
-                  className="font-display text-[72px] font-black uppercase leading-[0.9] tracking-wider tabular-nums sm:text-[88px] md:text-[104px] lg:text-[120px] ticker-gradient"
-                  digits={String(displayCount).length}
+                  className="font-display text-[72px] font-black uppercase leading-tight tracking-wider tabular-nums sm:text-[88px] md:text-[104px] lg:text-[120px] ticker-gradient"
                 />
                 {ninetyDayCount > 0 && (
                   <p className="mt-2 text-sm text-text-primary/60">
