@@ -1,24 +1,28 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 
 interface AnimatedCountProps {
   value: number
   className?: string
   animate?: boolean
+  onComplete?: () => void
 }
 
 function easeOutExpo(t: number): number {
   return t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
 }
 
-export function AnimatedCount({ value, className, animate = false }: AnimatedCountProps) {
-  const [display, setDisplay] = useState(value)
+export function AnimatedCount({ value, className, animate = false, onComplete }: AnimatedCountProps) {
+  const displayRef = useRef<HTMLSpanElement>(null)
   const hasAnimated = useRef(false)
 
   useEffect(() => {
     if (hasAnimated.current) return
     hasAnimated.current = true
+
+    const el = displayRef.current
+    if (!el) { onComplete?.(); return }
 
     const duration = 2200
     const start = performance.now()
@@ -27,24 +31,23 @@ export function AnimatedCount({ value, className, animate = false }: AnimatedCou
       const elapsed = now - start
       const progress = Math.min(elapsed / duration, 1)
       const eased = easeOutExpo(progress)
-      setDisplay(Math.round(eased * value))
+      el!.textContent = String(Math.round(eased * value))
 
       if (progress < 1) {
         requestAnimationFrame(tick)
+      } else {
+        onComplete?.()
       }
     }
 
-    setDisplay(0)
+    el.textContent = "0"
     requestAnimationFrame(tick)
-  }, [value])
+  }, [value, onComplete])
 
-  // Right-align the number in a grid cell sized to the final value.
-  // The invisible placeholder sets the cell width; the visible number
-  // shares the same grid cell so baseline and size are identical.
   return (
     <span
       className="inline-grid"
-      style={{ gridTemplateColumns: "1fr", gridTemplateRows: "1fr" }}
+      style={{ gridTemplateColumns: "1fr", gridTemplateRows: "1fr", contain: "layout style" }}
     >
       <span
         className={`${className ?? ""} tabular-nums col-start-1 row-start-1 invisible${animate ? " digit-roll-in" : ""}`}
@@ -53,10 +56,11 @@ export function AnimatedCount({ value, className, animate = false }: AnimatedCou
         {value}
       </span>
       <span
+        ref={displayRef}
         className={`${className ?? ""} tabular-nums col-start-1 row-start-1 text-right${animate ? " digit-roll-in" : ""}`}
         aria-live="polite"
       >
-        {display}
+        {value}
       </span>
     </span>
   )

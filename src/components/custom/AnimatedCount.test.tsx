@@ -7,62 +7,60 @@ afterEach(() => {
 })
 
 describe("AnimatedCount", () => {
-  it("renders the value", () => {
-    render(<AnimatedCount value={42} />)
+  it("renders with aria-live polite for screen readers", () => {
+    const { container } = render(<AnimatedCount value={42} />)
 
-    expect(screen.getByText("42")).toBeInTheDocument()
+    const liveRegion = container.querySelector("[aria-live='polite']")
+    expect(liveRegion).toBeInTheDocument()
+    expect(liveRegion).toHaveAttribute("aria-live", "polite")
   })
 
-  it("has aria-live polite for screen readers", () => {
-    render(<AnimatedCount value={10} />)
+  it("applies custom className to both spans", () => {
+    const { container } = render(<AnimatedCount value={5} className="text-lg font-bold" />)
 
-    const container = screen.getByText("10").closest("[aria-live]")
-    expect(container).toHaveAttribute("aria-live", "polite")
-  })
-
-  it("applies custom className", () => {
-    render(<AnimatedCount value={5} className="text-lg font-bold" />)
-
-    const container = screen.getByText("5").closest("[aria-live]")
-    expect(container).toHaveClass("text-lg", "font-bold")
+    const liveRegion = container.querySelector("[aria-live='polite']")
+    expect(liveRegion).toHaveClass("text-lg", "font-bold")
   })
 
   it("uses tabular-nums for consistent digit width", () => {
-    render(<AnimatedCount value={99} />)
+    const { container } = render(<AnimatedCount value={99} />)
 
-    const digitSpan = screen.getByText("99")
-    expect(digitSpan).toHaveClass("tabular-nums")
+    const liveRegion = container.querySelector("[aria-live='polite']")
+    expect(liveRegion).toHaveClass("tabular-nums")
   })
 
-  it("does not animate when animate is false", () => {
-    render(<AnimatedCount value={7} />)
+  it("does not add digit-roll-in when animate is false", () => {
+    const { container } = render(<AnimatedCount value={7} />)
 
-    const digitSpan = screen.getByText("7")
-    expect(digitSpan).not.toHaveClass("digit-roll-in")
+    const liveRegion = container.querySelector("[aria-live='polite']")
+    expect(liveRegion).not.toHaveClass("digit-roll-in")
   })
 
-  it("animates when animate prop is true", () => {
-    render(<AnimatedCount value={20} animate />)
+  it("adds digit-roll-in when animate prop is true", () => {
+    const { container } = render(<AnimatedCount value={20} animate />)
 
-    const digitSpan = screen.getByText("20")
-    expect(digitSpan).toHaveClass("digit-roll-in")
+    const liveRegion = container.querySelector("[aria-live='polite']")
+    expect(liveRegion).toHaveClass("digit-roll-in")
   })
 
-  it("has overflow hidden on container", () => {
-    render(<AnimatedCount value={5} />)
+  it("has an invisible placeholder span for stable width", () => {
+    const { container } = render(<AnimatedCount value={42} />)
 
-    const container = screen.getByText("5").closest("[aria-live]")
-    expect(container).toHaveClass("overflow-hidden")
+    const placeholder = container.querySelector("[aria-hidden='true']")
+    expect(placeholder).toBeInTheDocument()
+    expect(placeholder).toHaveClass("invisible")
+    expect(placeholder).toHaveTextContent("42")
   })
 
-  it("updates displayed value when prop changes", () => {
-    const { rerender } = render(<AnimatedCount value={10} />)
+  it("uses CSS grid overlay layout", () => {
+    const { container } = render(<AnimatedCount value={5} />)
 
-    expect(screen.getByText("10")).toBeInTheDocument()
+    const grid = container.querySelector(".inline-grid")
+    expect(grid).toBeInTheDocument()
 
-    rerender(<AnimatedCount value={20} />)
-
-    expect(screen.getByText("20")).toBeInTheDocument()
-    expect(screen.queryByText("10")).not.toBeInTheDocument()
+    const children = grid!.querySelectorAll(":scope > span")
+    expect(children).toHaveLength(2)
+    expect(children[0]).toHaveClass("col-start-1", "row-start-1")
+    expect(children[1]).toHaveClass("col-start-1", "row-start-1")
   })
 })

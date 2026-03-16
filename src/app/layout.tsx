@@ -8,7 +8,7 @@ const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "700", "900"],
   variable: "--font-playfair",
-  display: "swap",
+  display: "optional",
 })
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi"
