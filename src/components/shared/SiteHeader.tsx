@@ -18,7 +18,7 @@ export function SiteHeader() {
 
   return (
     <header className="border-b-2 border-accent-red bg-surface-primary">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-7">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
         <Link href="/" className="font-display text-base font-black uppercase tracking-[0.15em] text-text-primary">
           Ethical AI Departures
         </Link>

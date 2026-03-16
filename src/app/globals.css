@@ -296,28 +296,6 @@
     -webkit-text-fill-color: transparent;
   }
 
-  /* Footstep walk-across animation */
-  @keyframes footstep-walk {
-    0% {
-      opacity: 0;
-      transform: translateY(4px) scale(0.7);
-    }
-    15% {
-      opacity: 0.14;
-      transform: translateY(0) scale(1);
-    }
-    60% {
-      opacity: 0.14;
-    }
-    100% {
-      opacity: 0;
-    }
-  }
-
-  .footstep-walk {
-    animation: footstep-walk 2.4s ease-out forwards;
-  }
-
   /* Reduced motion preference */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
