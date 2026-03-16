@@ -52,7 +52,7 @@ export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: 
                   className="font-display text-[72px] font-black uppercase leading-tight tracking-wider tabular-nums sm:text-[88px] md:text-[104px] lg:text-[120px] ticker-gradient"
                 />
                 {ninetyDayCount > 0 && (
-                  <p className="mt-2 text-sm text-text-primary/60">
+                  <p className="mt-2 hidden text-sm text-text-primary/60 sm:block">
                     {ninetyDayCount} in the last 90 days
                   </p>
                 )}
