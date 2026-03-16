@@ -38,11 +38,12 @@ export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: 
 
   return (
     <div className="relative">
-      <section
-        aria-label="Departure ticker"
-        className="relative w-full border-[3px] border-accent-red bg-[#f0ebe0] shadow-[inset_0_0_0_5px_#f0ebe0,inset_0_0_0_6px_#1c1917] overflow-hidden"
-      >
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center px-6 py-8 sm:py-10 md:grid-cols-[1fr_auto]">
+      <div className="mx-auto max-w-6xl px-6">
+        <section
+          aria-label="Departure ticker"
+          className="relative w-full border-[3px] border-accent-red bg-[#f0ebe0] shadow-[inset_0_0_0_5px_#f0ebe0,inset_0_0_0_6px_#1c1917] overflow-hidden"
+        >
+          <div className="grid grid-cols-1 items-center px-6 py-8 sm:py-10 md:grid-cols-[1fr_auto]">
           <div className="text-left">
             <h1 className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
               <div className="shrink-0">
@@ -77,8 +78,9 @@ export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: 
               priority
             />
           </div>
-        </div>
-      </section>
+          </div>
+        </section>
+      </div>
       <div className="flex flex-col items-center bg-surface-primary pb-6">
         {mounted && delta > 0 && (
           <span
