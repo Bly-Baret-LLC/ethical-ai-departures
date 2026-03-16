@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect, useCallback } from "react"
-import { createProfile, type ProfileActionResult } from "@/lib/actions/profiles"
+import { submitDeparture, type ProfileActionResult } from "@/lib/actions/profiles"
 
 export function SubmitDepartureButton() {
   const [open, setOpen] = useState(false)
@@ -52,8 +52,7 @@ export function SubmitDepartureButton() {
 
   async function handleSubmit(formData: FormData) {
     setPending(true)
-    formData.set("status", "draft")
-    const res = await createProfile(formData)
+    const res = await submitDeparture(formData)
     setResult(res)
     setPending(false)
     if (res.success) {
@@ -121,12 +120,11 @@ export function SubmitDepartureButton() {
             <form ref={formRef} action={handleSubmit} className="mt-4 space-y-4">
               <div>
                 <label htmlFor="submit-name" className="block text-sm font-medium text-text-primary">
-                  Name *
+                  Name
                 </label>
                 <input
                   id="submit-name"
                   name="name"
-                  required
                   className="mt-1 w-full rounded-md border border-border-light bg-bg-primary px-3 py-2 text-sm text-text-primary focus:border-accent-amber focus:outline-none focus:ring-1 focus:ring-accent-amber"
                 />
               </div>
@@ -134,23 +132,21 @@ export function SubmitDepartureButton() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="submit-company" className="block text-sm font-medium text-text-primary">
-                    Company *
+                    Company
                   </label>
                   <input
                     id="submit-company"
                     name="company"
-                    required
                     className="mt-1 w-full rounded-md border border-border-light bg-bg-primary px-3 py-2 text-sm text-text-primary focus:border-accent-amber focus:outline-none focus:ring-1 focus:ring-accent-amber"
                   />
                 </div>
                 <div>
                   <label htmlFor="submit-role" className="block text-sm font-medium text-text-primary">
-                    Role *
+                    Role
                   </label>
                   <input
                     id="submit-role"
                     name="role"
-                    required
                     className="mt-1 w-full rounded-md border border-border-light bg-bg-primary px-3 py-2 text-sm text-text-primary focus:border-accent-amber focus:outline-none focus:ring-1 focus:ring-accent-amber"
                   />
                 </div>
@@ -158,13 +154,12 @@ export function SubmitDepartureButton() {
 
               <div>
                 <label htmlFor="submit-departure" className="block text-sm font-medium text-text-primary">
-                  Departure Date *
+                  Departure Date
                 </label>
                 <input
                   id="submit-departure"
                   name="departureDate"
                   type="date"
-                  required
                   className="mt-1 w-full rounded-md border border-border-light bg-bg-primary px-3 py-2 text-sm text-text-primary focus:border-accent-amber focus:outline-none focus:ring-1 focus:ring-accent-amber"
                 />
               </div>

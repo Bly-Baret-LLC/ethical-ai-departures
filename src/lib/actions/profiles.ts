@@ -87,6 +87,30 @@ export async function createProfile(formData: FormData): Promise<ProfileActionRe
   }
 }
 
+export async function submitDeparture(formData: FormData): Promise<ProfileActionResult> {
+  const name = (formData.get("name") as string) || ""
+  const company = (formData.get("company") as string) || ""
+  const role = (formData.get("role") as string) || ""
+  const departureDate = (formData.get("departureDate") as string) || ""
+  const statedReason = (formData.get("statedReason") as string) || undefined
+  const sourceUrl = (formData.get("sourceUrl") as string) || undefined
+
+  try {
+    await sendDepartureNotification({
+      name,
+      company,
+      role,
+      departureDate,
+      statedReason,
+      sourceUrl,
+    })
+
+    return { success: true, message: "Submission received — thank you." }
+  } catch {
+    return { success: false, message: "Something went wrong. Please try again." }
+  }
+}
+
 export async function updateProfileStatus(id: string, status: string): Promise<ProfileActionResult> {
   try {
     const supabase = await createClient()

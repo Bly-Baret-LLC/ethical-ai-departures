@@ -58,7 +58,8 @@ vi.mock("@/lib/supabase/server", () => {
 let singleResponse = { data: { id: "abc-123" }, error: null }
 let updateResponse = { error: null }
 
-import { createProfile, updateProfileStatus } from "./profiles"
+import { createProfile, submitDeparture, updateProfileStatus } from "./profiles"
+import { sendDepartureNotification } from "@/lib/email"
 
 function makeFormData(fields: Record<string, string>): FormData {
   const fd = new FormData()
@@ -160,6 +161,46 @@ describe("createProfile", () => {
     const result = await createProfile(makeFormData(validData))
     expect(result.success).toBe(false)
     expect(result.message).toBe("Failed to create profile. Please try again.")
+  })
+})
+
+describe("submitDeparture", () => {
+  it("sends email and returns success", async () => {
+    const result = await submitDeparture(
+      makeFormData({ name: "Jane Smith", company: "Acme Corp", role: "Engineer", departureDate: "2025-06-15" })
+    )
+    expect(result.success).toBe(true)
+    expect(result.message).toBe("Submission received — thank you.")
+    expect(sendDepartureNotification).toHaveBeenCalledWith({
+      name: "Jane Smith",
+      company: "Acme Corp",
+      role: "Engineer",
+      departureDate: "2025-06-15",
+      statedReason: undefined,
+      sourceUrl: undefined,
+    })
+  })
+
+  it("accepts empty fields", async () => {
+    const result = await submitDeparture(makeFormData({}))
+    expect(result.success).toBe(true)
+    expect(sendDepartureNotification).toHaveBeenCalledWith({
+      name: "",
+      company: "",
+      role: "",
+      departureDate: "",
+      statedReason: undefined,
+      sourceUrl: undefined,
+    })
+  })
+
+  it("returns error when email fails", async () => {
+    vi.mocked(sendDepartureNotification).mockRejectedValueOnce(new Error("send failed"))
+    const result = await submitDeparture(
+      makeFormData({ name: "Jane Smith", company: "Acme", role: "Eng", departureDate: "2025-01-01" })
+    )
+    expect(result.success).toBe(false)
+    expect(result.message).toBe("Something went wrong. Please try again.")
   })
 })
 

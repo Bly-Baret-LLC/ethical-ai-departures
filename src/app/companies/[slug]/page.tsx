@@ -57,7 +57,7 @@ export default async function CompanyDetailPage({
             {company.concernBreakdown.map((concern) => (
               <Link
                 key={concern.slug}
-                href={`/?concern=${concern.slug}`}
+                href={`/?company=${slug}&concern=${concern.slug}`}
                 className="rounded-full bg-accent-amber/10 px-3 py-1 text-sm font-medium text-accent-amber hover:bg-accent-amber/20"
               >
                 {concern.name} ({concern.count})
