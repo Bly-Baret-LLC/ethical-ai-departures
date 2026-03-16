@@ -170,7 +170,7 @@ export async function GET(request: NextRequest) {
             marginTop: "12px",
           }}
         >
-          Public accountability for AI safety
+          An open record of AI safety departures
         </div>
       </div>
     ),

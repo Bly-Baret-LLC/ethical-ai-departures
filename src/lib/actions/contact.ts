@@ -33,7 +33,7 @@ export async function submitContactRequest(formData: FormData): Promise<ContactR
       message: parsed.data.message,
     })
 
-    return { success: true, message: "Message sent. We'll respond within 5 business days." }
+    return { success: true, message: "Message sent — thank you." }
   } catch {
     return { success: false, message: "Something went wrong. Please try again." }
   }

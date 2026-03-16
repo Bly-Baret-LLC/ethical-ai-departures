@@ -55,7 +55,8 @@ export default function AboutPage() {
         </h2>
         <p className="mt-3 text-text-secondary">
           Ethical AI Departures is a solo project with input from a handful of
-          collaborators who care about AI accountability. Want to get involved?
+          collaborators who care about AI accountability. If you spot an error
+          or have a correction, please reach out — accuracy matters to us.
         </p>
         <ContactButton />
       </section>

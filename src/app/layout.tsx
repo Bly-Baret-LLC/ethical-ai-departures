@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "Ethical AI Departures",
   description:
-    "Tracking safety-motivated departures from AI companies. A public accountability resource for journalists, researchers, and the concerned public.",
+    "Tracking safety-motivated departures from AI companies. An open record for journalists, researchers, and the public.",
   openGraph: {
     type: "website",
     siteName: "Ethical AI Departures",

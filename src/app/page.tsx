@@ -17,7 +17,7 @@ const websiteJsonLd = {
   name: "Ethical AI Departures",
   url: siteUrl,
   description:
-    "Tracking safety-motivated departures from AI companies. A public accountability resource for journalists, researchers, and the concerned public.",
+    "Tracking safety-motivated departures from AI companies. An open record for journalists, researchers, and the public.",
 }
 
 export default async function HomePage() {
