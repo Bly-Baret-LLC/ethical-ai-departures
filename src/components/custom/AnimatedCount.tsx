@@ -38,19 +38,22 @@ export function AnimatedCount({ value, className, animate = false }: AnimatedCou
     requestAnimationFrame(tick)
   }, [value])
 
+  // Right-align the number in a grid cell sized to the final value.
+  // The invisible placeholder sets the cell width; the visible number
+  // shares the same grid cell so baseline and size are identical.
   return (
-    <span className="relative inline-block tabular-nums">
-      {/* Invisible final value holds the width constant */}
-      <span className="invisible" aria-hidden="true">
-        <span
-          className={`${className ?? ""} inline-block tabular-nums${animate ? " digit-roll-in" : ""}`}
-        >
-          {value}
-        </span>
-      </span>
-      {/* Visible animated value overlaid on top */}
+    <span
+      className="inline-grid"
+      style={{ gridTemplateColumns: "1fr", gridTemplateRows: "1fr" }}
+    >
       <span
-        className={`${className ?? ""} absolute left-0 top-0 inline-block tabular-nums${animate ? " digit-roll-in" : ""}`}
+        className={`${className ?? ""} tabular-nums col-start-1 row-start-1 invisible${animate ? " digit-roll-in" : ""}`}
+        aria-hidden="true"
+      >
+        {value}
+      </span>
+      <span
+        className={`${className ?? ""} tabular-nums col-start-1 row-start-1 text-right${animate ? " digit-roll-in" : ""}`}
         aria-live="polite"
       >
         {display}
