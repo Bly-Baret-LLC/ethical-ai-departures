@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getCompanyBySlug } from "@/lib/queries/companies"
 import { Avatar } from "@/components/custom/Avatar"
+import { getCompanyOverview } from "@/data/company-overviews"
 
 export const revalidate = 300
 
@@ -46,6 +47,13 @@ export default async function CompanyDetailPage({
         {company.profiles.length} safety-motivated departure
         {company.profiles.length !== 1 ? "s" : ""} tracked
       </p>
+
+      {/* Overview */}
+      {getCompanyOverview(slug) && (
+        <p className="mt-6 text-base leading-relaxed text-text-secondary">
+          {getCompanyOverview(slug)}
+        </p>
+      )}
 
       {/* Concern Distribution */}
       {company.concernBreakdown.length > 0 && (
