@@ -10,7 +10,7 @@ export default function ProfileNotFound() {
         The profile you&apos;re looking for doesn&apos;t exist or has been removed.
       </p>
       <Link
-        href="/profiles"
+        href="/"
         className="mt-6 inline-block text-sm text-accent-amber hover:underline"
       >
         ← Browse all profiles

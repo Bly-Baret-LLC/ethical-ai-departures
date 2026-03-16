@@ -94,7 +94,7 @@ export default async function ProfileDetailPage({
           {profile.concernTags.map((tag) => (
             <Link
               key={tag.id}
-              href={`/profiles?concern=${tag.slug}`}
+              href={`/?concern=${tag.slug}`}
               className="rounded-full bg-accent-amber/10 px-3 py-1 text-sm font-medium text-accent-amber hover:bg-accent-amber/20"
             >
               {tag.name}
@@ -222,7 +222,7 @@ export default async function ProfileDetailPage({
       {/* Back link */}
       <div className="mt-12 border-t border-border-light pt-6">
         <Link
-          href="/profiles"
+          href="/"
           className="text-sm text-text-secondary hover:text-text-primary"
         >
           ← Back to all profiles

@@ -58,7 +58,7 @@ export default async function ThemesPage() {
               return (
                 <Link
                   key={theme.slug}
-                  href={`/profiles?concern=${theme.slug}`}
+                  href={`/?concern=${theme.slug}`}
                   className="rounded-lg border border-border-light bg-surface-card px-4 py-3 transition-colors hover:border-accent-amber/30"
                   style={{ fontSize: `${0.875 + size * 0.5}rem` }}
                 >
@@ -86,7 +86,7 @@ export default async function ThemesPage() {
               >
                 <div className="flex items-center justify-between">
                   <Link
-                    href={`/profiles?concern=${theme.slug}`}
+                    href={`/?concern=${theme.slug}`}
                     className="font-medium text-text-primary hover:text-accent-amber"
                   >
                     {theme.name}
