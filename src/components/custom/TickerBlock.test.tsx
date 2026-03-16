@@ -15,17 +15,14 @@ vi.mock("./TickerClient", () => ({
   TickerClient: ({
     totalCount,
     ninetyDayCount,
-    seniorityText,
   }: {
     totalCount: number
     ninetyDayCount: number
-    seniorityText: string
   }) => (
     <div
       data-testid="ticker-client"
       data-total-count={totalCount}
       data-ninety-day-count={ninetyDayCount}
-      data-seniority-text={seniorityText}
     />
   ),
 }))
@@ -53,17 +50,6 @@ describe("TickerBlock", () => {
     expect(client).toHaveAttribute("data-ninety-day-count", "2")
   })
 
-  it("passes formatted seniority text to TickerClient", async () => {
-    const jsx = await TickerBlock()
-    render(jsx)
-
-    const client = screen.getByTestId("ticker-client")
-    expect(client).toHaveAttribute(
-      "data-seniority-text",
-      "including 1 Safety Lead and 1 Research Director"
-    )
-  })
-
   it("returns null when getTickerStats fails", async () => {
     const { getTickerStats } = await import("@/lib/queries/ticker")
     vi.mocked(getTickerStats).mockRejectedValueOnce(new Error("DB down"))
@@ -79,7 +65,7 @@ describe("TickerBlock", () => {
     consoleError.mockRestore()
   })
 
-  it("passes null seniority text when breakdown is empty", async () => {
+  it("passes zero counts correctly", async () => {
     const { getTickerStats } = await import("@/lib/queries/ticker")
     vi.mocked(getTickerStats).mockResolvedValueOnce({
       id: "d0000000-0000-4000-8000-000000000001",
@@ -94,6 +80,6 @@ describe("TickerBlock", () => {
 
     const client = screen.getByTestId("ticker-client")
     expect(client).toHaveAttribute("data-total-count", "0")
-    expect(client).not.toHaveAttribute("data-seniority-text")
+    expect(client).toHaveAttribute("data-ninety-day-count", "0")
   })
 })

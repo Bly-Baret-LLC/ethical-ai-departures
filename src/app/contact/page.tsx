@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { ContactForm } from "./ContactForm"
 
 export const metadata: Metadata = {
-  title: "Contact · The Warning Collective",
+  title: "Contact · Ethical AI Departures",
   description:
     "Submit corrections, takedown requests, press inquiries, or general questions.",
 }
@@ -24,7 +24,7 @@ export default function ContactPage() {
           Funding & Independence
         </h2>
         <p className="mt-3 text-text-secondary leading-relaxed">
-          The Warning Collective is independently funded and operates without
+          Ethical AI Departures is independently funded and operates without
           financial support from any AI company tracked on this platform. We
           have no financial conflicts of interest. Our commitment is to
           accuracy and public accountability.
@@ -48,19 +48,19 @@ export default function ContactPage() {
           <li>
             Press inquiries:{" "}
             <a
-              href="mailto:press@thewarningcollective.org"
+              href="mailto:press@ethicalaidepartures.fyi"
               className="text-accent-info underline"
             >
-              press@thewarningcollective.org
+              press@ethicalaidepartures.fyi
             </a>
           </li>
           <li>
             General inquiries:{" "}
             <a
-              href="mailto:hello@thewarningcollective.org"
+              href="mailto:hello@ethicalaidepartures.fyi"
               className="text-accent-info underline"
             >
-              hello@thewarningcollective.org
+              hello@ethicalaidepartures.fyi
             </a>
           </li>
         </ul>

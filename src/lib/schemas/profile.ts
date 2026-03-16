@@ -11,6 +11,7 @@ export const profileRowSchema = z.object({
   role: z.string(),
   departure_date: z.string(),
   stated_reason: z.string().nullable(),
+  departure_context: z.string().nullable().default(null),
   status: z.enum(["draft", "published", "archived"]),
   created_at: z.string(),
   updated_at: z.string(),
@@ -53,6 +54,7 @@ export const profileSchema = profileRowSchema.transform((row) => ({
   role: row.role,
   departureDate: row.departure_date,
   statedReason: row.stated_reason,
+  departureContext: row.departure_context,
   status: row.status,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
@@ -105,6 +107,7 @@ export const profileWithTagsSchema = profileWithTagsRowSchema.transform((row) =>
   role: row.role,
   departureDate: row.departure_date,
   statedReason: row.stated_reason,
+  departureContext: row.departure_context,
   status: row.status,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
@@ -132,6 +135,15 @@ export const profileDetailRowSchema = profileRowSchema.extend({
     platform: z.string().nullable(),
     published_date: z.string().nullable(),
   })).default([]),
+  publications: z.array(z.object({
+    id: z.string().uuid(),
+    title: z.string(),
+    url: z.string().nullable(),
+    publication_type: z.enum(["paper", "white_paper", "report", "preprint"]).nullable(),
+    publisher: z.string().nullable(),
+    published_date: z.string().nullable(),
+    abstract: z.string().nullable(),
+  })).default([]),
 })
 
 export const profileDetailSchema = profileDetailRowSchema.transform((row) => ({
@@ -143,6 +155,7 @@ export const profileDetailSchema = profileDetailRowSchema.transform((row) => ({
   role: row.role,
   departureDate: row.departure_date,
   statedReason: row.stated_reason,
+  departureContext: row.departure_context,
   status: row.status,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
@@ -157,6 +170,15 @@ export const profileDetailSchema = profileDetailRowSchema.transform((row) => ({
     title: s.title,
     platform: s.platform,
     publishedDate: s.published_date,
+  })),
+  publications: row.publications.map((pub) => ({
+    id: pub.id,
+    title: pub.title,
+    url: pub.url,
+    publicationType: pub.publication_type,
+    publisher: pub.publisher,
+    publishedDate: pub.published_date,
+    abstract: pub.abstract,
   })),
 }))
 

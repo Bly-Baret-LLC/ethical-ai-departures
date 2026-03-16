@@ -6,9 +6,8 @@ import { usePathname } from "next/navigation"
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/profiles", label: "Profiles" },
   { href: "/companies", label: "Companies" },
-  { href: "/predictions", label: "Predictions" },
+  { href: "/predictions", label: "Publications" },
   { href: "/about", label: "About" },
   { href: "/press", label: "Press" },
 ]
@@ -18,10 +17,10 @@ export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <header className="border-b border-border-light bg-bg-primary">
+    <header className="border-b-2 border-accent-red bg-surface-primary">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-        <Link href="/" className="font-serif text-lg font-semibold text-text-primary">
-          The Warning Collective
+        <Link href="/" className="font-display text-base font-black uppercase tracking-[0.15em] text-text-primary">
+          Ethical AI Departures
         </Link>
 
         {/* Desktop nav */}
@@ -69,7 +68,7 @@ export function SiteHeader() {
 
       {/* Mobile nav */}
       {menuOpen && (
-        <nav className="border-t border-border-light px-6 py-3 md:hidden" aria-label="Mobile navigation">
+        <nav className="border-t border-accent-red/30 px-6 py-3 md:hidden" aria-label="Mobile navigation">
           <ul className="space-y-2">
             {navLinks.map((link) => (
               <li key={link.href}>

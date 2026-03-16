@@ -1,12 +1,11 @@
 import type { Metadata } from "next"
-import { EmailSignup } from "@/components/custom/EmailSignup"
 
 export const revalidate = 86400 // 24-hour ISR
 
 export const metadata: Metadata = {
-  title: "Press & Media Kit · The Warning Collective",
+  title: "Press & Media Kit · Ethical AI Departures",
   description:
-    "Press resources, citation guidelines, and media kit for journalists covering The Warning Collective.",
+    "Press resources, citation guidelines, and media kit for journalists covering Ethical AI Departures.",
 }
 
 export default function PressPage() {
@@ -19,10 +18,10 @@ export default function PressPage() {
       {/* About */}
       <section className="mt-10">
         <h2 className="font-serif text-xl font-semibold text-text-primary">
-          About The Warning Collective
+          About Ethical AI Departures
         </h2>
         <p className="mt-3 text-text-secondary leading-relaxed">
-          The Warning Collective is an independent, non-partisan public
+          Ethical AI Departures is an independent, non-partisan public
           accountability resource that tracks safety-motivated departures from
           AI companies. We document sourced accounts of researchers, engineers,
           and executives who have left their positions due to safety and ethics
@@ -38,14 +37,14 @@ export default function PressPage() {
           How to Cite
         </h2>
         <p className="mt-3 text-text-secondary">
-          When referencing Warning Collective data in your reporting, please use
+          When referencing Ethical AI Departures data in your reporting, please use
           the following citation format:
         </p>
         <div className="mt-4 rounded-lg border border-border-light bg-surface-card p-4">
           <p className="font-mono text-sm text-text-primary">
-            The Warning Collective. &quot;[Profile Name] — Why They Left
-            [Company].&quot; <em>The Warning Collective</em>,
-            thewarningcollective.org/profiles/[slug]. Accessed [date].
+            Ethical AI Departures. &quot;[Profile Name] — Why They Left
+            [Company].&quot; <em>Ethical AI Departures</em>,
+            ethicalaidepartures.fyi/profiles/[slug]. Accessed [date].
           </p>
         </div>
         <p className="mt-3 text-sm text-text-secondary">
@@ -78,48 +77,6 @@ export default function PressPage() {
         </ul>
       </section>
 
-      {/* Media Kit */}
-      <section className="mt-10">
-        <h2 className="font-serif text-xl font-semibold text-text-primary">
-          Media Kit
-        </h2>
-        <p className="mt-3 text-text-secondary">
-          Logo files and brand guidelines are available for download. Please
-          use the provided assets when referencing The Warning Collective in
-          print or digital media.
-        </p>
-        <p className="mt-4">
-          <span className="inline-block rounded-md border border-border-light bg-surface-card px-4 py-2 text-sm text-text-secondary">
-            Media kit coming soon
-          </span>
-        </p>
-      </section>
-
-      {/* Press Contact */}
-      <section className="mt-10">
-        <h2 className="font-serif text-xl font-semibold text-text-primary">
-          Press Contact
-        </h2>
-        <p className="mt-3 text-text-secondary">
-          For press inquiries, interview requests, or data questions:
-        </p>
-        <p className="mt-2">
-          <a
-            href="mailto:press@thewarningcollective.org"
-            className="text-accent-info underline hover:text-accent-info/80"
-          >
-            press@thewarningcollective.org
-          </a>
-        </p>
-        <p className="mt-2 text-sm text-text-secondary">
-          We aim to respond to press inquiries within 24 hours.
-        </p>
-      </section>
-
-      {/* Email Signup */}
-      <section className="mt-10">
-        <EmailSignup />
-      </section>
     </main>
   )
 }

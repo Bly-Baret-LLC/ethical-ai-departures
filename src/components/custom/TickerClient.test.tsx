@@ -41,7 +41,6 @@ const mockLocalStorage = {
 const defaultProps = {
   totalCount: 6,
   ninetyDayCount: 2,
-  seniorityText: "including 1 Safety Lead",
 }
 
 beforeEach(() => {
@@ -63,7 +62,7 @@ describe("TickerClient", () => {
 
     expect(screen.getByText("6")).toBeInTheDocument()
     expect(
-      screen.getByText("AI researchers have left major companies over safety concerns")
+      screen.getByText("AI employees and counting have walked away from major companies over ethical concerns")
     ).toBeInTheDocument()
   })
 
@@ -73,14 +72,6 @@ describe("TickerClient", () => {
     })
 
     expect(screen.getByText("2 in the last 90 days")).toBeInTheDocument()
-  })
-
-  it("renders seniority text", async () => {
-    await act(async () => {
-      render(<TickerClient {...defaultProps} />)
-    })
-
-    expect(screen.getByText("including 1 Safety Lead")).toBeInTheDocument()
   })
 
   it("shows explainer on first visit", async () => {
@@ -192,7 +183,7 @@ describe("TickerClient", () => {
   it("renders with zero count without errors", async () => {
     await act(async () => {
       render(
-        <TickerClient totalCount={0} ninetyDayCount={0} seniorityText="" />
+        <TickerClient totalCount={0} ninetyDayCount={0} />
       )
     })
 

@@ -42,12 +42,12 @@ export default async function TickerWidget({
             <p className={`text-xs ${sub}`}>safety departures tracked</p>
           </div>
           <a
-            href="https://thewarningcollective.org"
+            href="https://ethicalaidepartures.fyi"
             target="_blank"
             rel="noopener noreferrer"
             className={`ml-auto text-xs ${sub} hover:underline`}
           >
-            The Warning Collective
+            Ethical AI Departures
           </a>
         </div>
       </body>

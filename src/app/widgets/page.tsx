@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Embeddable Widgets · The Warning Collective",
-  description: "Embed Warning Collective widgets on your website.",
+  title: "Embeddable Widgets · Ethical AI Departures",
+  description: "Embed Ethical AI Departures widgets on your website.",
 }
 
 export default function WidgetsPage() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://thewarningcollective.org"
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi"
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
@@ -14,7 +14,7 @@ export default function WidgetsPage() {
         Embeddable Widgets
       </h1>
       <p className="mt-2 text-text-secondary">
-        Embed Warning Collective data on your website. Copy the embed code below.
+        Embed Ethical AI Departures data on your website. Copy the embed code below.
       </p>
 
       {/* Ticker Widget */}
@@ -31,7 +31,7 @@ export default function WidgetsPage() {
             width="280"
             height="80"
             style={{ border: "none", maxWidth: "100%" }}
-            title="Warning Collective Ticker"
+            title="Ethical AI Departures Ticker"
           />
         </div>
         <div className="mt-3">
@@ -40,7 +40,7 @@ export default function WidgetsPage() {
 {`<iframe src="${siteUrl}/widgets/ticker"
   width="280" height="80"
   style="border:none"
-  title="Warning Collective Ticker">
+  title="Ethical AI Departures Ticker">
 </iframe>`}
           </pre>
         </div>

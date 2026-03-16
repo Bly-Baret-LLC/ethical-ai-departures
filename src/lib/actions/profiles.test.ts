@@ -1,40 +1,59 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 
-const mockInsert = vi.fn()
-const mockUpdate = vi.fn()
-const mockSelect = vi.fn()
-const mockSingle = vi.fn()
-const mockEq = vi.fn()
-
-vi.mock("@/lib/supabase/server", () => ({
-  createClient: vi.fn().mockResolvedValue({
-    from: vi.fn().mockReturnValue({
-      insert: (...args: unknown[]) => {
-        mockInsert(...args)
-        return {
-          select: (...sArgs: unknown[]) => {
-            mockSelect(...sArgs)
-            return {
-              single: (...siArgs: unknown[]) => {
-                mockSingle(...siArgs)
-                return singleResponse
-              },
-            }
-          },
-        }
-      },
-      update: (...args: unknown[]) => {
-        mockUpdate(...args)
-        return {
-          eq: (...eqArgs: unknown[]) => {
-            mockEq(...eqArgs)
-            return updateResponse
-          },
-        }
-      },
-    }),
-  }),
+const {
+  mockInsert,
+  mockUpdate,
+  mockSelect,
+  mockSingle,
+  mockEq,
+} = vi.hoisted(() => ({
+  mockInsert: vi.fn(),
+  mockUpdate: vi.fn(),
+  mockSelect: vi.fn(),
+  mockSingle: vi.fn(),
+  mockEq: vi.fn(),
 }))
+
+vi.mock("@/lib/email", () => ({
+  sendDepartureNotification: vi.fn().mockResolvedValue(undefined),
+}))
+
+vi.mock("@/lib/supabase/server", () => {
+  const mockFromValue = {
+    insert: (...args: unknown[]) => {
+      mockInsert(...args)
+      return {
+        select: (...sArgs: unknown[]) => {
+          mockSelect(...sArgs)
+          return {
+            single: (...siArgs: unknown[]) => {
+              mockSingle(...siArgs)
+              return singleResponse
+            },
+          }
+        },
+      }
+    },
+    update: (...args: unknown[]) => {
+      mockUpdate(...args)
+      return {
+        eq: (...eqArgs: unknown[]) => {
+          mockEq(...eqArgs)
+          return updateResponse
+        },
+      }
+    },
+  }
+
+  return {
+    createClient: vi.fn().mockResolvedValue({
+      from: vi.fn().mockReturnValue(mockFromValue),
+    }),
+    createServiceClient: vi.fn().mockReturnValue({
+      from: vi.fn().mockReturnValue(mockFromValue),
+    }),
+  }
+})
 
 let singleResponse = { data: { id: "abc-123" }, error: null }
 let updateResponse = { error: null }

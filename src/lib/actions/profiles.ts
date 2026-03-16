@@ -1,6 +1,7 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
+import { createClient, createServiceClient } from "@/lib/supabase/server"
+import { sendDepartureNotification } from "@/lib/email"
 import { z } from "zod"
 
 const profileInputSchema = z.object({
@@ -33,6 +34,7 @@ export async function createProfile(formData: FormData): Promise<ProfileActionRe
     photoUrl: formData.get("photoUrl") || undefined,
     status: formData.get("status") || "draft",
   }
+  const sourceUrl = (formData.get("sourceUrl") as string) || null
 
   const parsed = profileInputSchema.safeParse(raw)
   if (!parsed.success) {
@@ -40,7 +42,7 @@ export async function createProfile(formData: FormData): Promise<ProfileActionRe
   }
 
   try {
-    const supabase = await createClient()
+    const supabase = createServiceClient()
     const { data, error } = await supabase
       .from("profiles")
       .insert({
@@ -57,6 +59,27 @@ export async function createProfile(formData: FormData): Promise<ProfileActionRe
       .single()
 
     if (error) throw error
+
+    if (sourceUrl && data.id) {
+      await supabase.from("profile_sources").insert({
+        profile_id: data.id,
+        url: sourceUrl,
+      })
+    }
+
+    // Notify via email (non-blocking — failure must not affect the submission)
+    try {
+      await sendDepartureNotification({
+        name: parsed.data.name,
+        company: parsed.data.company,
+        role: parsed.data.role,
+        departureDate: parsed.data.departureDate,
+        statedReason: parsed.data.statedReason,
+        sourceUrl: sourceUrl ?? undefined,
+      })
+    } catch {
+      // Email failure should not affect the submission
+    }
 
     return { success: true, message: "Profile created successfully", id: data.id }
   } catch {

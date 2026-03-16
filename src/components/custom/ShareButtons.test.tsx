@@ -14,7 +14,7 @@ afterEach(() => {
 
 describe("ShareButtons", () => {
   const defaultProps = {
-    url: "https://thewarningcollective.org/profiles/elena-rodriguez",
+    url: "https://ethicalaidepartures.fyi/profiles/elena-rodriguez",
     twitterText: "Elena Rodriguez left OpenAI over safety concerns.",
   }
 

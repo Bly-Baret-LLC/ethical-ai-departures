@@ -19,7 +19,7 @@ describe("PressPage", () => {
 
   it("renders About section", () => {
     render(<PressPage />)
-    expect(screen.getByRole("heading", { name: /About The Warning Collective/ })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /About Ethical AI Departures/ })).toBeInTheDocument()
   })
 
   it("renders citation format section", () => {
@@ -30,7 +30,7 @@ describe("PressPage", () => {
   it("renders press contact email", () => {
     render(<PressPage />)
     const emailLink = screen.getByRole("link", { name: /press@thewarningcollective\.org/ })
-    expect(emailLink).toHaveAttribute("href", "mailto:press@thewarningcollective.org")
+    expect(emailLink).toHaveAttribute("href", "mailto:press@ethicalaidepartures.fyi")
   })
 
   it("renders embedding guidelines", () => {

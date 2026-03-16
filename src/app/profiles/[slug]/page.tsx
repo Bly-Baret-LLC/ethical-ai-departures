@@ -20,13 +20,13 @@ export async function generateMetadata({
   const profile = await getProfileBySlug(slug)
 
   if (!profile) {
-    return { title: "Profile Not Found · The Warning Collective" }
+    return { title: "Profile Not Found · Ethical AI Departures" }
   }
 
   const year = new Date(profile.departureDate + "T00:00:00").getFullYear()
   const primaryConcern = profile.concernTags[0]?.name ?? "safety concerns"
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://thewarningcollective.org"
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi"
   const ogParams = new URLSearchParams({
     type: "profile",
     name: profile.name,
@@ -35,7 +35,7 @@ export async function generateMetadata({
   })
 
   return {
-    title: `${profile.name} — Why They Left ${profile.company} · The Warning Collective`,
+    title: `${profile.name} — Why They Left ${profile.company} · Ethical AI Departures`,
     description: `${profile.name} left ${profile.company} in ${year} over ${primaryConcern.toLowerCase()}. Read their sourced account.`,
     openGraph: {
       images: [`${siteUrl}/api/og?${ogParams}`],
@@ -81,6 +81,13 @@ export default async function ProfileDetailPage({
         </blockquote>
       )}
 
+      {/* Editorial Context */}
+      {profile.departureContext && (
+        <p className="mt-6 text-base leading-relaxed text-text-secondary">
+          {profile.departureContext}
+        </p>
+      )}
+
       {/* Concern Tags */}
       {profile.concernTags.length > 0 && (
         <div className="mt-6 flex flex-wrap gap-2">
@@ -124,10 +131,73 @@ export default async function ProfileDetailPage({
         </section>
       )}
 
+      {/* Key Publications */}
+      {profile.publications.length > 0 && (
+        <section className="mt-10">
+          <h2 className="font-serif text-xl font-semibold text-text-primary">
+            Key Publications
+          </h2>
+          <ul className="mt-4 space-y-4">
+            {profile.publications.map((pub) => (
+              <li key={pub.id} className="rounded-lg border border-border-light bg-surface-card px-5 py-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    {pub.url ? (
+                      <a
+                        href={pub.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-accent-info hover:underline"
+                      >
+                        {pub.title}
+                        <span className="ml-1 text-xs" aria-hidden="true">
+                          ⤴
+                        </span>
+                      </a>
+                    ) : (
+                      <span className="font-medium text-text-primary">
+                        {pub.title}
+                      </span>
+                    )}
+                    <div className="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-text-secondary">
+                      {pub.publisher && <span>{pub.publisher}</span>}
+                      {pub.publisher && pub.publishedDate && (
+                        <span aria-hidden="true">&middot;</span>
+                      )}
+                      {pub.publishedDate && (
+                        <time>
+                          {new Date(pub.publishedDate + "T00:00:00").toLocaleDateString(
+                            undefined,
+                            { year: "numeric", month: "short" }
+                          )}
+                        </time>
+                      )}
+                      {pub.publicationType && (
+                        <>
+                          <span aria-hidden="true">&middot;</span>
+                          <span className="rounded-full bg-surface-secondary px-2 py-0.5 text-xs">
+                            {pub.publicationType.replace("_", " ")}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                    {pub.abstract && (
+                      <p className="mt-2 text-sm text-text-secondary">
+                        {pub.abstract}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {/* Share */}
       <div className="mt-8">
         <ShareButtons
-          url={`${process.env.NEXT_PUBLIC_SITE_URL ?? "https://thewarningcollective.org"}/profiles/${profile.slug}`}
+          url={`${process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi"}/profiles/${profile.slug}`}
           twitterText={`${profile.name} left ${profile.company} over safety concerns. Read their sourced account on @WarningCollect:`}
         />
       </div>

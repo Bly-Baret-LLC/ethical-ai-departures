@@ -96,12 +96,12 @@ export default async function StatsWidget({
             </ul>
           )}
           <a
-            href="https://thewarningcollective.org"
+            href="https://ethicalaidepartures.fyi"
             target="_blank"
             rel="noopener noreferrer"
             className={`mt-3 block text-right text-[10px] ${sub} hover:underline`}
           >
-            The Warning Collective
+            Ethical AI Departures
           </a>
         </div>
       </body>
