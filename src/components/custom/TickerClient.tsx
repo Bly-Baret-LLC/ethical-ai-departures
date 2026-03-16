@@ -49,7 +49,7 @@ export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: 
       >
         <div className="mx-auto grid max-w-6xl grid-cols-1 items-center px-6 py-8 sm:py-10 md:grid-cols-[1fr_auto]">
           <div className="text-left">
-            <h1 className="flex items-center gap-4 sm:gap-6">
+            <h1 className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
               <div className="shrink-0">
                 <AnimatedCount
                   value={displayCount}
