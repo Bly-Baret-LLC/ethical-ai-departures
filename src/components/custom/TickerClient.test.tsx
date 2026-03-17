@@ -62,7 +62,7 @@ describe("TickerClient", () => {
 
     expect(screen.getByText("6")).toBeInTheDocument()
     expect(
-      screen.getByText("AI employees (and counting) have walked away from major companies over ethical concerns")
+      screen.getByText("AI employees (and counting) have walked away from major companies over ethical concerns. What are they saying?")
     ).toBeInTheDocument()
   })
 
