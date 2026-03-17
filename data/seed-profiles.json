@@ -1,0 +1,1096 @@
+[
+  {
+    "name": "Timnit Gebru",
+    "company": "Google",
+    "role": "Co-Lead, Ethical AI Team",
+    "departureDate": "2020-12-02",
+    "statedReason": "Forced out after co-authoring a paper on the harms of large language models ('On the Dangers of Stochastic Parrots'). Google objected to publication and demanded she retract or remove her name.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.technologyreview.com/2020/12/04/1013294/google-ai-ethics-research-paper-forced-out-timnit-gebru/",
+        "title": "We read the paper that forced Timnit Gebru out of Google. Here's what it says.",
+        "platform": "MIT Technology Review",
+        "publishedDate": "2020-12-04"
+      },
+      {
+        "url": "https://www.technologyreview.com/2020/12/16/1014634/google-ai-ethics-lead-timnit-gebru-tells-story/",
+        "title": "'I started crying': Inside Timnit Gebru's last days at Google",
+        "platform": "MIT Technology Review",
+        "publishedDate": "2020-12-16"
+      }
+    ],
+    "concernTags": ["research-suppression", "whistleblower-retaliation", "lack-of-transparency"]
+  },
+  {
+    "name": "Dario Amodei",
+    "company": "OpenAI",
+    "role": "VP of Research",
+    "departureDate": "2021-01-15",
+    "statedReason": "Left over disagreements about scaling AI without adequate safety research. Co-founded Anthropic to pursue a safety-first approach to AI development.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://finance.yahoo.com/news/anthropic-ceo-says-why-quit-194409797.html",
+        "title": "Anthropic's CEO says why he quit his job at OpenAI to start a rival",
+        "platform": "Yahoo Finance / Fortune",
+        "publishedDate": "2024-09-22"
+      },
+      {
+        "url": "https://research.contrary.com/company/anthropic",
+        "title": "Anthropic Business Breakdown & Founding Story",
+        "platform": "Contrary Research",
+        "publishedDate": "2024-01-15"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "alignment-research-gaps", "agi-risk-underestimation"]
+  },
+  {
+    "name": "Daniela Amodei",
+    "company": "OpenAI",
+    "role": "VP of Safety & Policy",
+    "departureDate": "2021-01-15",
+    "statedReason": "Departed with Dario Amodei to co-found Anthropic. Concerned about the pace of scaling without proportional safety investment.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://research.contrary.com/company/anthropic",
+        "title": "Anthropic Business Breakdown & Founding Story",
+        "platform": "Contrary Research",
+        "publishedDate": "2024-01-15"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "alignment-research-gaps"]
+  },
+  {
+    "name": "Tom Brown",
+    "company": "OpenAI",
+    "role": "Research Scientist (GPT-3 Lead Author)",
+    "departureDate": "2021-01-15",
+    "statedReason": "Left to co-found Anthropic over safety direction concerns at OpenAI.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://research.contrary.com/company/anthropic",
+        "title": "Anthropic Business Breakdown & Founding Story",
+        "platform": "Contrary Research",
+        "publishedDate": "2024-01-15"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "alignment-research-gaps"]
+  },
+  {
+    "name": "Chris Olah",
+    "company": "OpenAI",
+    "role": "Research Scientist (Interpretability)",
+    "departureDate": "2021-01-15",
+    "statedReason": "Left to co-found Anthropic to focus on AI interpretability and safety research.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://research.contrary.com/company/anthropic",
+        "title": "Anthropic Business Breakdown & Founding Story",
+        "platform": "Contrary Research",
+        "publishedDate": "2024-01-15"
+      }
+    ],
+    "concernTags": ["alignment-research-gaps", "safety-deprioritization"]
+  },
+  {
+    "name": "Sam McCandlish",
+    "company": "OpenAI",
+    "role": "Research Scientist",
+    "departureDate": "2021-01-15",
+    "statedReason": "Left to co-found Anthropic. Became Chief Architect focused on safe scaling.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://research.contrary.com/company/anthropic",
+        "title": "Anthropic Business Breakdown & Founding Story",
+        "platform": "Contrary Research",
+        "publishedDate": "2024-01-15"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "alignment-research-gaps"]
+  },
+  {
+    "name": "Jack Clark",
+    "company": "OpenAI",
+    "role": "Head of Policy",
+    "departureDate": "2021-01-15",
+    "statedReason": "Left to co-found Anthropic. Concerned about governance and policy gaps in AI development.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://research.contrary.com/company/anthropic",
+        "title": "Anthropic Business Breakdown & Founding Story",
+        "platform": "Contrary Research",
+        "publishedDate": "2024-01-15"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "inadequate-oversight"]
+  },
+  {
+    "name": "Jared Kaplan",
+    "company": "OpenAI",
+    "role": "Research Scientist",
+    "departureDate": "2021-01-15",
+    "statedReason": "Left to co-found Anthropic. Became Chief Science Officer focused on scaling laws and safety.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://research.contrary.com/company/anthropic",
+        "title": "Anthropic Business Breakdown & Founding Story",
+        "platform": "Contrary Research",
+        "publishedDate": "2024-01-15"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "alignment-research-gaps"]
+  },
+  {
+    "name": "Paul Christiano",
+    "company": "OpenAI",
+    "role": "Research Scientist (Alignment)",
+    "departureDate": "2021-01-31",
+    "statedReason": "Left to found the Alignment Research Center (ARC) to focus on theoretical alignment research outside the constraints of a capabilities lab.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://ai-alignment.com/announcing-the-alignment-research-center-a9b07f77431b",
+        "title": "Announcing the Alignment Research Center",
+        "platform": "AI Alignment Blog",
+        "publishedDate": "2021-04-01"
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Paul_Christiano",
+        "title": "Paul Christiano - Wikipedia",
+        "platform": "Wikipedia",
+        "publishedDate": "2024-01-01"
+      }
+    ],
+    "concernTags": ["alignment-research-gaps", "agi-risk-underestimation"]
+  },
+  {
+    "name": "Margaret Mitchell",
+    "company": "Google",
+    "role": "Co-Lead, Ethical AI Team",
+    "departureDate": "2021-02-19",
+    "statedReason": "Fired after searching company emails for evidence of discrimination related to Timnit Gebru's ouster. Google cited violations of security policies.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://techcrunch.com/2021/02/19/google-fires-top-ai-ethics-researcher-margaret-mitchell/",
+        "title": "Google fires top AI ethics researcher Margaret Mitchell",
+        "platform": "TechCrunch",
+        "publishedDate": "2021-02-19"
+      },
+      {
+        "url": "https://venturebeat.com/ai/google-fires-ethical-ai-lead-margaret-mitchell/",
+        "title": "Google fires Ethical AI lead Margaret Mitchell",
+        "platform": "VentureBeat",
+        "publishedDate": "2021-02-19"
+      }
+    ],
+    "concernTags": ["whistleblower-retaliation", "research-suppression", "team-dissolution"]
+  },
+  {
+    "name": "Geoffrey Hinton",
+    "company": "Google",
+    "role": "VP and Engineering Fellow",
+    "departureDate": "2023-05-01",
+    "statedReason": "Resigned to freely speak about the existential risks of AI. Warned of 10-20% probability of human extinction from AI. Said he regretted his life's work.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.technologyreview.com/2023/05/02/1072528/geoffrey-hinton-google-why-scared-ai/",
+        "title": "Geoffrey Hinton tells us why he's now scared of the technology he helped build",
+        "platform": "MIT Technology Review",
+        "publishedDate": "2023-05-02"
+      },
+      {
+        "url": "https://www.npr.org/2023/05/28/1178673070/the-godfather-of-ai-sounds-alarm-about-potential-dangers-of-ai",
+        "title": "'The godfather of AI' sounds alarm about potential dangers",
+        "platform": "NPR",
+        "publishedDate": "2023-05-28"
+      }
+    ],
+    "concernTags": ["agi-risk-underestimation", "lack-of-transparency", "safety-deprioritization"]
+  },
+  {
+    "name": "William Saunders",
+    "company": "OpenAI",
+    "role": "Researcher, Superalignment Team",
+    "departureDate": "2024-02-15",
+    "statedReason": "Left the Superalignment team. Said 'I really didn't want to end up working for the Titanic of AI.'",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://qz.com/openai-safety-staffers-quit-sam-altman-1851482644",
+        "title": "OpenAI staffers who are supposed to make sure AI doesn't go rogue are jumping ship fast",
+        "platform": "Quartz",
+        "publishedDate": "2024-06-01"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "alignment-research-gaps", "agi-risk-underestimation"]
+  },
+  {
+    "name": "Daniel Kokotajlo",
+    "company": "OpenAI",
+    "role": "Researcher, Governance Team",
+    "departureDate": "2024-04-15",
+    "statedReason": "Lost confidence in OpenAI leadership's ability to handle AGI responsibly. Forfeited approximately $1.7M in vested equity by refusing to sign a non-disparagement agreement.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://forum.effectivealtruism.org/posts/ckYw5FZFrejETuyjN/articles-about-recent-openai-departures",
+        "title": "Articles about recent OpenAI departures",
+        "platform": "EA Forum",
+        "publishedDate": "2024-05-20"
+      }
+    ],
+    "concernTags": ["agi-risk-underestimation", "inadequate-oversight", "whistleblower-retaliation"]
+  },
+  {
+    "name": "Leopold Aschenbrenner",
+    "company": "OpenAI",
+    "role": "Researcher, Superalignment Team",
+    "departureDate": "2024-04-15",
+    "statedReason": "Fired after writing an internal board memo about cybersecurity vulnerabilities. Later published the influential 'Situational Awareness' essay arguing AGI is imminent and labs are unprepared.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Leopold_Aschenbrenner",
+        "title": "Leopold Aschenbrenner - Wikipedia",
+        "platform": "Wikipedia",
+        "publishedDate": "2024-06-01"
+      },
+      {
+        "url": "https://www.techmeme.com/240604/p48",
+        "title": "Transformer News: OpenAI fired researcher for leaking information",
+        "platform": "Techmeme",
+        "publishedDate": "2024-06-04"
+      }
+    ],
+    "concernTags": ["whistleblower-retaliation", "agi-risk-underestimation", "lack-of-transparency"]
+  },
+  {
+    "name": "Cullen O'Keefe",
+    "company": "OpenAI",
+    "role": "Researcher, Policy & Governance",
+    "departureDate": "2024-04-15",
+    "statedReason": "Departed the AI governance team amid broader safety staff exodus.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://qz.com/openai-safety-staffers-quit-sam-altman-1851482644",
+        "title": "OpenAI staffers who are supposed to make sure AI doesn't go rogue are jumping ship fast",
+        "platform": "Quartz",
+        "publishedDate": "2024-06-01"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "inadequate-oversight"]
+  },
+  {
+    "name": "Pavel Izmailov",
+    "company": "OpenAI",
+    "role": "Safety Researcher",
+    "departureDate": "2024-05-01",
+    "statedReason": "Departed amid the broader Superalignment team exodus.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://qz.com/openai-safety-staffers-quit-sam-altman-1851482644",
+        "title": "OpenAI staffers who are supposed to make sure AI doesn't go rogue are jumping ship fast",
+        "platform": "Quartz",
+        "publishedDate": "2024-06-01"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "team-dissolution"]
+  },
+  {
+    "name": "Collin Burns",
+    "company": "OpenAI",
+    "role": "Safety Researcher",
+    "departureDate": "2024-05-01",
+    "statedReason": "Departed amid the broader Superalignment team exodus.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://qz.com/openai-safety-staffers-quit-sam-altman-1851482644",
+        "title": "OpenAI staffers who are supposed to make sure AI doesn't go rogue are jumping ship fast",
+        "platform": "Quartz",
+        "publishedDate": "2024-06-01"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "team-dissolution"]
+  },
+  {
+    "name": "Carroll Wainwright",
+    "company": "OpenAI",
+    "role": "Safety Researcher",
+    "departureDate": "2024-05-01",
+    "statedReason": "Departed amid the broader safety staff exodus.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://qz.com/openai-safety-staffers-quit-sam-altman-1851482644",
+        "title": "OpenAI staffers who are supposed to make sure AI doesn't go rogue are jumping ship fast",
+        "platform": "Quartz",
+        "publishedDate": "2024-06-01"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "team-dissolution"]
+  },
+  {
+    "name": "Ryan Lowe",
+    "company": "OpenAI",
+    "role": "Safety Researcher",
+    "departureDate": "2024-05-01",
+    "statedReason": "Departed amid the broader safety staff exodus.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://qz.com/openai-safety-staffers-quit-sam-altman-1851482644",
+        "title": "OpenAI staffers who are supposed to make sure AI doesn't go rogue are jumping ship fast",
+        "platform": "Quartz",
+        "publishedDate": "2024-06-01"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "team-dissolution"]
+  },
+  {
+    "name": "Ilya Sutskever",
+    "company": "OpenAI",
+    "role": "Co-Founder and Chief Scientist",
+    "departureDate": "2024-05-14",
+    "statedReason": "Co-led the Superalignment team and was involved in the attempted board ouster of Sam Altman in Nov 2023. After the board crisis resolved in Altman's favor, Sutskever departed and founded Safe Superintelligence Inc. (SSI).",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.cnbc.com/2024/05/17/openai-superalignment-sutskever-leike.html",
+        "title": "OpenAI dissolves team focused on long-term AI safety risks led by Ilya Sutskever",
+        "platform": "CNBC",
+        "publishedDate": "2024-05-17"
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Ilya_Sutskever",
+        "title": "Ilya Sutskever - Wikipedia",
+        "platform": "Wikipedia",
+        "publishedDate": "2024-05-14"
+      }
+    ],
+    "concernTags": ["alignment-research-gaps", "agi-risk-underestimation", "inadequate-oversight", "team-dissolution"]
+  },
+  {
+    "name": "Jan Leike",
+    "company": "OpenAI",
+    "role": "Co-Lead, Superalignment Team",
+    "departureDate": "2024-05-15",
+    "statedReason": "Said 'safety culture and processes have taken a backseat to shiny products' at OpenAI. Resigned the day after Sutskever. Joined Anthropic to continue alignment work.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.cbsnews.com/sanfrancisco/news/openai-exec-jan-leike-resigns-says-safety-has-taken-a-backseat/",
+        "title": "OpenAI exec Jan Leike resigns, says safety has 'taken a backseat'",
+        "platform": "CBS News",
+        "publishedDate": "2024-05-15"
+      },
+      {
+        "url": "https://www.lesswrong.com/posts/JSWF2ZLt6YahyAauE/ilya-sutskever-and-jan-leike-resign-from-openai-updated",
+        "title": "Ilya Sutskever and Jan Leike resign from OpenAI",
+        "platform": "LessWrong",
+        "publishedDate": "2024-05-15"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "alignment-research-gaps", "team-dissolution"]
+  },
+  {
+    "name": "Jan Hendrik Kirchner",
+    "company": "OpenAI",
+    "role": "Researcher, Superalignment Team",
+    "departureDate": "2024-05-20",
+    "statedReason": "Departed after the Superalignment team was dissolved.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.cnbc.com/2024/05/17/openai-superalignment-sutskever-leike.html",
+        "title": "OpenAI dissolves team focused on long-term AI safety risks",
+        "platform": "CNBC",
+        "publishedDate": "2024-05-17"
+      }
+    ],
+    "concernTags": ["team-dissolution", "alignment-research-gaps"]
+  },
+  {
+    "name": "Jeffrey Wu",
+    "company": "OpenAI",
+    "role": "Researcher, Superalignment Team",
+    "departureDate": "2024-05-20",
+    "statedReason": "Departed after the Superalignment team was dissolved.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.cnbc.com/2024/05/17/openai-superalignment-sutskever-leike.html",
+        "title": "OpenAI dissolves team focused on long-term AI safety risks",
+        "platform": "CNBC",
+        "publishedDate": "2024-05-17"
+      }
+    ],
+    "concernTags": ["team-dissolution", "alignment-research-gaps"]
+  },
+  {
+    "name": "Jonathan Uesato",
+    "company": "OpenAI",
+    "role": "Researcher, Superalignment Team",
+    "departureDate": "2024-05-20",
+    "statedReason": "Departed after the Superalignment team was dissolved.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.cnbc.com/2024/05/17/openai-superalignment-sutskever-leike.html",
+        "title": "OpenAI dissolves team focused on long-term AI safety risks",
+        "platform": "CNBC",
+        "publishedDate": "2024-05-17"
+      }
+    ],
+    "concernTags": ["team-dissolution", "alignment-research-gaps"]
+  },
+  {
+    "name": "Steven Bills",
+    "company": "OpenAI",
+    "role": "Researcher, Superalignment Team",
+    "departureDate": "2024-05-20",
+    "statedReason": "Departed after the Superalignment team was dissolved.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.cnbc.com/2024/05/17/openai-superalignment-sutskever-leike.html",
+        "title": "OpenAI dissolves team focused on long-term AI safety risks",
+        "platform": "CNBC",
+        "publishedDate": "2024-05-17"
+      }
+    ],
+    "concernTags": ["team-dissolution", "alignment-research-gaps"]
+  },
+  {
+    "name": "Yuri Burda",
+    "company": "OpenAI",
+    "role": "Researcher, Superalignment Team",
+    "departureDate": "2024-05-20",
+    "statedReason": "Departed after the Superalignment team was dissolved.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.cnbc.com/2024/05/17/openai-superalignment-sutskever-leike.html",
+        "title": "OpenAI dissolves team focused on long-term AI safety risks",
+        "platform": "CNBC",
+        "publishedDate": "2024-05-17"
+      }
+    ],
+    "concernTags": ["team-dissolution", "alignment-research-gaps"]
+  },
+  {
+    "name": "Todor Markov",
+    "company": "OpenAI",
+    "role": "Researcher, Superalignment Team",
+    "departureDate": "2024-05-20",
+    "statedReason": "Departed after the Superalignment team was dissolved.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.cnbc.com/2024/05/17/openai-superalignment-sutskever-leike.html",
+        "title": "OpenAI dissolves team focused on long-term AI safety risks",
+        "platform": "CNBC",
+        "publishedDate": "2024-05-17"
+      }
+    ],
+    "concernTags": ["team-dissolution", "alignment-research-gaps"]
+  },
+  {
+    "name": "Aleksander Madry",
+    "company": "OpenAI",
+    "role": "Head of Preparedness Team",
+    "departureDate": "2024-07-15",
+    "statedReason": "Removed from leadership of the Preparedness team without public announcement. Reassigned to AI reasoning work. The Preparedness team was formed in Dec 2023 to evaluate catastrophic risks.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://fortune.com/2024/08/26/openai-agi-safety-researchers-exodus/",
+        "title": "OpenAI Exodus: Nearly half of AGI safety team gone",
+        "platform": "Fortune",
+        "publishedDate": "2024-08-26"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "team-dissolution", "inadequate-oversight"]
+  },
+  {
+    "name": "John Schulman",
+    "company": "OpenAI",
+    "role": "Co-Founder",
+    "departureDate": "2024-08-05",
+    "statedReason": "Left to join Anthropic to 'deepen my focus on AI alignment and to start a new chapter where I can return to hands-on technical work.' Departed less than 3 months after the Superalignment team was dissolved.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.cnbc.com/2024/08/06/openai-co-founder-john-schulman-says-he-will-join-rival-anthropic.html",
+        "title": "OpenAI co-founder John Schulman says he will leave and join rival Anthropic",
+        "platform": "CNBC",
+        "publishedDate": "2024-08-06"
+      },
+      {
+        "url": "https://techcrunch.com/2024/08/05/openai-co-founder-leaves-for-anthropic/",
+        "title": "OpenAI co-founder Schulman leaves for Anthropic, Brockman takes extended leave",
+        "platform": "TechCrunch",
+        "publishedDate": "2024-08-05"
+      }
+    ],
+    "concernTags": ["alignment-research-gaps", "safety-deprioritization"]
+  },
+  {
+    "name": "Suchir Balaji",
+    "company": "OpenAI",
+    "role": "Research Scientist",
+    "departureDate": "2024-08-15",
+    "statedReason": "Left over concerns about copyright law violations in ChatGPT's training data. Said 'If you believe what I believe, you have to just leave the company.' Became a whistleblower. Found dead in his apartment on November 26, 2024.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.pbs.org/newshour/nation/openai-whistleblower-who-raised-legal-concerns-about-chatgpts-datasets-has-died",
+        "title": "OpenAI whistleblower who raised legal concerns about ChatGPT's datasets has died",
+        "platform": "PBS",
+        "publishedDate": "2024-12-13"
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Suchir_Balaji",
+        "title": "Suchir Balaji - Wikipedia",
+        "platform": "Wikipedia",
+        "publishedDate": "2024-12-13"
+      }
+    ],
+    "concernTags": ["copyright-data-ethics", "whistleblower-retaliation", "lack-of-transparency"]
+  },
+  {
+    "name": "Mira Murati",
+    "company": "OpenAI",
+    "role": "Chief Technology Officer",
+    "departureDate": "2024-09-25",
+    "statedReason": "Departed amid broader leadership exodus. Said she wanted 'to create the time and space to do my own exploration.' Left the same day as the Chief Research Officer and VP of Research.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Mira_Murati",
+        "title": "Mira Murati - Wikipedia",
+        "platform": "Wikipedia",
+        "publishedDate": "2024-09-25"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "inadequate-oversight"]
+  },
+  {
+    "name": "Bob McGrew",
+    "company": "OpenAI",
+    "role": "Chief Research Officer",
+    "departureDate": "2024-09-25",
+    "statedReason": "Departed the same day as CTO Mira Murati and VP Research Barret Zoph, part of a coordinated senior leadership exodus.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://techcrunch.com/2024/11/08/openai-loses-another-lead-safety-researcher-lilian-weng/",
+        "title": "OpenAI loses another lead safety researcher, Lilian Weng",
+        "platform": "TechCrunch",
+        "publishedDate": "2024-11-08"
+      }
+    ],
+    "concernTags": ["safety-deprioritization"]
+  },
+  {
+    "name": "Barret Zoph",
+    "company": "OpenAI",
+    "role": "VP of Research",
+    "departureDate": "2024-09-25",
+    "statedReason": "Departed the same day as CTO Mira Murati and CRO Bob McGrew.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://techcrunch.com/2024/11/08/openai-loses-another-lead-safety-researcher-lilian-weng/",
+        "title": "OpenAI loses another lead safety researcher, Lilian Weng",
+        "platform": "TechCrunch",
+        "publishedDate": "2024-11-08"
+      }
+    ],
+    "concernTags": ["safety-deprioritization"]
+  },
+  {
+    "name": "Miles Brundage",
+    "company": "OpenAI",
+    "role": "Senior Advisor for AGI Readiness",
+    "departureDate": "2024-10-23",
+    "statedReason": "Said 'Neither OpenAI nor any other frontier lab is ready' for AGI. Noted OpenAI placed increasingly restrictive limits on what he could publish. The AGI Readiness team was disbanded after his departure.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.cnbc.com/2024/10/24/openai-miles-brundage-agi-readiness.html",
+        "title": "OpenAI disbands another safety team, as head advisor for 'AGI Readiness' resigns",
+        "platform": "CNBC",
+        "publishedDate": "2024-10-24"
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Miles_Brundage",
+        "title": "Miles Brundage - Wikipedia",
+        "platform": "Wikipedia",
+        "publishedDate": "2024-10-23"
+      }
+    ],
+    "concernTags": ["agi-risk-underestimation", "research-suppression", "team-dissolution", "lack-of-transparency"]
+  },
+  {
+    "name": "Richard Ngo",
+    "company": "OpenAI",
+    "role": "Researcher, AI Governance",
+    "departureDate": "2024-11-01",
+    "statedReason": "Said it became 'harder for me to trust that my work here would benefit the world.'",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.transformernews.ai/p/openai-is-haemorrhaging-safety-talent",
+        "title": "OpenAI is haemorrhaging safety talent",
+        "platform": "Transformer",
+        "publishedDate": "2024-11-10"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "inadequate-oversight"]
+  },
+  {
+    "name": "Lilian Weng",
+    "company": "OpenAI",
+    "role": "VP of Research and Safety",
+    "departureDate": "2024-11-15",
+    "statedReason": "Led an 80+ person safety systems team. Departed after 7 years. Her exit marked the latest in a long string of safety researcher departures.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://techcrunch.com/2024/11/08/openai-loses-another-lead-safety-researcher-lilian-weng/",
+        "title": "OpenAI loses another lead safety researcher, Lilian Weng",
+        "platform": "TechCrunch",
+        "publishedDate": "2024-11-08"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "team-dissolution"]
+  },
+  {
+    "name": "Steven Adler",
+    "company": "OpenAI",
+    "role": "Safety Researcher",
+    "departureDate": "2024-11-15",
+    "statedReason": "Said he's 'pretty terrified' by the pace of AI development. Called the pursuit of AGI a 'very risky gamble with the future of humanity.'",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.newsweek.com/openai-researcher-quit-terrified-steven-adler-2022119",
+        "title": "Latest OpenAI researcher to quit says he's 'pretty terrified'",
+        "platform": "Newsweek",
+        "publishedDate": "2025-01-28"
+      }
+    ],
+    "concernTags": ["agi-risk-underestimation", "safety-deprioritization", "rushed-deployment"]
+  },
+  {
+    "name": "Ryan Beiermeister",
+    "company": "OpenAI",
+    "role": "VP of Product Policy",
+    "departureDate": "2026-01-15",
+    "statedReason": "Fired after opposing ChatGPT's 'adult mode' that would allow sexually explicit conversations. Led the product policy team that develops safeguards. Said 'The allegation that I discriminated against anyone is absolutely false.'",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://futurism.com/artificial-intelligence/openai-fires-safety-exec-opposed-adult-mode",
+        "title": "OpenAI Fires Top Safety Exec Who Opposed ChatGPT's 'Adult Mode'",
+        "platform": "Futurism",
+        "publishedDate": "2026-02-10"
+      },
+      {
+        "url": "https://techcrunch.com/2026/02/10/openai-policy-exec-who-opposed-chatbots-adult-mode-reportedly-fired-on-discrimination-claim/",
+        "title": "OpenAI policy exec who opposed chatbot's 'adult mode' reportedly fired on discrimination claim",
+        "platform": "TechCrunch",
+        "publishedDate": "2026-02-10"
+      }
+    ],
+    "concernTags": ["whistleblower-retaliation", "rushed-deployment", "inadequate-oversight"]
+  },
+  {
+    "name": "Zoe Hitzig",
+    "company": "OpenAI",
+    "role": "Researcher",
+    "departureDate": "2026-02-11",
+    "statedReason": "Resigned over ChatGPT advertising plans. Wrote a New York Times op-ed warning that OpenAI would exploit users' intimate conversational data to serve targeted ads.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://futurism.com/artificial-intelligence/openai-researcher-quit-ads",
+        "title": "Another OpenAI Researcher Just Quit in Disgust",
+        "platform": "Futurism",
+        "publishedDate": "2026-02-11"
+      },
+      {
+        "url": "https://siliconangle.com/2026/02/11/openai-researcher-quits-slippery-slope-chatgpt-ads/",
+        "title": "OpenAI researcher quits over slippery slope of ChatGPT ads",
+        "platform": "SiliconANGLE",
+        "publishedDate": "2026-02-11"
+      }
+    ],
+    "concernTags": ["lack-of-transparency", "inadequate-oversight", "safety-deprioritization"]
+  },
+  {
+    "name": "Mrinank Sharma",
+    "company": "Anthropic",
+    "role": "Head of Safeguards Research",
+    "departureDate": "2026-02-11",
+    "statedReason": "Warned 'the world is in peril.' Cited a disconnect between Anthropic's stated safety values and competitive pressures driving actual decisions.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.semafor.com/article/02/11/2026/anthropic-safety-researcher-quits-warning-world-is-in-peril",
+        "title": "Anthropic safety researcher quits, warning 'world is in peril'",
+        "platform": "Semafor",
+        "publishedDate": "2026-02-11"
+      },
+      {
+        "url": "https://futurism.com/artificial-intelligence/anthropic-researcher-quits-cryptic-letter",
+        "title": "Anthropic Researcher Quits in Cryptic Public Letter",
+        "platform": "Futurism",
+        "publishedDate": "2026-02-11"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "agi-risk-underestimation", "rushed-deployment"]
+  },
+  {
+    "name": "Jimmy Ba",
+    "company": "xAI",
+    "role": "Co-Founder (Research and Safety Lead)",
+    "departureDate": "2026-02-12",
+    "statedReason": "Co-founder who led research and safety. Part of a broader exodus where 9 of 11 original xAI co-founders departed, amid concerns about Grok's safety failures including generation of non-consensual explicit images. The safety team was completely disbanded after his departure.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://techcrunch.com/2026/02/14/is-safety-is-dead-at-xai/",
+        "title": "Is safety dead at xAI?",
+        "platform": "TechCrunch",
+        "publishedDate": "2026-02-14"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "rushed-deployment", "inadequate-oversight"]
+  },
+  {
+    "name": "Tony Wu",
+    "company": "xAI",
+    "role": "Co-Founder (Reasoning Team Lead)",
+    "departureDate": "2026-02-12",
+    "statedReason": "Co-founder who led the reasoning team. Departed as part of broader xAI co-founder exodus.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://techcrunch.com/2026/02/14/is-safety-is-dead-at-xai/",
+        "title": "Is safety dead at xAI?",
+        "platform": "TechCrunch",
+        "publishedDate": "2026-02-14"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "rushed-deployment"]
+  },
+  {
+    "name": "Frances Haugen",
+    "company": "Meta",
+    "role": "Product Manager, Civic Integrity Team",
+    "departureDate": "2021-05-15",
+    "statedReason": "Leaked tens of thousands of internal Facebook documents to the SEC and Wall Street Journal, revealing that Meta knew its algorithms amplified hate speech and harmed teen mental health. Testified before Congress. The Civic Integrity team was dissolved after the 2020 election.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Frances_Haugen",
+        "title": "Frances Haugen - Wikipedia",
+        "platform": "Wikipedia",
+        "publishedDate": "2021-10-01"
+      },
+      {
+        "url": "https://www.cbsnews.com/news/facebook-whistleblower-frances-haugen-misinformation-public-60-minutes-2021-10-03/",
+        "title": "Facebook Whistleblower Frances Haugen: The 60 Minutes Interview",
+        "platform": "CBS News",
+        "publishedDate": "2021-10-03"
+      }
+    ],
+    "concernTags": ["whistleblower-retaliation", "lack-of-transparency", "team-dissolution", "inadequate-oversight"]
+  },
+  {
+    "name": "Alex Hanna",
+    "company": "Google",
+    "role": "Research Scientist, Ethical AI Team",
+    "departureDate": "2022-02-01",
+    "statedReason": "Resigned from Google's Ethical AI team after the firings of Timnit Gebru and Margaret Mitchell. Said the company was not serious about ethical AI research. Joined Gebru's DAIR Institute.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.wired.com/story/five-years-tech-worker-organizing-whats-changed/",
+        "title": "Five Years of Tech Worker Organizing",
+        "platform": "Wired",
+        "publishedDate": "2023-01-15"
+      }
+    ],
+    "concernTags": ["whistleblower-retaliation", "research-suppression", "team-dissolution"]
+  },
+  {
+    "name": "Rumman Chowdhury",
+    "company": "Twitter",
+    "role": "Director of ML Ethics, Transparency, and Accountability",
+    "departureDate": "2022-11-04",
+    "statedReason": "Laid off by Elon Musk during mass Twitter layoffs. Her entire ML Ethics, Transparency, and Accountability (META) team of ~20 people was eliminated. Had been building algorithmic fairness tools. Called the dissolution 'a loss for the industry.'",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://techcrunch.com/2022/11/04/elon-musk-twitter-layoffs/",
+        "title": "Elon Musk just axed key Twitter teams like human rights, accessibility, AI ethics and curation",
+        "platform": "TechCrunch",
+        "publishedDate": "2022-11-04"
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Rumman_Chowdhury",
+        "title": "Rumman Chowdhury - Wikipedia",
+        "platform": "Wikipedia",
+        "publishedDate": "2022-11-04"
+      }
+    ],
+    "concernTags": ["team-dissolution", "safety-deprioritization", "inadequate-oversight"]
+  },
+  {
+    "name": "Igor Babuschkin",
+    "company": "xAI",
+    "role": "Chief Engineer and Co-Founder",
+    "departureDate": "2025-08-15",
+    "statedReason": "Left xAI to focus on AI safety research. Founded Babuschkin Ventures to work on alignment problems independently from capabilities labs.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://techcrunch.com/2026/02/14/is-safety-is-dead-at-xai/",
+        "title": "Is safety dead at xAI?",
+        "platform": "TechCrunch",
+        "publishedDate": "2026-02-14"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "alignment-research-gaps"]
+  },
+  {
+    "name": "Christian Szegedy",
+    "company": "xAI",
+    "role": "Co-Founder",
+    "departureDate": "2025-02-15",
+    "statedReason": "Co-founder who departed to join Morph Labs, citing desire to pursue independent research. Part of the broader xAI co-founder exodus.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://techcrunch.com/2026/02/14/is-safety-is-dead-at-xai/",
+        "title": "Is safety dead at xAI?",
+        "platform": "TechCrunch",
+        "publishedDate": "2026-02-14"
+      }
+    ],
+    "concernTags": ["safety-deprioritization"]
+  },
+  {
+    "name": "Toby Pohlen",
+    "company": "xAI",
+    "role": "Co-Founder",
+    "departureDate": "2026-02-27",
+    "statedReason": "Co-founder who departed on Feb 27, 2026. Part of the broader exodus where 9 of 11 original xAI co-founders have now left.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://techcrunch.com/2026/02/14/is-safety-is-dead-at-xai/",
+        "title": "Is safety dead at xAI?",
+        "platform": "TechCrunch",
+        "publishedDate": "2026-02-14"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "rushed-deployment"]
+  },
+  {
+    "name": "Harsh Mehta",
+    "company": "Anthropic",
+    "role": "Safety Researcher",
+    "departureDate": "2026-02-11",
+    "statedReason": "Departed from Anthropic alongside Mrinank Sharma during the February 2026 safety researcher exodus. Part of a wave of departures expressing concern about the gap between Anthropic's safety commitments and competitive pressures.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.semafor.com/article/02/11/2026/anthropic-safety-researcher-quits-warning-world-is-in-peril",
+        "title": "Anthropic safety researcher quits, warning 'world is in peril'",
+        "platform": "Semafor",
+        "publishedDate": "2026-02-11"
+      },
+      {
+        "url": "https://edition.cnn.com/2026/02/11/business/openai-anthropic-departures-nightcap",
+        "title": "AI researchers are sounding the alarm on their way out the door",
+        "platform": "CNN",
+        "publishedDate": "2026-02-11"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "agi-risk-underestimation", "rushed-deployment"]
+  },
+  {
+    "name": "Behnam Neyshabur",
+    "company": "Anthropic",
+    "role": "Safety Researcher",
+    "departureDate": "2026-02-11",
+    "statedReason": "Departed from Anthropic alongside Mrinank Sharma during the February 2026 safety researcher exodus. Part of a wave of departures expressing concern about the gap between Anthropic's safety commitments and competitive pressures.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.semafor.com/article/02/11/2026/anthropic-safety-researcher-quits-warning-world-is-in-peril",
+        "title": "Anthropic safety researcher quits, warning 'world is in peril'",
+        "platform": "Semafor",
+        "publishedDate": "2026-02-11"
+      },
+      {
+        "url": "https://edition.cnn.com/2026/02/11/business/openai-anthropic-departures-nightcap",
+        "title": "AI researchers are sounding the alarm on their way out the door",
+        "platform": "CNN",
+        "publishedDate": "2026-02-11"
+      }
+    ],
+    "concernTags": ["safety-deprioritization", "agi-risk-underestimation", "rushed-deployment"]
+  },
+  {
+    "name": "Caitlin Kalinowski",
+    "company": "OpenAI",
+    "role": "VP of Hardware, Robotics Lead",
+    "departureDate": "2026-03-07",
+    "statedReason": "Resigned over OpenAI's deal with the Pentagon. Opposed military applications of AI, particularly concerns about surveillance and lethal autonomy. Her departure triggered a 295% surge in ChatGPT uninstalls.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.forbes.com/sites/mikestunson/2026/03/07/openais-robotics-chief-leaving-tech-company-after-its-deal-with-pentagon/",
+        "title": "OpenAI's Robotics Chief Leaving Tech Company After Its Deal With Pentagon",
+        "platform": "Forbes",
+        "publishedDate": "2026-03-07"
+      }
+    ],
+    "concernTags": ["military-applications", "safety-deprioritization", "inadequate-oversight"]
+  },
+  {
+    "name": "Meredith Whittaker",
+    "company": "Google",
+    "role": "AI Researcher, Open Research Group Founder",
+    "departureDate": "2019-07-15",
+    "statedReason": "Resigned citing retaliation for organizing the 2018 Google Walkout protesting sexual misconduct handling. Said Google forced her to 'abandon her work' on AI ethics. Wrote: 'It's clear Google isn't a place where I can continue this work.' Co-founded the AI Now Institute at NYU.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://techcrunch.com/2019/07/15/meredith-whittaker-ai-researcher-and-an-organizer-of-last-years-google-walkout-is-leaving-the-company/",
+        "title": "Meredith Whittaker, AI researcher and organizer of last year's Google walkout, is leaving",
+        "platform": "TechCrunch",
+        "publishedDate": "2019-07-15"
+      }
+    ],
+    "concernTags": ["whistleblower-retaliation", "research-suppression", "inadequate-oversight"]
+  },
+  {
+    "name": "David Baker",
+    "company": "Google",
+    "role": "Engineering Director, User Safety",
+    "departureDate": "2021-02-04",
+    "statedReason": "Resigned after 16 years at Google in protest of Timnit Gebru's firing. Said her exit 'extinguished my desire to continue as a Googler' and added: 'We cannot say we believe in diversity, and then ignore the conspicuous absence of many voices from within our walls.'",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.cnbc.com/2021/02/04/two-google-engineers-resign-over-firing-of-ai-ethics-researcher-timnit-gebru.html",
+        "title": "Two Google engineers resign over firing of AI ethics researcher Timnit Gebru",
+        "platform": "CNBC",
+        "publishedDate": "2021-02-04"
+      }
+    ],
+    "concernTags": ["whistleblower-retaliation", "research-suppression", "team-dissolution"]
+  },
+  {
+    "name": "Vinesh Kannan",
+    "company": "Google",
+    "role": "Software Engineer",
+    "departureDate": "2021-02-04",
+    "statedReason": "Resigned citing Google's mistreatment of Timnit Gebru. Part of the wave of protest resignations following the Ethical AI team leadership firings.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.cnbc.com/2021/02/04/two-google-engineers-resign-over-firing-of-ai-ethics-researcher-timnit-gebru.html",
+        "title": "Two Google engineers resign over firing of AI ethics researcher Timnit Gebru",
+        "platform": "CNBC",
+        "publishedDate": "2021-02-04"
+      }
+    ],
+    "concernTags": ["whistleblower-retaliation", "research-suppression"]
+  },
+  {
+    "name": "Dylan Baker",
+    "company": "Google",
+    "role": "Software Engineer, Ethical AI Team",
+    "departureDate": "2022-02-01",
+    "statedReason": "Departed alongside Alex Hanna to join Timnit Gebru's DAIR Institute as Director of Research. The dismissals of Gebru and Margaret Mitchell weighed heavily on his decision to leave.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.engadget.com/alex-hanna-dylan-baker-dair-233014682.html",
+        "title": "Two more AI ethics researchers follow Timnit Gebru out of Google",
+        "platform": "Engadget",
+        "publishedDate": "2022-02-01"
+      }
+    ],
+    "concernTags": ["whistleblower-retaliation", "research-suppression", "team-dissolution"]
+  },
+  {
+    "name": "Joan Deitchman",
+    "company": "Twitter",
+    "role": "Senior Engineering Manager, ML Ethics Team",
+    "departureDate": "2022-11-04",
+    "statedReason": "Laid off when Elon Musk eliminated the entire ~20-person META (ML Ethics, Transparency, and Accountability) team. Stated publicly: 'The team that was researching and pushing for algorithmic transparency and algorithmic choice... is gone.'",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://gizmodo.com/twitter-layoffs-elon-musk-ai-ethics-1849743051",
+        "title": "Welp, There Goes Twitter's Ethical AI Team",
+        "platform": "Gizmodo",
+        "publishedDate": "2022-11-04"
+      }
+    ],
+    "concernTags": ["team-dissolution", "safety-deprioritization", "inadequate-oversight"]
+  },
+  {
+    "name": "Zvika Krieger",
+    "company": "Meta",
+    "role": "Director of Responsible Innovation",
+    "departureDate": "2022-06-01",
+    "statedReason": "Left before Meta formally disbanded the Responsible Innovation Team in September 2022. The team had advised product teams on potential harms across societal issues. He was Meta's first-ever Director of Responsible Innovation.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.theregister.com/2022/09/09/meta_disbands_responsible_innovation_team/",
+        "title": "Meta disbands Responsible Innovation team",
+        "platform": "The Register",
+        "publishedDate": "2022-09-09"
+      }
+    ],
+    "concernTags": ["team-dissolution", "safety-deprioritization", "inadequate-oversight"]
+  },
+  {
+    "name": "Ed Newton-Rex",
+    "company": "Stability AI",
+    "role": "Vice President of Audio",
+    "departureDate": "2023-11-15",
+    "statedReason": "Resigned because he disagreed with Stability AI's position that training generative AI models on copyrighted works constitutes 'fair use.' Wrote: 'Companies worth billions of dollars are training generative AI models on creators' works without permission... this is not acceptable.'",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://www.fastcompany.com/90987146/stability-ais-high-profile-resignation-got-lost-in-the-openai-chaos",
+        "title": "Stability AI's high-profile resignation got lost in the OpenAI chaos",
+        "platform": "Fast Company",
+        "publishedDate": "2023-11-15"
+      }
+    ],
+    "concernTags": ["copyright-data-ethics", "lack-of-transparency"]
+  }
+]
