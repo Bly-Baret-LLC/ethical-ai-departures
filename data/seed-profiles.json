@@ -736,6 +736,12 @@
         "title": "OpenAI researcher quits over slippery slope of ChatGPT ads",
         "platform": "SiliconANGLE",
         "publishedDate": "2026-02-11"
+      },
+      {
+        "url": "https://www.nytimes.com/2026/02/11/opinion/openai-ads-chatgpt.html",
+        "title": "Opinion: OpenAI Ads in ChatGPT",
+        "platform": "New York Times",
+        "publishedDate": "2026-02-11"
       }
     ],
     "concernTags": ["lack-of-transparency", "inadequate-oversight", "safety-deprioritization"]
@@ -757,6 +763,12 @@
       {
         "url": "https://futurism.com/artificial-intelligence/anthropic-researcher-quits-cryptic-letter",
         "title": "Anthropic Researcher Quits in Cryptic Public Letter",
+        "platform": "Futurism",
+        "publishedDate": "2026-02-11"
+      },
+      {
+        "url": "https://x.com/MrinankSharma/status/2020881722003583421",
+        "title": "Mrinank Sharma resignation letter",
         "platform": "Futurism",
         "publishedDate": "2026-02-11"
       }
