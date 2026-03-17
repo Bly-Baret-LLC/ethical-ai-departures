@@ -48,6 +48,20 @@ export default function AboutPage() {
         </p>
       </section>
 
+      {/* Inclusion Criteria */}
+      <section className="mt-10">
+        <h2 className="font-serif text-xl font-semibold text-text-primary">
+          Inclusion Criteria
+        </h2>
+        <p className="mt-3 text-text-secondary leading-relaxed">
+          Profiles are included when a departure is tied to a public
+          statement — a LinkedIn post, tweet, news article, published interview,
+          or other verifiable source. As an early-stage project, we&apos;re still
+          working through verification for some entries. If you spot an issue,
+          please let us know.
+        </p>
+      </section>
+
       {/* Team */}
       <section className="mt-10">
         <h2 className="font-serif text-xl font-semibold text-text-primary">
