@@ -3,7 +3,19 @@
 import { useState, useRef, useEffect, useCallback } from "react"
 import { submitContactRequest, type ContactResult } from "@/lib/actions/contact"
 
-export function ContactButton() {
+interface ContactButtonProps {
+  label?: string
+  dialogTitle?: string
+  subtitle?: string
+  contactType?: string
+}
+
+export function ContactButton({
+  label = "Get in Touch",
+  dialogTitle = "Get in Touch",
+  subtitle = "Questions, tips, or want to collaborate? Drop us a line.",
+  contactType = "general",
+}: ContactButtonProps) {
   const [open, setOpen] = useState(false)
   const [result, setResult] = useState<ContactResult | null>(null)
   const [pending, setPending] = useState(false)
@@ -50,7 +62,7 @@ export function ContactButton() {
 
   async function handleSubmit(formData: FormData) {
     setPending(true)
-    formData.set("type", "general")
+    formData.set("type", contactType)
     const res = await submitContactRequest(formData)
     setResult(res)
     setPending(false)
@@ -67,7 +79,7 @@ export function ContactButton() {
         onClick={() => setOpen(true)}
         className="mt-4 rounded-md bg-accent-amber px-4 py-2 text-sm font-medium text-white hover:bg-accent-amber/90 focus:outline-none focus:ring-2 focus:ring-accent-amber focus:ring-offset-2"
       >
-        Get in Touch
+        {label}
       </button>
 
       {open && (
@@ -82,12 +94,12 @@ export function ContactButton() {
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Get in touch"
+            aria-label={dialogTitle}
             className="w-full max-w-lg rounded-lg border border-border-light bg-white p-6 shadow-xl"
           >
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-text-primary">
-                Get in Touch
+                {dialogTitle}
               </h2>
               <button
                 type="button"
@@ -113,7 +125,7 @@ export function ContactButton() {
             </div>
 
             <p className="mt-1 text-sm text-text-secondary">
-              Questions, tips, or want to collaborate? Drop us a line.
+              {subtitle}
             </p>
 
             <form ref={formRef} action={handleSubmit} className="mt-4 space-y-4">

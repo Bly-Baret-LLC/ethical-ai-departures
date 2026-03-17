@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Playfair_Display } from "next/font/google"
 import { SkipLinks } from "@/components/shared/SkipLinks"
 import { SiteHeader } from "@/components/shared/SiteHeader"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import "./globals.css"
 
 const playfairDisplay = Playfair_Display({
@@ -37,9 +38,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${playfairDisplay.variable} antialiased`}>
-        <SkipLinks />
-        <SiteHeader />
-        {children}
+        <TooltipProvider>
+          <SkipLinks />
+          <SiteHeader />
+          {children}
+        </TooltipProvider>
       </body>
     </html>
   )

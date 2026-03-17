@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach, vi } from "vitest"
 import { render, screen, cleanup } from "@testing-library/react"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { ProfileCard } from "./ProfileCard"
 
 // Mock NewBadge to isolate ProfileCard tests
@@ -12,6 +13,14 @@ vi.mock("./NewBadge", () => ({
 afterEach(() => {
   cleanup()
 })
+
+function renderCard(props: React.ComponentProps<typeof ProfileCard>) {
+  return render(
+    <TooltipProvider>
+      <ProfileCard {...props} />
+    </TooltipProvider>
+  )
+}
 
 const defaultProps = {
   slug: "elena-rodriguez",
@@ -30,7 +39,7 @@ const defaultProps = {
 
 describe("ProfileCard", () => {
   it("renders name, role, company, and year", () => {
-    render(<ProfileCard {...defaultProps} />)
+    renderCard(defaultProps)
 
     expect(screen.getByText("Elena Rodriguez")).toBeInTheDocument()
     expect(
@@ -39,14 +48,14 @@ describe("ProfileCard", () => {
   })
 
   it("links to profile detail page", () => {
-    render(<ProfileCard {...defaultProps} />)
+    renderCard(defaultProps)
 
     const link = screen.getByRole("link")
     expect(link).toHaveAttribute("href", "/profiles/elena-rodriguez")
   })
 
   it("has aria-label with full context", () => {
-    render(<ProfileCard {...defaultProps} />)
+    renderCard(defaultProps)
 
     const link = screen.getByRole("link")
     expect(link).toHaveAttribute(
@@ -56,34 +65,32 @@ describe("ProfileCard", () => {
   })
 
   it("renders as article element", () => {
-    render(<ProfileCard {...defaultProps} />)
+    renderCard(defaultProps)
     expect(screen.getByRole("article")).toBeInTheDocument()
   })
 
   it("renders initials avatar when photoUrl is null", () => {
-    render(<ProfileCard {...defaultProps} />)
+    renderCard(defaultProps)
 
     expect(screen.getByText("ER")).toBeInTheDocument()
   })
 
   it("renders photo when photoUrl is provided", () => {
-    render(
-      <ProfileCard {...defaultProps} photoUrl="https://example.com/photo.jpg" />
-    )
+    renderCard({ ...defaultProps, photoUrl: "https://example.com/photo.jpg" })
 
     const img = screen.getByRole("img")
     expect(img.getAttribute("src")).toContain("photo.jpg")
   })
 
   it("renders stated reason as blockquote", () => {
-    render(<ProfileCard {...defaultProps} />)
+    renderCard(defaultProps)
 
     const quote = screen.getByText(/Safety concerns consistently/i)
     expect(quote.tagName).toBe("BLOCKQUOTE")
   })
 
   it("does not render blockquote when statedReason is null", () => {
-    render(<ProfileCard {...defaultProps} statedReason={null} />)
+    renderCard({ ...defaultProps, statedReason: null })
 
     expect(
       screen.queryByText(/Safety concerns/i)
@@ -91,13 +98,13 @@ describe("ProfileCard", () => {
   })
 
   it("renders primary concern tag", () => {
-    render(<ProfileCard {...defaultProps} />)
+    renderCard(defaultProps)
 
     expect(screen.getByText("Safety Deprioritization")).toBeInTheDocument()
   })
 
   it("handles empty concern tags", () => {
-    render(<ProfileCard {...defaultProps} concernTags={[]} />)
+    renderCard({ ...defaultProps, concernTags: [] })
 
     expect(
       screen.queryByText("Safety Deprioritization")
@@ -105,12 +112,10 @@ describe("ProfileCard", () => {
   })
 
   it("clamps long names to one line", () => {
-    render(
-      <ProfileCard
-        {...defaultProps}
-        name="Extremely Long Name That Should Be Truncated In The Display"
-      />
-    )
+    renderCard({
+      ...defaultProps,
+      name: "Extremely Long Name That Should Be Truncated In The Display",
+    })
 
     const nameElement = screen.getByText(
       "Extremely Long Name That Should Be Truncated In The Display"
@@ -119,7 +124,7 @@ describe("ProfileCard", () => {
   })
 
   it("passes createdAt to NewBadge", () => {
-    render(<ProfileCard {...defaultProps} />)
+    renderCard(defaultProps)
 
     const badge = screen.getByTestId("new-badge")
     expect(badge).toHaveAttribute("data-created-at", "2025-11-18T00:00:00Z")

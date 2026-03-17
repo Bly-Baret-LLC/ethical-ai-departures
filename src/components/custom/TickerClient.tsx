@@ -59,8 +59,8 @@ export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: 
               </div>
               <span className="font-serif text-base font-normal leading-snug text-text-primary sm:text-lg md:text-xl max-w-[400px]">
                 {topCompanies.length > 0
-                  ? <>AI employees and counting have walked away from {topCompanies.slice(0, -1).join(", ")}{topCompanies.length > 1 ? `, and ${topCompanies[topCompanies.length - 1]}` : topCompanies[0]} over ethical concerns</>
-                  : "AI employees and counting have walked away from major companies over ethical concerns"
+                  ? <>AI employees (and counting) have walked away from {topCompanies.slice(0, -1).join(", ")}{topCompanies.length > 1 ? `, and ${topCompanies[topCompanies.length - 1]}` : topCompanies[0]} over ethical concerns</>
+                  : "AI employees (and counting) have walked away from major companies over ethical concerns"
                 }
               </span>
             </h1>

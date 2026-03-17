@@ -66,7 +66,7 @@ export function SubmitDepartureButton() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        aria-label="Submit a Departure"
+        aria-label="Submit a Departure Tip"
         className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-b from-[#c41e1e] via-[#d42b2b] to-[#a51c1c] text-white shadow-lg transition-transform hover:scale-105 hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-accent-red focus:ring-offset-2 sm:h-auto sm:w-auto sm:px-5 sm:py-3"
       >
         <svg
@@ -82,7 +82,7 @@ export function SubmitDepartureButton() {
           <line x1="12" y1="5" x2="12" y2="19" />
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
-        <span className="hidden text-sm font-semibold sm:inline">Submit a Departure</span>
+        <span className="hidden text-sm font-semibold sm:inline">Submit a Departure Tip</span>
       </button>
 
       {open && (
@@ -97,12 +97,12 @@ export function SubmitDepartureButton() {
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Submit a departure"
+            aria-label="Submit a departure tip"
             className="w-full max-w-lg rounded-lg border border-border-light bg-white p-6 shadow-xl"
           >
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-text-primary">
-                Submit a Departure
+                Submit a Departure Tip
               </h2>
               <button
                 type="button"
@@ -128,7 +128,7 @@ export function SubmitDepartureButton() {
             </div>
 
             <p className="mt-1 text-sm text-text-secondary">
-              Know someone who left over safety concerns? Let us know.
+              Know someone who left over ethical concerns? Share with us.
             </p>
 
             <form ref={formRef} action={handleSubmit} className="mt-4 space-y-4">

@@ -1,6 +1,14 @@
+"use client"
+
+import { useRef, useState, useCallback } from "react"
 import Link from "next/link"
 import { Avatar } from "./Avatar"
 import { NewBadge } from "./NewBadge"
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip"
 
 interface ConcernTagInfo {
   id: string
@@ -33,6 +41,21 @@ export function ProfileCard({
 }: ProfileCardProps) {
   const year = new Date(departureDate + "T00:00:00").getFullYear()
   const primaryTag = concernTags[0] ?? null
+  const roleText = `${role} · ${company} · ${year}`
+
+  const roleRef = useRef<HTMLParagraphElement>(null)
+  const [tooltipOpen, setTooltipOpen] = useState(false)
+
+  const handleOpenChange = useCallback((open: boolean) => {
+    if (!open) {
+      setTooltipOpen(false)
+      return
+    }
+    const el = roleRef.current
+    if (el && el.scrollHeight > el.clientHeight) {
+      setTooltipOpen(true)
+    }
+  }, [])
 
   return (
     <article className="relative">
@@ -48,9 +71,17 @@ export function ProfileCard({
             <h3 className="line-clamp-1 font-serif text-lg font-semibold leading-snug text-text-primary group-hover:text-accent-amber">
               {name}
             </h3>
-            <p className="mt-0.5 line-clamp-1 text-sm leading-snug text-text-secondary">
-              {role} · {company} · {year}
-            </p>
+            <Tooltip open={tooltipOpen} onOpenChange={handleOpenChange}>
+              <TooltipTrigger asChild>
+                <p
+                  ref={roleRef}
+                  className="mt-0.5 line-clamp-1 text-sm leading-snug text-text-secondary"
+                >
+                  {roleText}
+                </p>
+              </TooltipTrigger>
+              <TooltipContent>{roleText}</TooltipContent>
+            </Tooltip>
           </div>
         </div>
 

@@ -20,7 +20,7 @@ import { GET } from "./route"
 
 function makeRequest(params: Record<string, string> = {}) {
   const searchParams = new URLSearchParams(params)
-  return new NextRequest(`http://localhost:3000/api/og?${searchParams}`)
+  return new NextRequest(`http://localhost:3700/api/og?${searchParams}`)
 }
 
 describe("GET /api/og", () => {

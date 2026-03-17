@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { ContactButton } from "@/components/custom/ContactButton"
 
 export const revalidate = 86400 // 24-hour ISR
 
@@ -75,6 +76,16 @@ export default function PressPage() {
             — please verify sources independently.
           </li>
         </ul>
+      </section>
+
+      {/* Media Inquiries */}
+      <section className="mt-10">
+        <ContactButton
+          label="Media Inquiries"
+          dialogTitle="Media Inquiries"
+          subtitle="Press questions or interview requests? We'd love to hear from you."
+          contactType="press"
+        />
       </section>
 
     </main>

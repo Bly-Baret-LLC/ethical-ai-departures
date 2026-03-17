@@ -33,7 +33,7 @@ export default async function CompaniesPage() {
         Companies
       </h1>
       <p className="mt-2 text-text-secondary">
-        AI companies with tracked safety-motivated departures, sorted by count.
+        AI companies with tracked ethically motivated departures, sorted by count.
       </p>
 
       <ul className="mt-8 space-y-3">
