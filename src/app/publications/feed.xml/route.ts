@@ -40,8 +40,8 @@ export async function GET() {
     <item>
       <title>${escapeXml(`[${outcome}] ${p.title}`)}</title>
       <description>${escapeXml(p.resolution_rationale ?? `Prediction by ${author} has been ${outcome.toLowerCase()}.`)}</description>
-      <link>${siteUrl}/predictions/${p.id}</link>
-      <guid isPermaLink="true">${siteUrl}/predictions/${p.id}</guid>
+      <link>${siteUrl}/publications/${p.id}</link>
+      <guid isPermaLink="true">${siteUrl}/publications/${p.id}</guid>
       <pubDate>${new Date(p.resolution_date ?? p.updated_at).toUTCString()}</pubDate>
     </item>`
         })
@@ -56,8 +56,8 @@ export async function GET() {
   <channel>
     <title>Ethical AI Departures · Prediction Resolutions</title>
     <description>Resolved predictions from AI safety researcher departure statements.</description>
-    <link>${siteUrl}/predictions</link>
-    <atom:link href="${siteUrl}/predictions/feed.xml" rel="self" type="application/rss+xml" />
+    <link>${siteUrl}/publications</link>
+    <atom:link href="${siteUrl}/publications/feed.xml" rel="self" type="application/rss+xml" />
     <language>en-us</language>${items}
   </channel>
 </rss>`

@@ -22,7 +22,7 @@ describe("SiteHeader", () => {
     const nav = screen.getByRole("navigation", { name: "Main navigation" })
     expect(nav).toBeInTheDocument()
     expect(screen.getByRole("link", { name: "Companies" })).toHaveAttribute("href", "/companies")
-    expect(screen.getByRole("link", { name: "Publications" })).toHaveAttribute("href", "/predictions")
+    expect(screen.getByRole("link", { name: "Publications" })).toHaveAttribute("href", "/publications")
     expect(screen.getByRole("link", { name: "Press" })).toHaveAttribute("href", "/press")
   })
 

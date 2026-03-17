@@ -33,7 +33,7 @@ export default async function TrackRecordPage() {
   return (
     <main className="mx-auto max-w-4xl px-6 py-16">
       <Link
-        href="/predictions"
+        href="/publications"
         className="text-sm text-text-secondary hover:text-accent-amber"
       >
         &larr; All Predictions
