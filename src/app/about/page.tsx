@@ -56,9 +56,7 @@ export default function AboutPage() {
         <p className="mt-3 text-text-secondary leading-relaxed">
           Profiles are included when a departure is tied to a public
           statement — a LinkedIn post, tweet, news article, published interview,
-          or other verifiable source. As an early-stage project, we&apos;re still
-          working through verification for some entries. If you spot an issue,
-          please let us know.
+          or other verifiable source.
         </p>
       </section>
 
