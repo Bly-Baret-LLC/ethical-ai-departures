@@ -5,6 +5,7 @@ import type { ProfileWithTags } from "@/lib/schemas/profile"
 import { TickerBlock } from "@/components/custom/TickerBlock"
 import { VisitTracker } from "@/components/custom/VisitTracker"
 import { SubmitDepartureButton } from "@/components/custom/SubmitDepartureButton"
+import { PredictionSpotlight } from "@/components/custom/PredictionSpotlight"
 
 // Revalidate at the shorter ticker interval (profiles use 300s but ticker uses 60s)
 export const revalidate = 60
@@ -32,6 +33,7 @@ export default async function HomePage() {
     <main id="main-content" className="min-h-screen bg-surface-primary">
       <VisitTracker />
       <TickerBlock />
+      <PredictionSpotlight />
       <div className="mx-auto max-w-6xl px-6 py-8">
         <Suspense>
           <ProfileBrowser profiles={profiles} />

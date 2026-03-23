@@ -2,9 +2,11 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getProfileBySlug } from "@/lib/queries/profiles"
+import { getPredictions } from "@/lib/queries/predictions"
 import { Avatar } from "@/components/custom/Avatar"
 import { SourceTooltip } from "@/components/custom/SourceTooltip"
 import { ShareButtons } from "@/components/custom/ShareButtons"
+import { PredictionStatusBadge } from "@/components/custom/PredictionStatusBadge"
 
 // ISR: 5-minute revalidation
 export const revalidate = 300
@@ -52,6 +54,11 @@ export default async function ProfileDetailPage({
 }: ProfileDetailPageProps) {
   const { slug } = await params
   const profile = await getProfileBySlug(slug)
+  const predictions = profile
+    ? await getPredictions().then((preds) =>
+        preds.filter((p) => p.profileSlug === slug)
+      ).catch(() => [])
+    : []
 
   if (!profile) {
     notFound()
@@ -185,6 +192,58 @@ export default async function ProfileDetailPage({
                       <p className="mt-2 text-sm text-text-secondary">
                         {pub.abstract}
                       </p>
+                    )}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Predictions */}
+      {predictions.length > 0 && (
+        <section className="mt-10">
+          <h2 className="font-serif text-xl font-semibold text-text-primary">
+            Predictions
+          </h2>
+          <p className="mt-1 text-sm text-text-secondary">
+            {predictions.filter((p) => p.status === "confirmed").length} of{" "}
+            {predictions.length} confirmed
+          </p>
+          <ul className="mt-4 space-y-3">
+            {predictions.map((pred) => (
+              <li
+                key={pred.id}
+                className="rounded-lg border border-border-light bg-surface-card px-5 py-4"
+              >
+                <div className="flex items-start gap-2">
+                  <PredictionStatusBadge status={pred.status} />
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-text-primary text-sm leading-snug">
+                      {pred.title}
+                    </p>
+                    {pred.sourceQuote && (
+                      <p className="mt-1.5 text-sm italic text-text-secondary line-clamp-2">
+                        &ldquo;{pred.sourceQuote}&rdquo;
+                      </p>
+                    )}
+                    {pred.resolutionRationale && pred.status !== "open" && (
+                      <div className="mt-2 rounded-md bg-surface-secondary/50 px-3 py-2">
+                        <p className="text-xs text-text-secondary">
+                          {pred.resolutionRationale}
+                        </p>
+                        {pred.resolutionEvidenceUrl && (
+                          <a
+                            href={pred.resolutionEvidenceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-accent-red/80 hover:text-accent-red hover:underline"
+                          >
+                            View evidence ⤴
+                          </a>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>

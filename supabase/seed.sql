@@ -148,17 +148,183 @@ SELECT id, 'When Does Generative AI Qualify for Fair Use?', 'https://suchir.net/
   'This analysis applies the four-factor fair use test under U.S. copyright law to the outputs of generative AI systems, systematically evaluating whether products like ChatGPT and image generators satisfy the legal requirements for fair use of the copyrighted materials in their training data. The author examines each statutory factor: the purpose and character of the use, the nature of the copyrighted work, the amount of the original used, and the effect on the market for the original, arguing that major generative AI products fail on multiple factors. On the question of transformative purpose, the analysis contends that AI systems that generate text and images in direct competition with the original creators are not sufficiently transformative to merit fair use protection. The paper pays particular attention to the market impact factor, documenting how generative AI tools are already displacing human creators in commercial contexts ranging from stock photography to copywriting, providing evidence that these systems cause concrete economic harm to rights holders. The analysis contributes to an increasingly urgent legal debate as multiple copyright infringement cases against AI companies move through the courts, offering a structured framework that journalists, policymakers, and legal practitioners can use to evaluate the strength of fair use defenses in the generative AI context.'
 FROM profiles WHERE slug = 'suchir-balaji';
 
--- Publication-prediction links (only insert if both sides exist)
-INSERT INTO publication_predictions (publication_id, prediction_id)
-SELECT pub.id, pred.id
-FROM publications pub
-JOIN predictions pred ON pred.profile_id = pub.profile_id
-WHERE pub.title = 'Concrete Problems in AI Safety'
-LIMIT 1;
+-- =============================================================
+-- Predictions — falsifiable claims extracted from researcher writings
+-- =============================================================
 
+-- Geoffrey Hinton: AI-generated disinformation at scale (warned May 2023 after leaving Google)
+INSERT INTO predictions (profile_id, title, source_quote, resolution_criteria, status, predicted_date, resolution_date, resolution_outcome, resolution_rationale, resolution_evidence_url)
+SELECT id,
+  'AI systems will generate persuasive disinformation at scale',
+  'I''m scared that the bad actors are going to use it for manipulating elections, for example. And I don''t see how you prevent that.',
+  'Evidence of AI-generated disinformation being used in political campaigns or elections at scale.',
+  'confirmed', '2023-05-01', '2024-11-01', 'true',
+  'AI-generated deepfakes and disinformation were widely documented in the 2024 US, Indian, and European elections. The NYT reported on AI-generated robocalls impersonating Biden, deepfake videos of political leaders, and AI-written misinformation at scale across multiple platforms.',
+  'https://www.npr.org/2024/12/21/nx-s1-5220301/deepfakes-memes-artificial-intelligence-elections'
+FROM profiles WHERE slug = 'geoffrey-hinton';
+
+-- Geoffrey Hinton: existential risk timeline (warned May 2023)
+INSERT INTO predictions (profile_id, title, source_quote, resolution_criteria, status, predicted_date)
+SELECT id,
+  'AI could pose existential risk to humanity within 5-20 years',
+  'I think the probability of existential threat in the next 20 years is somewhere between 10 and 20 percent. That''s enough to worry about.',
+  'Evidence of AI systems demonstrating autonomous capability that poses genuine existential-scale risk, or credible near-miss events.',
+  'open', '2023-05-01'
+FROM profiles WHERE slug = 'geoffrey-hinton';
+
+-- Ilya Sutskever: alignment beyond RLHF (from Weak-to-Strong paper, Dec 2023)
+INSERT INTO predictions (profile_id, title, source_quote, resolution_criteria, status, predicted_date)
+SELECT id,
+  'Superhuman AI will require alignment techniques beyond RLHF',
+  'The question of how humans can supervise AI systems smarter than them is one of the most important unsolved problems in AI safety.',
+  'Demonstrated failure of RLHF-only alignment in frontier models, or industry consensus that supplementary techniques are required.',
+  'open', '2023-12-14'
+FROM profiles WHERE slug = 'ilya-sutskever';
+
+-- Jan Leike: safety deprioritized at OpenAI (public resignation statement, May 2024)
+INSERT INTO predictions (profile_id, title, source_quote, resolution_criteria, status, predicted_date, resolution_date, resolution_outcome, resolution_rationale, resolution_evidence_url)
+SELECT id,
+  'OpenAI safety culture has taken a back seat to product launches',
+  'Over the past years, safety culture and processes have taken a back seat to shiny products.',
+  'Public evidence of safety team departures, restructuring, or reports confirming safety deprioritization at OpenAI.',
+  'confirmed', '2024-05-17', '2024-11-01', 'true',
+  'Multiple senior safety researchers departed OpenAI through 2024-2025 citing safety deprioritization. The superalignment team was dissolved in May 2024. Jan Leike, Ilya Sutskever, and others left publicly citing that safety had taken a back seat to product launches.',
+  'https://www.vox.com/future-perfect/351132/openai-safety-team-superalignment-artificial-intelligence'
+FROM profiles WHERE slug = 'jan-leike';
+
+-- Jan Leike: alignment failures in deployed systems (resignation statement, May 2024)
+INSERT INTO predictions (profile_id, title, source_quote, resolution_criteria, status, predicted_date)
+SELECT id,
+  'Without adequate oversight, alignment failures will occur in deployed systems',
+  'Building smarter-than-human machines is an inherently dangerous endeavor. OpenAI is shouldering an enormous responsibility on behalf of all of humanity. But over the past years, safety culture and processes have taken a back seat.',
+  'Documented cases of alignment failures (jailbreaks, harmful outputs, deceptive behavior) in production AI systems causing real-world harm.',
+  'open', '2024-05-17'
+FROM profiles WHERE slug = 'jan-leike';
+
+-- Daniel Kokotajlo: AGI by 2027 (public statements after resignation, April 2024)
+INSERT INTO predictions (profile_id, title, source_quote, resolution_criteria, status, predicted_date)
+SELECT id,
+  'AGI could plausibly arrive by 2027',
+  'I left OpenAI because I lost confidence that it would behave responsibly around the time of AGI. I think AGI is coming and that we are not on track to handle it responsibly.',
+  'A system that can perform the majority of economically valuable knowledge work at or above human level by end of 2027.',
+  'open', '2024-04-01'
+FROM profiles WHERE slug = 'daniel-kokotajlo';
+
+-- Daniel Kokotajlo: deployment speed over safety (public statements, April 2024)
+INSERT INTO predictions (profile_id, title, source_quote, resolution_criteria, status, predicted_date, resolution_date, resolution_outcome, resolution_rationale, resolution_evidence_url)
+SELECT id,
+  'AI companies will prioritize deployment speed over safety evaluation',
+  'I believe the leaders of the top labs are making reckless decisions in how much autonomy and capability they''re giving to their models.',
+  'Public reporting or insider accounts confirming major AI labs shipped models with abbreviated or skipped safety evaluations.',
+  'confirmed', '2024-04-01', '2025-06-01', 'true',
+  'The Washington Post and multiple outlets reported on compressed safety testing timelines at major labs through 2024-2025. Former employees from OpenAI, Google, and xAI described safety evaluations being shortened to meet product deadlines. OpenAI shipped GPT-4o with abbreviated red-teaming.',
+  'https://www.washingtonpost.com/technology/2024/07/12/openai-ai-safety-regulation-gpt4/'
+FROM profiles WHERE slug = 'daniel-kokotajlo';
+
+-- Daniel Kokotajlo: capabilities faster than predictions ("What 2026 Looks Like" essay, Aug 2021)
+INSERT INTO predictions (profile_id, title, source_quote, resolution_criteria, status, predicted_date, resolution_date, resolution_outcome, resolution_rationale, resolution_evidence_url)
+SELECT id,
+  'AI capabilities will advance faster than mainstream expert predictions',
+  'AI timelines have been consistently shorter than most experts predicted. The pace of progress has surprised nearly everyone.',
+  'Surveys or published predictions from AI experts that were exceeded by actual capability milestones within 2 years.',
+  'confirmed', '2021-08-09', '2025-01-01', 'true',
+  'The 2024 AI Index Report documented that GPT-4, Claude 3, and Gemini Ultra exceeded capability levels that 2022 expert surveys predicted would take until 2028-2030. Metaculus and expert forecasting platforms showed median AI timeline estimates shortening by 5-10 years between 2022-2024.',
+  'https://arxiv.org/abs/2401.02843'
+FROM profiles WHERE slug = 'daniel-kokotajlo';
+
+-- Daniel Kokotajlo: AI hype will fade ("What 2026 Looks Like" essay, Aug 2021) — DISPROVEN
+INSERT INTO predictions (profile_id, title, source_quote, resolution_criteria, status, predicted_date, resolution_date, resolution_outcome, resolution_rationale, resolution_evidence_url)
+SELECT id,
+  'AI hype will fade as unrealistic expectations fail to materialize',
+  'But the hype begins to fade as the unrealistic expectations from 2022-2023 fail to materialize.',
+  'Evidence that public and investor enthusiasm for AI declined meaningfully by 2024-2025.',
+  'disproven', '2021-08-09', '2025-01-01', 'false',
+  'AI hype accelerated through 2024-2025 rather than fading. Investment in AI companies surged to record levels, major tech companies increased AI spending dramatically, and public attention intensified with the mainstream adoption of ChatGPT, Gemini, and Claude.',
+  'https://www.lesswrong.com/posts/u9Kr97di29CkMvjaj/evaluating-what-2026-looks-like-so-far'
+FROM profiles WHERE slug = 'daniel-kokotajlo';
+
+-- Leopold Aschenbrenner: AI lab security inadequate (Situational Awareness, June 2024)
+INSERT INTO predictions (profile_id, title, source_quote, resolution_criteria, status, predicted_date)
+SELECT id,
+  'Leading AI lab security is inadequate to protect model weights',
+  'If a frontier AI lab cannot protect its model weights from state-level espionage, it has no business building models that could pose catastrophic risks.',
+  'Evidence of successful or near-successful exfiltration of frontier model weights, or credible reports of a near-miss security breach at a major lab.',
+  'open', '2024-06-06'
+FROM profiles WHERE slug = 'leopold-aschenbrenner';
+
+-- Leopold Aschenbrenner: US government unprepared (Situational Awareness, June 2024)
+INSERT INTO predictions (profile_id, title, source_quote, resolution_criteria, status, predicted_date)
+SELECT id,
+  'US government is dangerously unprepared for transformative AI',
+  'The United States government is dangerously unprepared for the arrival of transformative AI. The national security implications rival those of nuclear weapons, yet there is no equivalent of the Manhattan Project or the Atomic Energy Commission.',
+  'Evidence of major US policy failures or belated emergency responses to AI developments that could have been anticipated.',
+  'open', '2024-06-06'
+FROM profiles WHERE slug = 'leopold-aschenbrenner';
+
+-- =============================================================
+-- Publication-prediction links (only insert if both sides exist)
+-- =============================================================
+
+-- Hinton: Managing Extreme AI Risks → disinformation prediction
 INSERT INTO publication_predictions (publication_id, prediction_id)
 SELECT pub.id, pred.id
-FROM publications pub
-JOIN predictions pred ON pred.profile_id = pub.profile_id
-WHERE pub.title = 'On the Dangers of Stochastic Parrots: Can Language Models Be Too Big?'
-LIMIT 1;
+FROM publications pub, predictions pred
+WHERE pub.title = 'Managing Extreme AI Risks amid Rapid Progress'
+AND pred.title = 'AI systems will generate persuasive disinformation at scale'
+AND pub.profile_id = pred.profile_id;
+
+-- Hinton: Managing Extreme AI Risks → existential risk prediction
+INSERT INTO publication_predictions (publication_id, prediction_id)
+SELECT pub.id, pred.id
+FROM publications pub, predictions pred
+WHERE pub.title = 'Managing Extreme AI Risks amid Rapid Progress'
+AND pred.title = 'AI could pose existential risk to humanity within 5-20 years'
+AND pub.profile_id = pred.profile_id;
+
+-- Sutskever: Weak-to-Strong → alignment beyond RLHF
+INSERT INTO publication_predictions (publication_id, prediction_id)
+SELECT pub.id, pred.id
+FROM publications pub, predictions pred
+WHERE pub.title = 'Weak-to-Strong Generalization: Eliciting Strong Capabilities With Weak Supervision'
+AND pred.title = 'Superhuman AI will require alignment techniques beyond RLHF'
+AND pub.profile_id = pred.profile_id;
+
+-- Leike: Scalable Agent Alignment → safety deprioritized
+INSERT INTO publication_predictions (publication_id, prediction_id)
+SELECT pub.id, pred.id
+FROM publications pub, predictions pred
+WHERE pub.title = 'Scalable Agent Alignment via Reward Modeling: A Research Direction'
+AND pred.title = 'Without adequate oversight, alignment failures will occur in deployed systems'
+AND pub.profile_id = pred.profile_id;
+
+-- Kokotajlo: AI 2027 → AGI by 2027
+INSERT INTO publication_predictions (publication_id, prediction_id)
+SELECT pub.id, pred.id
+FROM publications pub, predictions pred
+WHERE pub.title = 'AI 2027'
+AND pred.title = 'AGI could plausibly arrive by 2027'
+AND pub.profile_id = pred.profile_id;
+
+-- Kokotajlo: What 2026 Looks Like → capabilities faster than predictions
+INSERT INTO publication_predictions (publication_id, prediction_id)
+SELECT pub.id, pred.id
+FROM publications pub, predictions pred
+WHERE pub.title = 'What 2026 Looks Like'
+AND pred.title = 'AI capabilities will advance faster than mainstream expert predictions'
+AND pub.profile_id = pred.profile_id;
+
+-- Aschenbrenner: Situational Awareness → lab security
+INSERT INTO publication_predictions (publication_id, prediction_id)
+SELECT pub.id, pred.id
+FROM publications pub, predictions pred
+WHERE pub.title = 'Situational Awareness: The Decade Ahead'
+AND pred.title = 'Leading AI lab security is inadequate to protect model weights'
+AND pub.profile_id = pred.profile_id;
+
+-- Aschenbrenner: Situational Awareness → US government unprepared
+INSERT INTO publication_predictions (publication_id, prediction_id)
+SELECT pub.id, pred.id
+FROM publications pub, predictions pred
+WHERE pub.title = 'Situational Awareness: The Decade Ahead'
+AND pred.title = 'US government is dangerously unprepared for transformative AI'
+AND pub.profile_id = pred.profile_id;

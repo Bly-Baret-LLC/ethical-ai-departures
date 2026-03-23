@@ -13,7 +13,7 @@ interface TickerClientProps {
   topCompanies?: string[]
 }
 
-export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: TickerClientProps) {
+export function TickerClient({ totalCount, topCompanies = [] }: TickerClientProps) {
   const { liveCount } = useTickerSubscription()
 
   const displayCount = liveCount ?? totalCount
@@ -38,11 +38,6 @@ export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: 
                   animate={liveCount !== null}
                   className="font-display text-[72px] font-black uppercase leading-tight tracking-wider tabular-nums sm:text-[88px] md:text-[104px] lg:text-[120px] ticker-gradient"
                 />
-                {ninetyDayCount > 0 && (
-                  <p className="mt-2 hidden text-sm text-text-primary/60 sm:block">
-                    {ninetyDayCount} in the last 90 days
-                  </p>
-                )}
               </div>
               <span className="font-serif text-base font-normal leading-snug text-text-primary sm:text-lg md:text-xl max-w-[400px]">
                 {topCompanies.length > 0

@@ -1,10 +1,13 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 import {
   getPublicationsWithProfiles,
   getPublicationCountsByConcern,
 } from "@/lib/queries/publications"
+import { getPredictions } from "@/lib/queries/predictions"
 import type { PublicationWithProfile } from "@/lib/schemas/publication"
-import { WritingsSection } from "@/components/custom/WritingsSection"
+import type { PredictionWithProfile } from "@/lib/schemas/prediction"
+import { PublicationsTabs } from "@/components/custom/PublicationsTabs"
 
 export const revalidate = 300
 
@@ -17,12 +20,15 @@ export const metadata: Metadata = {
 export default async function ThemesAndWritingsPage() {
   let publications: PublicationWithProfile[] = []
   let pubCountsByConcern: { tagName: string; tagSlug: string; count: number }[] = []
+  let predictions: PredictionWithProfile[] = []
 
   try {
-    ;[publications, pubCountsByConcern] = await Promise.all([
-      getPublicationsWithProfiles(),
-      getPublicationCountsByConcern(),
-    ])
+    ;[publications, pubCountsByConcern, predictions] =
+      await Promise.all([
+        getPublicationsWithProfiles(),
+        getPublicationCountsByConcern(),
+        getPredictions(),
+      ])
   } catch {
     // Graceful fallback
   }
@@ -35,7 +41,7 @@ export default async function ThemesAndWritingsPage() {
 
       <div className="mt-6 space-y-4 text-text-secondary leading-relaxed">
         <p>
-          Across sixty departures from OpenAI, Google, xAI, Anthropic, Meta, and Stability AI,
+          Across dozens of departures from OpenAI, Google, xAI, Anthropic, Meta, and Stability AI,
           the same concerns surface again and again across their writings. Safety teams are dissolved or absorbed
           into product work. Deployment timelines are compressed past the point where
           meaningful evaluation is possible. Researchers who raise objections internally
@@ -57,12 +63,13 @@ export default async function ThemesAndWritingsPage() {
         </p>
       </div>
 
-      {publications.length > 0 && (
-        <WritingsSection
+      <Suspense>
+        <PublicationsTabs
           publications={publications}
           concernCounts={pubCountsByConcern}
+          predictions={predictions}
         />
-      )}
+      </Suspense>
     </main>
   )
 }

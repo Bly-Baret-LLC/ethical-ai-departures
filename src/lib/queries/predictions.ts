@@ -122,18 +122,22 @@ export interface TrackRecord {
   profileName: string
   profileSlug: string
   total: number
+  totalAll: number
   confirmed: number
   disproven: number
   partial: number
+  open: number
   accuracy: number
 }
 
 export async function getTrackRecords(): Promise<TrackRecord[]> {
   const supabase = await createClient()
+
+  // Get ALL predictions (not just resolved) so we can show total counts
   const { data, error } = await supabase
     .from("predictions")
     .select("profile_id, status, profiles(name, slug)")
-    .in("status", ["confirmed", "disproven", "partially_resolved"])
+    .neq("status", "pending_review")
 
   if (error) throw error
   if (!data?.length) return []
@@ -149,18 +153,21 @@ export async function getTrackRecords(): Promise<TrackRecord[]> {
         profileName: profile.name,
         profileSlug: profile.slug,
         total: 0,
+        totalAll: 0,
         confirmed: 0,
         disproven: 0,
         partial: 0,
+        open: 0,
         accuracy: 0,
       })
     }
 
     const record = byProfile.get(key)!
-    record.total++
-    if (row.status === "confirmed") record.confirmed++
-    else if (row.status === "disproven") record.disproven++
-    else if (row.status === "partially_resolved") record.partial++
+    record.totalAll++
+    if (row.status === "confirmed") { record.confirmed++; record.total++ }
+    else if (row.status === "disproven") { record.disproven++; record.total++ }
+    else if (row.status === "partially_resolved") { record.partial++; record.total++ }
+    else if (row.status === "open") { record.open++ }
   }
 
   for (const record of byProfile.values()) {
@@ -169,5 +176,9 @@ export async function getTrackRecords(): Promise<TrackRecord[]> {
       : 0
   }
 
-  return Array.from(byProfile.values()).sort((a, b) => b.accuracy - a.accuracy)
+  // Only return researchers who have at least one resolved prediction
+  return Array.from(byProfile.values())
+    .filter((r) => r.total > 0)
+    .sort((a, b) => b.accuracy - a.accuracy)
 }
+
