@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useMemo, useSyncExternalStore } from "react"
+import { useEffect } from "react"
 import { STORAGE_KEYS } from "@/lib/constants"
-import { getStorageItem, setStorageItem, subscribeNoop } from "@/lib/utils/storage"
+import { setStorageItem } from "@/lib/utils/storage"
 import { useTickerSubscription } from "@/hooks/useTickerSubscription"
 import Image from "next/image"
 import { AnimatedCount } from "./AnimatedCount"
@@ -14,22 +14,9 @@ interface TickerClientProps {
 }
 
 export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: TickerClientProps) {
-  const mounted = useSyncExternalStore(subscribeNoop, () => true, () => false)
   const { liveCount } = useTickerSubscription()
 
   const displayCount = liveCount ?? totalCount
-
-  const initialStoredCount = useMemo(() => {
-    if (typeof window === "undefined") return null
-    const lastCountStr = getStorageItem(STORAGE_KEYS.LAST_COUNT)
-    if (lastCountStr === null) return null
-    const parsed = parseInt(lastCountStr, 10)
-    return isNaN(parsed) ? null : parsed
-  }, [])
-
-  const delta = initialStoredCount !== null && displayCount > initialStoredCount
-    ? displayCount - initialStoredCount
-    : 0
 
   useEffect(() => {
     setStorageItem(STORAGE_KEYS.LAST_COUNT, String(displayCount))
@@ -80,16 +67,7 @@ export function TickerClient({ totalCount, ninetyDayCount, topCompanies = [] }: 
           </div>
         </div>
       </section>
-      <div className="flex flex-col items-center bg-surface-primary pb-6">
-        {mounted && delta > 0 && (
-          <span
-            aria-label={`+${delta} new departures since your last visit`}
-            className="inline-block rounded-full bg-accent-amber/20 px-3 py-1 text-sm font-medium text-accent-amber"
-          >
-            +{delta} since your last visit
-          </span>
-        )}
-      </div>
+      <div className="bg-surface-primary pb-6" />
     </div>
   )
 }

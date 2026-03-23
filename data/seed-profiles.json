@@ -1104,5 +1104,51 @@
       }
     ],
     "concernTags": ["copyright-data-ethics", "lack-of-transparency"]
+  },
+  {
+    "name": "Tom Cunningham",
+    "company": "OpenAI",
+    "role": "Economics Researcher",
+    "departureDate": "2025-09-15",
+    "statedReason": "Left after concluding it had become difficult to publish research that didn't align with OpenAI's commercial interests. Accused the economic research team of functioning as a 'de facto advocacy arm' rather than conducting genuine research, specifically citing suppression of findings about AI's negative economic impacts.",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://futurism.com/artificial-intelligence/openai-researcher-quits-hiding-truth",
+        "title": "OpenAI Researcher Quits, Saying Company Is Hiding the Truth",
+        "platform": "Futurism",
+        "publishedDate": "2025-12-06"
+      },
+      {
+        "url": "https://gizmodo.com/openai-accused-of-self-censoring-research-that-paints-ai-in-a-bad-light-2000697413",
+        "title": "OpenAI Accused of Self-Censoring Research That Paints AI In a Bad Light",
+        "platform": "Gizmodo",
+        "publishedDate": "2025-12-06"
+      }
+    ],
+    "concernTags": ["research-suppression", "lack-of-transparency"]
+  },
+  {
+    "name": "Hieu Pham",
+    "company": "OpenAI",
+    "role": "Member of Technical Staff",
+    "departureDate": "2026-02-26",
+    "statedReason": "Resigned after seven months citing severe burnout from frontier AI work. Publicly stated: 'Today, I finally feel the existential threat that AI is posing. When AI becomes overly good and disrupts everything, what will be left for humans to do? And it's when, not if.'",
+    "status": "published",
+    "sources": [
+      {
+        "url": "https://x.com/hyhieu226/status/2026841633342501150",
+        "title": "Hieu Pham departure announcement on X",
+        "platform": "X (Twitter)",
+        "publishedDate": "2026-02-26"
+      },
+      {
+        "url": "https://www.technocracy.news/openai-engineer-calls-ai-existential-threat-days-after-anthropic-safety-lead-mrinank-quit-over-same-concerns/",
+        "title": "OpenAI Engineer Calls AI Existential Threat, Days After Anthropic Safety Lead Quit",
+        "platform": "Technocracy News",
+        "publishedDate": "2026-02-12"
+      }
+    ],
+    "concernTags": ["agi-risk-underestimation", "workforce-displacement"]
   }
 ]
