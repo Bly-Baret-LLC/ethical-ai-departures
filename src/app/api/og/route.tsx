@@ -22,8 +22,9 @@ export async function GET(request: NextRequest) {
             alignItems: "flex-start",
             width: "100%",
             height: "100%",
-            backgroundColor: "#1a1a2e",
+            backgroundColor: "#f0ebe0",
             padding: "60px 80px",
+            borderTop: "8px solid #8b1a1a",
           }}
         >
           <div
@@ -41,7 +42,7 @@ export async function GET(request: NextRequest) {
                 width: "80px",
                 height: "80px",
                 borderRadius: "50%",
-                backgroundColor: "#e2a03f",
+                backgroundColor: "#b45309",
                 fontSize: "32px",
                 fontWeight: 700,
                 color: "#fff",
@@ -59,8 +60,9 @@ export async function GET(request: NextRequest) {
                 style={{
                   fontSize: "48px",
                   fontWeight: 700,
-                  color: "#ffffff",
+                  color: "#1c1917",
                   lineHeight: 1.1,
+                  fontFamily: "Georgia, serif",
                 }}
               >
                 {name}
@@ -68,7 +70,7 @@ export async function GET(request: NextRequest) {
               <span
                 style={{
                   fontSize: "24px",
-                  color: "#a0a0b8",
+                  color: "#78716c",
                   marginTop: "8px",
                 }}
               >
@@ -82,13 +84,14 @@ export async function GET(request: NextRequest) {
               style={{
                 display: "flex",
                 marginTop: "40px",
-                borderLeft: "4px solid #e2a03f",
+                borderLeft: "4px solid #b45309",
                 paddingLeft: "20px",
                 fontSize: "28px",
                 fontStyle: "italic",
-                color: "#c0c0d0",
+                color: "#78716c",
                 lineHeight: 1.4,
                 maxWidth: "900px",
+                fontFamily: "Georgia, serif",
               }}
             >
               &ldquo;{quote.slice(0, 120)}
@@ -103,8 +106,10 @@ export async function GET(request: NextRequest) {
               bottom: "40px",
               left: "80px",
               fontSize: "20px",
-              color: "#e2a03f",
-              fontWeight: 600,
+              color: "#8b1a1a",
+              fontWeight: 700,
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
             }}
           >
             Ethical AI Departures
@@ -126,38 +131,21 @@ export async function GET(request: NextRequest) {
           alignItems: "center",
           width: "100%",
           height: "100%",
-          backgroundColor: "#1a1a2e",
+          backgroundColor: "#f0ebe0",
           padding: "60px",
+          borderTop: "8px solid #8b1a1a",
         }}
       >
         <div
           style={{
             display: "flex",
-            fontSize: "120px",
-            fontWeight: 700,
-            color: "#e2a03f",
-            lineHeight: 1,
-          }}
-        >
-          {count || "—"}
-        </div>
-        <div
-          style={{
-            display: "flex",
-            fontSize: "32px",
-            color: "#a0a0b8",
-            marginTop: "16px",
-          }}
-        >
-          safety-motivated departures tracked
-        </div>
-        <div
-          style={{
-            display: "flex",
-            fontSize: "28px",
-            fontWeight: 600,
-            color: "#ffffff",
-            marginTop: "40px",
+            fontSize: "56px",
+            fontWeight: 900,
+            color: "#8b1a1a",
+            lineHeight: 1.1,
+            fontFamily: "Georgia, serif",
+            letterSpacing: "0.05em",
+            textTransform: "uppercase",
           }}
         >
           Ethical AI Departures
@@ -165,12 +153,22 @@ export async function GET(request: NextRequest) {
         <div
           style={{
             display: "flex",
-            fontSize: "18px",
-            color: "#707088",
-            marginTop: "12px",
+            fontSize: "22px",
+            color: "#78716c",
+            marginTop: "24px",
           }}
         >
-          An open record of AI safety departures
+          Who left. Why they left. What they predicted. Whether they were right.
+        </div>
+        <div
+          style={{
+            display: "flex",
+            fontSize: "16px",
+            color: "#b45309",
+            marginTop: "32px",
+          }}
+        >
+          ethicalaidepartures.fyi
         </div>
       </div>
     ),
