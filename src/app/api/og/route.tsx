@@ -141,7 +141,7 @@ export async function GET(request: NextRequest) {
             display: "flex",
             fontSize: "56px",
             fontWeight: 900,
-            color: "#8b1a1a",
+            color: "#1c1917",
             lineHeight: 1.1,
             fontFamily: "Georgia, serif",
             letterSpacing: "0.05em",
