@@ -25,10 +25,18 @@ beforeEach(() => {
   mockLocalStorage.clear()
   vi.clearAllMocks()
   vi.stubGlobal("localStorage", mockLocalStorage)
+  vi.stubGlobal("plausible", vi.fn())
+  vi.useFakeTimers()
+  vi.setSystemTime(new Date("2026-03-24T12:00:00.000Z"))
+  Object.defineProperty(document, "visibilityState", {
+    configurable: true,
+    value: "visible",
+  })
 })
 
 afterEach(() => {
   cleanup()
+  vi.useRealTimers()
 })
 
 describe("VisitTracker", () => {
@@ -44,5 +52,37 @@ describe("VisitTracker", () => {
   it("renders nothing", () => {
     const { container } = render(<VisitTracker />)
     expect(container.innerHTML).toBe("")
+  })
+
+  it("reports active engagement when the tab becomes hidden", () => {
+    render(<VisitTracker />)
+
+    vi.advanceTimersByTime(22_000)
+    Object.defineProperty(document, "visibilityState", {
+      configurable: true,
+      value: "hidden",
+    })
+    document.dispatchEvent(new Event("visibilitychange"))
+
+    expect(window.plausible).toHaveBeenCalledWith("Engagement Session", {
+      props: {
+        active_bucket: "10_to_29s",
+        active_seconds: 22,
+      },
+    })
+  })
+
+  it("does not emit duplicate engagement events when pagehide fires after hiding", () => {
+    render(<VisitTracker />)
+
+    vi.advanceTimersByTime(8_000)
+    Object.defineProperty(document, "visibilityState", {
+      configurable: true,
+      value: "hidden",
+    })
+    document.dispatchEvent(new Event("visibilitychange"))
+    window.dispatchEvent(new Event("pagehide"))
+
+    expect(window.plausible).toHaveBeenCalledTimes(1)
   })
 })

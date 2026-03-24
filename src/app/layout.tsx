@@ -1,5 +1,8 @@
 import type { Metadata } from "next"
 import { Playfair_Display } from "next/font/google"
+import Script from "next/script"
+import { PlausiblePageViewTracker } from "@/components/custom/PlausiblePageViewTracker"
+import { VisitTracker } from "@/components/custom/VisitTracker"
 import { SkipLinks } from "@/components/shared/SkipLinks"
 import { SiteHeader } from "@/components/shared/SiteHeader"
 import { TooltipProvider } from "@/components/ui/tooltip"
@@ -38,8 +41,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${playfairDisplay.variable} antialiased`}>
+        <Script
+          async
+          src="https://plausible.io/js/pa-UvYovQn6Tzl2_07hOUOBB.js"
+          strategy="afterInteractive"
+        />
+        <Script id="plausible-init" strategy="afterInteractive">
+          {`window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)};window.plausible.init=window.plausible.init||function(i){window.plausible.o=i||{}};window.plausible.init();`}
+        </Script>
         <TooltipProvider>
           <SkipLinks />
+          <PlausiblePageViewTracker />
+          <VisitTracker />
           <SiteHeader />
           {children}
         </TooltipProvider>

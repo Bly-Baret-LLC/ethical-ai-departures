@@ -3,7 +3,6 @@ import { getPublishedProfiles } from "@/lib/queries/profiles"
 import { ProfileBrowser } from "@/components/custom/ProfileBrowser"
 import type { ProfileWithTags } from "@/lib/schemas/profile"
 import { TickerBlock } from "@/components/custom/TickerBlock"
-import { VisitTracker } from "@/components/custom/VisitTracker"
 import { SubmitDepartureButton } from "@/components/custom/SubmitDepartureButton"
 import { PredictionSpotlight } from "@/components/custom/PredictionSpotlight"
 
@@ -31,7 +30,6 @@ export default async function HomePage() {
 
   return (
     <main id="main-content" className="min-h-screen bg-surface-primary">
-      <VisitTracker />
       <TickerBlock />
       <PredictionSpotlight />
       <div className="mx-auto max-w-6xl px-6 py-8">

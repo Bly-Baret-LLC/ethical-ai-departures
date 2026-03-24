@@ -1,5 +1,26 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Analytics
+
+This site uses [Plausible](https://plausible.io/) for simple analytics.
+
+In the Plausible dashboard:
+
+- `Visitors` and `Pageviews` show how many people are visiting the site.
+- `Top Pages` shows which pages they viewed.
+- `Goals` or `Custom Events` will show an event named `Engagement Session`.
+
+`Engagement Session` is sent when someone hides or closes the tab and includes:
+
+- `active_seconds`: how many seconds the page was actively visible
+- `active_bucket`: a grouped version of that time, such as `10_to_29s` or `1_to_2m`
+
+This tracking is intentionally simple:
+
+- page visits are tracked across the site
+- active time only counts while the tab is visible
+- time does not keep counting while the tab is in the background
+
 ## Getting Started
 
 First, run the development server:
