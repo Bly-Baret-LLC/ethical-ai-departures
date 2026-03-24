@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Playfair_Display } from "next/font/google"
 import Script from "next/script"
+import { Suspense } from "react"
 import { PlausiblePageViewTracker } from "@/components/custom/PlausiblePageViewTracker"
 import { VisitTracker } from "@/components/custom/VisitTracker"
 import { SkipLinks } from "@/components/shared/SkipLinks"
@@ -51,7 +52,9 @@ export default function RootLayout({
         </Script>
         <TooltipProvider>
           <SkipLinks />
-          <PlausiblePageViewTracker />
+          <Suspense fallback={null}>
+            <PlausiblePageViewTracker />
+          </Suspense>
           <VisitTracker />
           <SiteHeader />
           {children}
