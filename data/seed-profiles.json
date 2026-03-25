@@ -151,7 +151,7 @@
     "name": "Paul Christiano",
     "company": "OpenAI",
     "role": "Research Scientist (Alignment)",
-    "departureDate": "2021-01-31",
+    "departureDate": "2021-04-01",
     "statedReason": "Left to found the Alignment Research Center (ARC) to focus on theoretical alignment research outside the constraints of a capabilities lab.",
     "status": "published",
     "sources": [
@@ -255,7 +255,7 @@
     "company": "OpenAI",
     "role": "Researcher, Superalignment Team",
     "departureDate": "2024-04-15",
-    "statedReason": "Fired after writing an internal board memo about cybersecurity vulnerabilities. Later published the influential 'Situational Awareness' essay arguing AGI is imminent and labs are unprepared.",
+    "statedReason": "Fired after raising cybersecurity concerns internally and sharing a security memo with board members. OpenAI cited a separate alleged information leak as the reason for termination; Aschenbrenner said the security memo was a major factor. Later published the influential 'Situational Awareness' essay arguing AGI is imminent and labs are unprepared.",
     "status": "published",
     "sources": [
       {
@@ -682,7 +682,7 @@
     "company": "OpenAI",
     "role": "VP of Product Policy",
     "departureDate": "2026-01-15",
-    "statedReason": "Fired after opposing ChatGPT's 'adult mode' that would allow sexually explicit conversations. Led the product policy team that develops safeguards. Said 'The allegation that I discriminated against anyone is absolutely false.'",
+    "statedReason": "Fired while leading the product policy team that develops safeguards. Had opposed ChatGPT's planned 'adult mode' feature. OpenAI cited a discrimination allegation from a colleague as the reason for termination; Beiermeister denied the allegation and said it was retaliation for raising safety concerns.",
     "status": "published",
     "sources": [
       {
@@ -1126,10 +1126,10 @@
         "publishedDate": "2026-02-26"
       },
       {
-        "url": "https://www.technocracy.news/openai-engineer-calls-ai-existential-threat-days-after-anthropic-safety-lead-mrinank-quit-over-same-concerns/",
-        "title": "OpenAI Engineer Calls AI Existential Threat, Days After Anthropic Safety Lead Quit",
-        "platform": "Technocracy News",
-        "publishedDate": "2026-02-12"
+        "url": "https://dnyuz.com/2026/02/26/a-former-openai-and-xai-staffer-says-he-burned-out-in-ai-labs-so-hes-quitting-and-going-back-to-vietnam/",
+        "title": "A former OpenAI and xAI staffer says he burned out in AI labs, so he's quitting and going back to Vietnam",
+        "platform": "DNyuz",
+        "publishedDate": "2026-02-26"
       }
     ],
     "concernTags": ["agi-risk-underestimation", "workforce-displacement"]
