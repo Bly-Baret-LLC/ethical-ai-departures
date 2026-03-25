@@ -974,7 +974,7 @@
     "company": "OpenAI",
     "role": "VP of Hardware, Robotics Lead",
     "departureDate": "2026-03-07",
-    "statedReason": "Resigned over OpenAI's deal with the Pentagon. Opposed military applications of AI, particularly concerns about surveillance and lethal autonomy. Her departure triggered a 295% surge in ChatGPT uninstalls.",
+    "statedReason": "Resigned over OpenAI's deal with the Pentagon, citing insufficient deliberation around guardrails — specifically surveillance without judicial oversight and lethal autonomy without human authorization. The Pentagon deal had already triggered a 295% surge in ChatGPT uninstalls before her departure.",
     "status": "published",
     "sources": [
       {
