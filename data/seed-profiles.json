@@ -26,7 +26,7 @@
     "name": "Dario Amodei",
     "company": "OpenAI",
     "role": "VP of Research",
-    "departureDate": "2021-01-15",
+    "departureDate": "2020-12-15",
     "statedReason": "Left over disagreements about scaling AI without adequate safety research. Co-founded Anthropic to pursue a safety-first approach to AI development.",
     "status": "published",
     "sources": [
@@ -49,7 +49,7 @@
     "name": "Daniela Amodei",
     "company": "OpenAI",
     "role": "VP of Safety & Policy",
-    "departureDate": "2021-01-15",
+    "departureDate": "2020-12-15",
     "statedReason": "Departed with Dario Amodei to co-found Anthropic. Concerned about the pace of scaling without proportional safety investment.",
     "status": "published",
     "sources": [
@@ -66,7 +66,7 @@
     "name": "Tom Brown",
     "company": "OpenAI",
     "role": "Research Scientist (GPT-3 Lead Author)",
-    "departureDate": "2021-01-15",
+    "departureDate": "2020-12-15",
     "statedReason": "Left to co-found Anthropic over safety direction concerns at OpenAI.",
     "status": "published",
     "sources": [
@@ -83,7 +83,7 @@
     "name": "Chris Olah",
     "company": "OpenAI",
     "role": "Research Scientist (Interpretability)",
-    "departureDate": "2021-01-15",
+    "departureDate": "2020-12-15",
     "statedReason": "Left to co-found Anthropic to focus on AI interpretability and safety research.",
     "status": "published",
     "sources": [
@@ -100,7 +100,7 @@
     "name": "Sam McCandlish",
     "company": "OpenAI",
     "role": "Research Scientist",
-    "departureDate": "2021-01-15",
+    "departureDate": "2020-12-15",
     "statedReason": "Left to co-found Anthropic. Became Chief Architect focused on safe scaling.",
     "status": "published",
     "sources": [
@@ -117,7 +117,7 @@
     "name": "Jack Clark",
     "company": "OpenAI",
     "role": "Head of Policy",
-    "departureDate": "2021-01-15",
+    "departureDate": "2020-12-15",
     "statedReason": "Left to co-found Anthropic. Concerned about governance and policy gaps in AI development.",
     "status": "published",
     "sources": [
@@ -134,7 +134,7 @@
     "name": "Jared Kaplan",
     "company": "OpenAI",
     "role": "Research Scientist",
-    "departureDate": "2021-01-15",
+    "departureDate": "2020-12-15",
     "statedReason": "Left to co-found Anthropic. Became Chief Science Officer focused on scaling laws and safety.",
     "status": "published",
     "sources": [
@@ -507,23 +507,6 @@
     "concernTags": ["team-dissolution", "alignment-research-gaps"]
   },
   {
-    "name": "Aleksander Madry",
-    "company": "OpenAI",
-    "role": "Head of Preparedness Team",
-    "departureDate": "2024-07-15",
-    "statedReason": "Removed from leadership of the Preparedness team without public announcement. Reassigned to AI reasoning work. The Preparedness team was formed in Dec 2023 to evaluate catastrophic risks.",
-    "status": "published",
-    "sources": [
-      {
-        "url": "https://fortune.com/2024/08/26/openai-agi-safety-researchers-exodus/",
-        "title": "OpenAI Exodus: Nearly half of AGI safety team gone",
-        "platform": "Fortune",
-        "publishedDate": "2024-08-26"
-      }
-    ],
-    "concernTags": ["safety-deprioritization", "team-dissolution", "inadequate-oversight"]
-  },
-  {
     "name": "John Schulman",
     "company": "OpenAI",
     "role": "Co-Founder",
@@ -877,7 +860,7 @@
     "company": "xAI",
     "role": "Chief Engineer and Co-Founder",
     "departureDate": "2025-08-15",
-    "statedReason": "Left xAI to focus on AI safety research. Founded Babuschkin Ventures to work on alignment problems independently from capabilities labs.",
+    "statedReason": "Left xAI and founded Babuschkin Ventures, a venture capital firm investing in AI and agentic systems. Part of the broader xAI co-founder exodus where 9 of 11 original co-founders departed.",
     "status": "published",
     "sources": [
       {
