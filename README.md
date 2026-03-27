@@ -1,57 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ethical AI Departures
+
+**Who left. Why they left. What they predicted. Whether they were right.**
+
+A tracker of safety-motivated departures from leading AI companies. Built to document the patterns of researchers, engineers, and executives who left over ethical concerns — and to hold their predictions accountable over time.
+
+Live at [ethicalaidepartures.fyi](https://ethicalaidepartures.fyi)
+
+## What this tracks
+
+- **59 departures** across OpenAI, Google, Anthropic, Meta, xAI, Twitter, and Stability AI
+- **11 predictions** with resolution tracking (confirmed, disproven, or open)
+- Sources linked to primary reporting for every claim
+- Editorial fact-checking against primary sources — no database timestamps as proxies for real-world dates
+
+## Stack
+
+- Next.js 16 (App Router)
+- React 19
+- Tailwind CSS v4
+- shadcn/ui
+- Supabase (Postgres + Auth + API)
+- Vercel
+
+## Data accuracy
+
+All dates, claims, and factual assertions are verified against primary sources before being committed. If a date cannot be verified, it is omitted rather than guessed. Corrections are welcome — open an issue or PR with a source.
+
+## Local development
+
+```bash
+npm install
+npx supabase start    # requires Docker
+npm run dev           # runs on port 3700
+```
 
 ## Analytics
 
-This site uses [Plausible](https://plausible.io/) for simple analytics.
+This site uses [Plausible](https://plausible.io/) for privacy-friendly analytics. No cookies, no personal data collected.
 
-In the Plausible dashboard:
+## Contributing
 
-- `Visitors` and `Pageviews` show how many people are visiting the site.
-- `Top Pages` shows which pages they viewed.
-- `Goals` or `Custom Events` will show an event named `Engagement Session`.
+If you spot an inaccuracy, please open an issue with:
+- The profile or claim in question
+- The correction
+- A primary source (news article, official statement, etc.)
 
-`Engagement Session` is sent when someone hides or closes the tab and includes:
+## License
 
-- `active_seconds`: how many seconds the page was actively visible
-- `active_bucket`: a grouped version of that time, such as `10_to_29s` or `1_to_2m`
-
-This tracking is intentionally simple:
-
-- page visits are tracked across the site
-- active time only counts while the tab is visible
-- time does not keep counting while the tab is in the background
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
