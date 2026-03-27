@@ -4,9 +4,8 @@ import { ContactButton } from "@/components/custom/ContactButton"
 export const revalidate = 86400 // 24-hour ISR
 
 export const metadata: Metadata = {
-  title: "About · Ethical AI Departures",
-  description:
-    "Our mission, team, and approach to tracking safety-motivated departures from AI companies.",
+  title: "About — Why We Track AI Safety Departures",
+  description: "How and why we track researchers and executives who quit or were fired from AI companies over safety and ethics concerns. Methodology and editorial standards.",
 }
 
 export default function AboutPage() {

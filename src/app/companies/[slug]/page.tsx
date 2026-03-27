@@ -22,8 +22,8 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${company.company} Departures · Ethical AI Departures`,
-    description: `${company.profiles.length} safety-motivated departure${company.profiles.length !== 1 ? "s" : ""} tracked from ${company.company}.`,
+    title: `Who Quit ${company.company} Over AI Safety — ${company.profiles.length} Departure${company.profiles.length !== 1 ? "s" : ""} Tracked`,
+    description: `${company.profiles.length} researcher${company.profiles.length !== 1 ? "s" : ""} and executive${company.profiles.length !== 1 ? "s" : ""} who quit or were fired from ${company.company} over AI safety and ethics concerns.`,
   }
 }
 

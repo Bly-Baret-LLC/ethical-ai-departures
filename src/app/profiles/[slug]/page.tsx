@@ -37,8 +37,8 @@ export async function generateMetadata({
   })
 
   return {
-    title: `${profile.name} — Why They Left ${profile.company} · Ethical AI Departures`,
-    description: `${profile.name} left ${profile.company} in ${year} over ${primaryConcern.toLowerCase()}. Read their sourced account.`,
+    title: `${profile.name} — Why They Quit ${profile.company} (${year})`,
+    description: `${profile.name} left ${profile.company} in ${year} citing ${primaryConcern.toLowerCase()}. Full sourced account with linked statements, papers, and predictions.`,
     openGraph: {
       images: [`${siteUrl}/api/og?${ogParams}`],
     },

@@ -11,10 +11,14 @@ import { PublicationsTabs } from "@/components/custom/PublicationsTabs"
 
 export const revalidate = 300
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi"
+
 export const metadata: Metadata = {
-  title: "Publications · Ethical AI Departures",
-  description:
-    "Recurring concerns behind AI safety departures, and the papers, essays, and reports the researchers wrote about them.",
+  title: "AI Safety Writings & Predictions — Papers, Essays, and Prediction Tracker",
+  description: "Papers, essays, and public statements from researchers who quit top AI companies. Track their predictions — 4 of 11 confirmed so far.",
+  alternates: {
+    canonical: `${siteUrl}/publications`,
+  },
 }
 
 export default async function ThemesAndWritingsPage() {

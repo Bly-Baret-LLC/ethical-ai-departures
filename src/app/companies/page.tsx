@@ -5,8 +5,8 @@ import { getCompanies } from "@/lib/queries/companies"
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: "Companies · Ethical AI Departures",
-  description: "Browse AI companies with tracked safety-motivated departures.",
+  title: "AI Companies With Safety Departures — OpenAI, Google, Anthropic, xAI",
+  description: "Which AI companies are losing researchers over safety concerns? Browse departures from OpenAI, Google DeepMind, Anthropic, Meta, xAI, and more.",
 }
 
 export default async function CompaniesPage() {

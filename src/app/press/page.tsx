@@ -4,9 +4,8 @@ import { ContactButton } from "@/components/custom/ContactButton"
 export const revalidate = 86400 // 24-hour ISR
 
 export const metadata: Metadata = {
-  title: "Press & Media Kit · Ethical AI Departures",
-  description:
-    "Press resources, citation guidelines, and media kit for journalists covering Ethical AI Departures.",
+  title: "Press & Media Kit — For Journalists Covering AI Safety",
+  description: "Press resources, citation guidelines, and media kit for journalists covering AI safety departures and researcher whistleblowers.",
 }
 
 export default function PressPage() {
