@@ -50,7 +50,7 @@ export function SpotlightCarousel({ slides, total }: SpotlightCarouselProps) {
 
       <div className="mt-4 flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-6">
         {/* Accuracy stat */}
-        <div className="shrink-0 text-center sm:text-left">
+        <div className="shrink-0 text-left">
           <p className="text-3xl font-bold text-accent-amber">
             {slides.length} of {total}
           </p>
@@ -65,12 +65,12 @@ export function SpotlightCarousel({ slides, total }: SpotlightCarouselProps) {
         {/* Carousel */}
         <div className="min-w-0 flex-1">
           <div>
-            <div className="flex items-start gap-2">
-              <PredictionStatusBadge status={current.status} />
+            <div className="flex flex-col items-start gap-2 sm:flex-row">
               <div className="min-w-0 flex-1">
+                <PredictionStatusBadge status={current.status} />
                 <Link
                   href={`/publications?tab=predictions#prediction-${current.id}`}
-                  className="group"
+                  className="group mt-2 block sm:mt-0"
                 >
                   <p className="font-medium text-text-primary leading-snug text-sm group-hover:text-accent-amber transition-colors">
                     {current.title}
