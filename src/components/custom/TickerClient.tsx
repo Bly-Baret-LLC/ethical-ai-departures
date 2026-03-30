@@ -30,8 +30,20 @@ export function TickerClient({ totalCount, topCompanies = [] }: TickerClientProp
         className="relative w-full border-[3px] border-accent-red bg-[#f0ebe0] shadow-[inset_0_0_0_5px_#f0ebe0,inset_0_0_0_6px_#1c1917] overflow-hidden"
       >
         <div className="mx-auto grid max-w-6xl grid-cols-1 items-center px-6 py-8 sm:py-10 md:grid-cols-[1fr_auto]">
-          <div className="text-left">
-            <h1 className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+          <div className="relative text-left">
+            <div className="absolute right-0 top-0 w-[112px] sm:w-[132px] md:hidden">
+              <Image
+                src="/images/kafka-drawing.png"
+                alt=""
+                width={400}
+                height={286}
+                className="h-auto w-full opacity-[0.16] mix-blend-multiply brightness-[1.2]"
+                aria-hidden="true"
+                priority
+              />
+            </div>
+
+            <div className="flex flex-col gap-4 pr-24 sm:flex-row sm:items-center sm:gap-6 sm:pr-32 md:pr-0">
               <div className="shrink-0">
                 <AnimatedCount
                   value={displayCount}
@@ -39,15 +51,16 @@ export function TickerClient({ totalCount, topCompanies = [] }: TickerClientProp
                   className="font-display text-[72px] font-black uppercase leading-tight tracking-wider tabular-nums sm:text-[88px] md:text-[104px] lg:text-[120px] ticker-gradient"
                 />
               </div>
-              <span className="font-serif text-base font-normal leading-snug text-text-primary sm:text-lg md:text-xl max-w-[400px]">
+              <h1 className="max-w-[400px] font-serif text-base font-normal leading-snug text-text-primary sm:text-lg md:text-xl">
                 {topCompanies.length > 0
                   ? <>AI employees (and counting) have walked away from {topCompanies.slice(0, -1).join(", ")}{topCompanies.length > 1 ? `, and ${topCompanies[topCompanies.length - 1]}` : topCompanies[0]} over ethical concerns. <br /><strong>What are they saying?</strong></>
                   : <>AI employees (and counting) have walked away from major companies over ethical concerns. <br /><strong>What are they saying?</strong></>
 
                 }
-              </span>
-            </h1>
+              </h1>
+            </div>
           </div>
+
           {/* Kafka ink drawing — right column */}
           <div className="hidden items-start justify-start md:flex">
             <Image

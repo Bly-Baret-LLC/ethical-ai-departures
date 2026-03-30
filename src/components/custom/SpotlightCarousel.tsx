@@ -36,13 +36,13 @@ export function SpotlightCarousel({ slides, total }: SpotlightCarouselProps) {
 
   return (
     <div className="rounded-lg border border-border-light bg-surface-card px-6 py-5">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">
           Prediction Tracker
         </p>
         <Link
           href="/publications?tab=predictions"
-          className="text-xs text-text-secondary hover:text-accent-amber transition-colors shrink-0"
+          className="text-xs text-text-secondary transition-colors hover:text-accent-amber sm:shrink-0"
         >
           See all predictions →
         </Link>
