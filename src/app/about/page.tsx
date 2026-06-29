@@ -72,6 +72,35 @@ export default function AboutPage() {
         <ContactButton />
       </section>
 
+      {/* Support */}
+      <section className="mt-10">
+        <h2 className="font-serif text-xl font-semibold text-text-primary">
+          Support Our Work
+        </h2>
+        <p className="mt-3 text-text-secondary leading-relaxed">
+          Ethical AI Departures is independently funded. If you find it
+          valuable, please consider contributing to its ongoing development on
+          Ko-fi.
+        </p>
+        <a
+          href="https://ko-fi.com/ethicalaidepartures"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 inline-flex items-center gap-2 rounded-md bg-accent-amber px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-amber/90 focus:outline-none focus:ring-2 focus:ring-accent-amber focus:ring-offset-2"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="h-4 w-4"
+            aria-hidden="true"
+          >
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+          </svg>
+          Support on Ko-fi
+        </a>
+      </section>
+
     </main>
   )
 }

@@ -12,6 +12,30 @@ const navLinks = [
   { href: "/press", label: "Press" },
 ]
 
+const KOFI_URL = "https://ko-fi.com/ethicalaidepartures"
+
+function CoffeeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+      <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+      <line x1="6" y1="2" x2="6" y2="4" />
+      <line x1="10" y1="2" x2="10" y2="4" />
+      <line x1="14" y1="2" x2="14" y2="4" />
+    </svg>
+  )
+}
+
 export function SiteHeader() {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -39,6 +63,15 @@ export function SiteHeader() {
               {link.label}
             </Link>
           ))}
+          <a
+            href={KOFI_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-accent-amber hover:text-accent-amber/80"
+          >
+            <CoffeeIcon className="h-4 w-4" />
+            Support
+          </a>
         </nav>
 
         {/* Mobile menu button */}
@@ -86,6 +119,18 @@ export function SiteHeader() {
                 </Link>
               </li>
             ))}
+            <li>
+              <a
+                href={KOFI_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-accent-amber hover:bg-surface-secondary"
+              >
+                <CoffeeIcon className="h-4 w-4" />
+                Support
+              </a>
+            </li>
           </ul>
         </nav>
       )}
