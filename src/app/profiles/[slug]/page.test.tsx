@@ -100,7 +100,7 @@ describe("ProfileDetailPage", () => {
     render(jsx)
 
     const tagLink = screen.getByRole("link", { name: "Safety Deprioritization" })
-    expect(tagLink).toHaveAttribute("href", "/profiles?concern=safety-deprioritization")
+    expect(tagLink).toHaveAttribute("href", "/?concern=safety-deprioritization")
   })
 
   it("renders sources section with links", async () => {
@@ -127,7 +127,7 @@ describe("ProfileDetailPage", () => {
     render(jsx)
 
     const backLink = screen.getByRole("link", { name: /Back to all profiles/ })
-    expect(backLink).toHaveAttribute("href", "/profiles")
+    expect(backLink).toHaveAttribute("href", "/")
   })
 
   it("renders JSON-LD structured data", async () => {

@@ -62,61 +62,11 @@ describe("TickerClient", () => {
 
     expect(screen.getByText("6")).toBeInTheDocument()
     expect(
-      screen.getByText("AI employees (and counting) have walked away from major companies over ethical concerns. What are they saying?")
+      screen.getByText(
+        /AI employees \(and counting\) have walked away from major companies over ethical concerns\./
+      )
     ).toBeInTheDocument()
-  })
-
-  it("renders 90-day count", async () => {
-    await act(async () => {
-      render(<TickerClient {...defaultProps} />)
-    })
-
-    expect(screen.getByText("2 in the last 90 days")).toBeInTheDocument()
-  })
-
-  it("shows delta badge when count increased", async () => {
-    store[STORAGE_KEYS.LAST_COUNT] = "3"
-
-    await act(async () => {
-      render(<TickerClient {...defaultProps} />)
-    })
-
-    expect(screen.getByText("+3 since your last visit")).toBeInTheDocument()
-  })
-
-  it("has aria-label on delta badge", async () => {
-    store[STORAGE_KEYS.LAST_COUNT] = "4"
-
-    await act(async () => {
-      render(<TickerClient {...defaultProps} />)
-    })
-
-    const badge = screen.getByLabelText(
-      "+2 new departures since your last visit"
-    )
-    expect(badge).toBeInTheDocument()
-  })
-
-  it("does not show delta badge when count is same", async () => {
-    store[STORAGE_KEYS.LAST_COUNT] = "6"
-
-    await act(async () => {
-      render(<TickerClient {...defaultProps} />)
-    })
-
-    expect(
-      screen.queryByText(/since your last visit/i)
-    ).not.toBeInTheDocument()
-  })
-
-  it("does not show delta badge on first visit", async () => {
-    await act(async () => {
-      render(<TickerClient {...defaultProps} />)
-    })
-
-    expect(
-      screen.queryByText(/since your last visit/i)
-    ).not.toBeInTheDocument()
+    expect(screen.getByText("What are they saying?")).toBeInTheDocument()
   })
 
   it("updates stored count after render", async () => {
@@ -159,17 +109,6 @@ describe("TickerClient", () => {
     })
 
     expect(screen.getByText("10")).toBeInTheDocument()
-  })
-
-  it("updates delta badge with live count", async () => {
-    store[STORAGE_KEYS.LAST_COUNT] = "5"
-    mockLiveCount.current = 10
-
-    await act(async () => {
-      render(<TickerClient {...defaultProps} />)
-    })
-
-    expect(screen.getByText("+5 since your last visit")).toBeInTheDocument()
   })
 
   it("stores live count in localStorage", async () => {

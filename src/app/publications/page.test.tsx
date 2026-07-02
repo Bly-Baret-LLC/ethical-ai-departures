@@ -3,15 +3,34 @@ import { render, screen, cleanup } from "@testing-library/react"
 
 const mockGetPublicationsWithProfiles = vi.fn()
 const mockGetPublicationCountsByConcern = vi.fn()
+const mockGetPredictions = vi.fn()
 
 vi.mock("@/lib/queries/publications", () => ({
   getPublicationsWithProfiles: (...args: unknown[]) => mockGetPublicationsWithProfiles(...args),
   getPublicationCountsByConcern: (...args: unknown[]) => mockGetPublicationCountsByConcern(...args),
 }))
 
-vi.mock("next/link", () => ({
-  default: ({ children, href }: { children: React.ReactNode; href: string }) => (
-    <a href={href}>{children}</a>
+vi.mock("@/lib/queries/predictions", () => ({
+  getPredictions: (...args: unknown[]) => mockGetPredictions(...args),
+}))
+
+// Stub the client tabs component (it relies on the app router / search params,
+// which aren't mounted in jsdom). Render the publications it receives so the
+// page test can assert the page fetches and forwards them.
+vi.mock("@/components/custom/PublicationsTabs", () => ({
+  PublicationsTabs: ({
+    publications,
+  }: {
+    publications: { id: string; title: string; profileName: string }[]
+  }) => (
+    <div data-testid="publications-tabs">
+      {publications.map((p) => (
+        <div key={p.id}>
+          <span>{p.title}</span>
+          <span>{p.profileName}</span>
+        </div>
+      ))}
+    </div>
   ),
 }))
 
@@ -20,6 +39,7 @@ import ThemesAndWritingsPage from "./page"
 beforeEach(() => {
   mockGetPublicationsWithProfiles.mockResolvedValue([])
   mockGetPublicationCountsByConcern.mockResolvedValue([])
+  mockGetPredictions.mockResolvedValue([])
 })
 
 afterEach(() => {
@@ -31,7 +51,7 @@ describe("ThemesAndWritingsPage", () => {
   it("renders heading", async () => {
     const jsx = await ThemesAndWritingsPage()
     render(jsx)
-    expect(screen.getByRole("heading", { name: /Themes & Writings/ })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: /Publications/ })).toBeInTheDocument()
   })
 
   it("renders thematic overview paragraphs", async () => {
@@ -41,7 +61,7 @@ describe("ThemesAndWritingsPage", () => {
     expect(screen.getByText(/peer-reviewed papers, policy reports/)).toBeInTheDocument()
   })
 
-  it("renders writings section when publications exist", async () => {
+  it("forwards publications to the tabs component", async () => {
     mockGetPublicationsWithProfiles.mockResolvedValue([
       {
         id: "pub1",
@@ -65,9 +85,9 @@ describe("ThemesAndWritingsPage", () => {
     expect(screen.getByText("Alice Chen")).toBeInTheDocument()
   })
 
-  it("does not render writings section when no publications", async () => {
+  it("renders no publications when the query returns none", async () => {
     const jsx = await ThemesAndWritingsPage()
     render(jsx)
-    expect(screen.queryByText(/Filter by Concern/)).not.toBeInTheDocument()
+    expect(screen.getByTestId("publications-tabs")).toBeEmptyDOMElement()
   })
 })
