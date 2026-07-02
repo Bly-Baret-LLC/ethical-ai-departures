@@ -50,19 +50,6 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - name: Diagnose Supabase reachability from runner
-        env:
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
-        run: |
-          echo "url length: ${#NEXT_PUBLIC_SUPABASE_URL}"
-          echo "key length: ${#NEXT_PUBLIC_SUPABASE_ANON_KEY}"
-          code=$(curl -s -o /tmp/sb.json -w "%{http_code}" \
-            "$NEXT_PUBLIC_SUPABASE_URL/rest/v1/ticker_stats?select=totalCount&limit=1" \
-            -H "apikey: $NEXT_PUBLIC_SUPABASE_ANON_KEY" \
-            -H "Authorization: Bearer $NEXT_PUBLIC_SUPABASE_ANON_KEY")
-          echo "REST HTTP status: $code"
-          echo "REST body: $(cat /tmp/sb.json)"
       - run: npx playwright test
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
