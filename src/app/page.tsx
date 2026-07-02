@@ -32,11 +32,15 @@ export default async function HomePage() {
     <main id="main-content" className="min-h-screen bg-surface-primary">
       <TickerBlock />
       <PredictionSpotlight />
-      <div className="mx-auto max-w-6xl px-6 py-8">
+      <section
+        id="profiles"
+        aria-label="Departures"
+        className="mx-auto max-w-6xl px-6 py-8"
+      >
         <Suspense>
           <ProfileBrowser profiles={profiles} />
         </Suspense>
-      </div>
+      </section>
       <SubmitDepartureButton />
       <script
         type="application/ld+json"

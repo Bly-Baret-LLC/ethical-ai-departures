@@ -4,13 +4,13 @@ test.describe("Homepage", () => {
   test("loads and displays the ticker block", async ({ page }) => {
     await page.goto("/")
 
-    // Ticker block is present with dark inverse background
-    const ticker = page.locator("main > div").first()
+    // Ticker section is present
+    const ticker = page.getByRole("region", { name: "Departure ticker" })
     await expect(ticker).toBeVisible()
 
-    // Page heading is present
-    const heading = page.getByRole("heading", { level: 2 })
-    await expect(heading).toContainText("Ethical AI Departures")
+    // Ticker headline (h1) is present
+    const heading = page.getByRole("heading", { level: 1 })
+    await expect(heading).toContainText("over ethical concerns")
   })
 
   test("has correct page title", async ({ page }) => {
@@ -35,15 +35,13 @@ test.describe("Homepage", () => {
     const skipNav = page.getByRole("navigation", { name: "Skip links" })
     await expect(skipNav).toBeAttached()
 
-    // Profiles section with skip link target
+    // Profiles section with skip link target (#profiles)
     const profiles = page.locator("section#profiles")
     await expect(profiles).toBeVisible()
 
-    // Departures heading in profiles section
-    const departuresHeading = page.getByRole("heading", {
-      name: "Departures",
-    })
-    await expect(departuresHeading).toBeVisible()
+    // Profile browser search input is present within the profiles section
+    const search = profiles.getByPlaceholder(/Search profiles/i)
+    await expect(search).toBeVisible()
   })
 
   test("skip links navigate to correct targets", async ({ page }) => {
