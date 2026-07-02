@@ -108,12 +108,12 @@
   --surface-inverse: #1c1917;
   --surface-card: #fffdf8;
   --text-primary: #1c1917;
-  --text-secondary: #78716c;
+  --text-secondary: #69635d;
   --text-inverse: #faf8f2;
   --border-light: #ddd8ce;
 
   /* --- Slate & Ink Functional Tokens --- */
-  --accent-amber: #b45309;
+  --accent-amber: #a34a08;
   --state-hover: #44403c;
   --state-disabled: #d6d3d1;
   --status-verified: #065f46;
@@ -128,24 +128,24 @@
   --card-foreground: #1c1917;
   --popover: #fffdf8;
   --popover-foreground: #1c1917;
-  --primary: #b45309;
+  --primary: #a34a08;
   --primary-foreground: #ffffff;
   --secondary: #f0ece3;
   --secondary-foreground: #1c1917;
   --muted: #f0ece3;
-  --muted-foreground: #78716c;
+  --muted-foreground: #69635d;
   --accent: #f0ece3;
   --accent-foreground: #1c1917;
   --destructive: #9f1239;
   --border: #ddd8ce;
   --input: #ddd8ce;
-  --ring: #b45309;
+  --ring: #a34a08;
 
   /* Charts */
-  --chart-1: #b45309;
+  --chart-1: #a34a08;
   --chart-2: #1e40af;
   --chart-3: #065f46;
-  --chart-4: #78716c;
+  --chart-4: #69635d;
   --chart-5: #9f1239;
 
   /* Radius */
@@ -154,12 +154,12 @@
   /* Sidebar */
   --sidebar: #faf8f2;
   --sidebar-foreground: #1c1917;
-  --sidebar-primary: #b45309;
+  --sidebar-primary: #a34a08;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #f0ece3;
   --sidebar-accent-foreground: #1c1917;
   --sidebar-border: #ddd8ce;
-  --sidebar-ring: #b45309;
+  --sidebar-ring: #a34a08;
 }
 
 /* ============================================================
