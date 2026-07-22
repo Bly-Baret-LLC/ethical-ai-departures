@@ -12,7 +12,8 @@ export async function TickerBlock() {
 
   return (
     <TickerClient
-      totalCount={stats.totalCount}
+      documentedCount={stats.documentedCount}
+      evidenceLinkedCount={stats.totalCount}
       contextualCount={stats.contextualCount}
       allegedCount={stats.allegedCount}
     />

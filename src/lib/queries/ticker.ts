@@ -16,6 +16,9 @@ const tickerRowSchema = z.object({
 })
 
 export interface TickerStats {
+  /** All published records — departures and removals documented, any evidence tier. */
+  documentedCount: number
+  /** Evidence-linked (direct/reported) records only — the primary tally. */
   totalCount: number
   ninetyDayCount: number
   contextualCount: number
@@ -52,6 +55,7 @@ export async function getTickerStats(): Promise<TickerStats> {
     .slice(0, 10)
 
   return {
+    documentedCount: rows.length,
     totalCount: headlineCount(rows),
     ninetyDayCount: headlineCount(
       rows.filter((r) => r.departureDate >= ninetyDaysAgo)

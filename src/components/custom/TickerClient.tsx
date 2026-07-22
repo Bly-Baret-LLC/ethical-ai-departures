@@ -8,19 +8,21 @@ import Image from "next/image"
 import { AnimatedCount } from "./AnimatedCount"
 
 interface TickerClientProps {
-  totalCount: number
+  documentedCount: number
+  evidenceLinkedCount: number
   contextualCount: number
   allegedCount: number
 }
 
 export function TickerClient({
-  totalCount,
+  documentedCount,
+  evidenceLinkedCount,
   contextualCount,
   allegedCount,
 }: TickerClientProps) {
   const { liveCount } = useTickerSubscription()
 
-  const displayCount = liveCount ?? totalCount
+  const displayCount = liveCount ?? documentedCount
 
   useEffect(() => {
     setStorageItem(STORAGE_KEYS.LAST_COUNT, String(displayCount))
@@ -65,9 +67,9 @@ export function TickerClient({
                   independent reporting, allegation, or context.
                 </p>
                 <p className="mt-2 text-sm font-medium leading-snug text-text-primary">
-                  {totalCount} evidence-linked departures
+                  {evidenceLinkedCount} evidence-linked departures
                   <span className="font-normal text-text-secondary">
-                    {" "}· {contextualCount} additional contextual records
+                    {" "}· {contextualCount} contextual records
                     {allegedCount > 0
                       ? ` · ${allegedCount} unresolved allegation${allegedCount === 1 ? "" : "s"} shown separately`
                       : ""}

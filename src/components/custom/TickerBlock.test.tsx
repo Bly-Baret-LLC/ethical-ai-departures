@@ -3,6 +3,7 @@ import { render, screen, cleanup } from "@testing-library/react"
 
 vi.mock("@/lib/queries/ticker", () => ({
   getTickerStats: vi.fn().mockResolvedValue({
+    documentedCount: 10,
     totalCount: 6,
     ninetyDayCount: 2,
     contextualCount: 3,
@@ -12,17 +13,20 @@ vi.mock("@/lib/queries/ticker", () => ({
 
 vi.mock("./TickerClient", () => ({
   TickerClient: ({
-    totalCount,
+    documentedCount,
+    evidenceLinkedCount,
     contextualCount,
     allegedCount,
   }: {
-    totalCount: number
+    documentedCount: number
+    evidenceLinkedCount: number
     contextualCount: number
     allegedCount: number
   }) => (
     <div
       data-testid="ticker-client"
-      data-total-count={totalCount}
+      data-documented-count={documentedCount}
+      data-total-count={evidenceLinkedCount}
       data-contextual-count={contextualCount}
       data-alleged-count={allegedCount}
     />
@@ -42,6 +46,7 @@ describe("TickerBlock", () => {
 
     const client = screen.getByTestId("ticker-client")
     expect(client).toHaveAttribute("data-total-count", "6")
+    expect(client).toHaveAttribute("data-documented-count", "10")
   })
 
   it("passes contextual and alleged counts to TickerClient", async () => {
@@ -71,6 +76,7 @@ describe("TickerBlock", () => {
   it("passes zero counts correctly", async () => {
     const { getTickerStats } = await import("@/lib/queries/ticker")
     vi.mocked(getTickerStats).mockResolvedValueOnce({
+      documentedCount: 0,
       totalCount: 0,
       ninetyDayCount: 0,
       contextualCount: 0,

@@ -39,7 +39,8 @@ const mockLocalStorage = {
 }
 
 const defaultProps = {
-  totalCount: 6,
+  documentedCount: 10,
+  evidenceLinkedCount: 6,
   contextualCount: 3,
   allegedCount: 1,
 }
@@ -61,7 +62,7 @@ describe("TickerClient", () => {
       render(<TickerClient {...defaultProps} />)
     })
 
-    expect(screen.getByText("6")).toBeInTheDocument()
+    expect(screen.getByText("10")).toBeInTheDocument()
     expect(
       screen.getByText(
         /Documented departures and removals linked to AI safety/
@@ -74,13 +75,13 @@ describe("TickerClient", () => {
       screen.getByText(/6 evidence-linked departures/)
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/3 additional contextual records/)
+      screen.getByText(/3 contextual records/)
     ).toBeInTheDocument()
   })
 
   it("updates stored count after render", async () => {
     await act(async () => {
-      render(<TickerClient {...defaultProps} totalCount={42} />)
+      render(<TickerClient {...defaultProps} documentedCount={42} />)
     })
 
     expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
@@ -103,7 +104,7 @@ describe("TickerClient", () => {
   it("renders with zero count without errors", async () => {
     await act(async () => {
       render(
-        <TickerClient totalCount={0} contextualCount={0} allegedCount={0} />
+        <TickerClient documentedCount={0} evidenceLinkedCount={0} contextualCount={0} allegedCount={0} />
       )
     })
 
