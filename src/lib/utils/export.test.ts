@@ -20,6 +20,14 @@ const mockProfiles: ProfileWithTags[] = [
     statedReason: "Safety concerns deprioritized.",
     departureContext: null,
     status: "published",
+    departureType: "resigned",
+    motiveEvidence: "direct",
+    headlineCounted: true,
+    motiveQuote: null,
+    claimStatus: null,
+    lastReviewedAt: null,
+    reviewer: null,
+    correctionNote: null,
     createdAt: "2025-11-20T00:00:00Z",
     updatedAt: "2025-11-20T00:00:00Z",
     concernTags: [
@@ -37,6 +45,14 @@ const mockProfiles: ProfileWithTags[] = [
     statedReason: null,
     departureContext: null,
     status: "published",
+    departureType: "resigned",
+    motiveEvidence: "direct",
+    headlineCounted: true,
+    motiveQuote: null,
+    claimStatus: null,
+    lastReviewedAt: null,
+    reviewer: null,
+    correctionNote: null,
     createdAt: "2025-06-05T00:00:00Z",
     updatedAt: "2025-06-05T00:00:00Z",
     concernTags: [],
@@ -58,7 +74,7 @@ describe("profilesToCsv", () => {
     const lines = csv.split("\n")
 
     expect(lines[0]).toBe(
-      "Name,Company,Role,Departure Date,Stated Reason,Concern Tags,Permalink"
+      "Name,Company,Role,Departure Date,Stated Reason,Concern Tags,Permalink,Departure Type,Evidence,Claim Status,Headline Counted"
     )
     expect(lines).toHaveLength(3) // header + 2 rows
   })

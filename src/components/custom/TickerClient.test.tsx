@@ -40,7 +40,8 @@ const mockLocalStorage = {
 
 const defaultProps = {
   totalCount: 6,
-  ninetyDayCount: 2,
+  contextualCount: 3,
+  allegedCount: 1,
 }
 
 beforeEach(() => {
@@ -63,10 +64,18 @@ describe("TickerClient", () => {
     expect(screen.getByText("6")).toBeInTheDocument()
     expect(
       screen.getByText(
-        /AI employees \(and counting\) have walked away from major companies over ethical concerns\./
+        /Documented departures and removals linked to AI safety/
       )
     ).toBeInTheDocument()
-    expect(screen.getByText("What are they saying?")).toBeInTheDocument()
+    expect(
+      screen.getByText(/labeled by evidence type/)
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(/6 evidence-linked departures/)
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(/3 additional contextual records/)
+    ).toBeInTheDocument()
   })
 
   it("updates stored count after render", async () => {
@@ -94,7 +103,7 @@ describe("TickerClient", () => {
   it("renders with zero count without errors", async () => {
     await act(async () => {
       render(
-        <TickerClient totalCount={0} ninetyDayCount={0} />
+        <TickerClient totalCount={0} contextualCount={0} allegedCount={0} />
       )
     })
 

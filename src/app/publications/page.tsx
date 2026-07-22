@@ -15,7 +15,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures
 
 export const metadata: Metadata = {
   title: "AI Safety Writings & Predictions — Papers, Essays, and Prediction Tracker",
-  description: "Papers, essays, and public statements from researchers who quit top AI companies. Track their predictions — 4 of 11 confirmed so far.",
+  description: "Papers, essays, and public statements from researchers who departed leading AI companies, alongside a prediction tracker currently under editorial review.",
   alternates: {
     canonical: `${siteUrl}/publications`,
   },
@@ -52,12 +52,12 @@ export default async function ThemesAndWritingsPage() {
           find their concerns deprioritized, and sometimes face retaliation for speaking up.
         </p>
         <p>
-          These are not abstract worries about a distant future. The people who left were
-          senior scientists, alignment leads, and ethics researchers — many of them
-          architects of the safety frameworks their former employers now sideline. Their
-          departures span every major AI laboratory and accelerated sharply through 2024
-          and into 2026, tracking the industry&apos;s pivot from cautious research to
-          aggressive commercialization.
+          These are not abstract worries about a distant future. Many of the people who
+          left were senior scientists, alignment leads, and ethics researchers — some of
+          them architects of the safety frameworks at their former employers. Their
+          departures span several major AI organizations and accelerated through 2024
+          and into 2026, coinciding with the industry&apos;s pivot from cautious research
+          to aggressive commercialization.
         </p>
         <p>
           The writings below — peer-reviewed papers, policy reports, public resignation

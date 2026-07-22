@@ -4,6 +4,7 @@ import { useRef, useState, useCallback } from "react"
 import Link from "next/link"
 import { Avatar } from "./Avatar"
 import { NewBadge } from "./NewBadge"
+import { EVIDENCE_LABELS, type MotiveEvidence } from "@/lib/evidence"
 import {
   Tooltip,
   TooltipTrigger,
@@ -26,6 +27,7 @@ export interface ProfileCardProps {
   statedReason: string | null
   createdAt: string
   concernTags: ConcernTagInfo[]
+  motiveEvidence?: MotiveEvidence
 }
 
 export function ProfileCard({
@@ -38,6 +40,7 @@ export function ProfileCard({
   statedReason,
   createdAt,
   concernTags,
+  motiveEvidence,
 }: ProfileCardProps) {
   const year = new Date(departureDate + "T00:00:00").getFullYear()
   const primaryTag = concernTags[0] ?? null
@@ -92,11 +95,26 @@ export function ProfileCard({
               {statedReason}
             </blockquote>
           )}
-          {primaryTag && (
-            <span className="rounded-full bg-accent-amber/10 px-2.5 py-0.5 text-xs font-medium text-accent-amber">
-              {primaryTag.name}
-            </span>
-          )}
+          <div className="flex flex-wrap items-center gap-1.5">
+            {primaryTag && (
+              <span className="rounded-full bg-accent-amber/10 px-2.5 py-0.5 text-xs font-medium text-accent-amber">
+                {primaryTag.name}
+              </span>
+            )}
+            {motiveEvidence && (
+              <span
+                className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                  motiveEvidence === "direct" || motiveEvidence === "reported"
+                    ? "border border-accent-amber/40 text-accent-amber"
+                    : motiveEvidence === "alleged"
+                      ? "border border-accent-red/40 text-accent-red"
+                      : "border border-border-light text-text-secondary"
+                }`}
+              >
+                {EVIDENCE_LABELS[motiveEvidence]}
+              </span>
+            )}
+          </div>
         </div>
       </Link>
       <NewBadge createdAt={createdAt} />

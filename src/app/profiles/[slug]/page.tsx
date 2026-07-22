@@ -2,6 +2,11 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getProfileBySlug } from "@/lib/queries/profiles"
+import {
+  profileTitle,
+  EVIDENCE_LABELS,
+  DEPARTURE_TYPE_LABELS,
+} from "@/lib/evidence"
 import { getPredictions } from "@/lib/queries/predictions"
 import { Avatar } from "@/components/custom/Avatar"
 import { SourceTooltip } from "@/components/custom/SourceTooltip"
@@ -36,9 +41,16 @@ export async function generateMetadata({
     quote: profile.statedReason?.slice(0, 120) ?? "",
   })
 
+  const evidenceClause =
+    profile.motiveEvidence === "direct" || profile.motiveEvidence === "reported"
+      ? `linked to ${primaryConcern.toLowerCase()}`
+      : profile.motiveEvidence === "alleged"
+        ? `with an unresolved allegation concerning ${primaryConcern.toLowerCase()}`
+        : "documented for context"
+
   return {
-    title: `${profile.name} — Why They Quit ${profile.company} (${year})`,
-    description: `${profile.name} left ${profile.company} in ${year} citing ${primaryConcern.toLowerCase()}. Full sourced account with linked statements, papers, and predictions.`,
+    title: profileTitle(profile.name, profile.company, year),
+    description: `${profile.name} departed ${profile.company} in ${year}, ${evidenceClause}. Sourced account with evidence labels, linked statements, and papers.`,
     openGraph: {
       images: [`${siteUrl}/api/og?${ogParams}`],
     },
@@ -78,6 +90,27 @@ export default async function ProfileDetailPage({
           <p className="mt-1 text-lg text-text-secondary">
             {profile.role} · {profile.company} · {year}
           </p>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <span className="rounded-full border border-border-light bg-surface-secondary px-2.5 py-0.5 text-xs font-medium text-text-secondary">
+              {DEPARTURE_TYPE_LABELS[profile.departureType]}
+            </span>
+            <span
+              className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                profile.motiveEvidence === "direct" || profile.motiveEvidence === "reported"
+                  ? "bg-accent-amber/10 text-accent-amber"
+                  : profile.motiveEvidence === "alleged"
+                    ? "bg-accent-red/10 text-accent-red"
+                    : "bg-surface-secondary text-text-secondary"
+              }`}
+            >
+              {EVIDENCE_LABELS[profile.motiveEvidence]}
+            </span>
+            {profile.motiveEvidence === "alleged" && profile.claimStatus && (
+              <span className="text-xs text-text-secondary">
+                Claim status: {profile.claimStatus}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -92,6 +125,14 @@ export default async function ProfileDetailPage({
       {profile.departureContext && (
         <p className="mt-6 text-base leading-relaxed text-text-secondary">
           {profile.departureContext}
+        </p>
+      )}
+
+      {/* Correction history */}
+      {profile.correctionNote && (
+        <p className="mt-4 rounded-md border border-border-light bg-surface-secondary px-4 py-3 text-sm leading-relaxed text-text-secondary">
+          <span className="font-medium text-text-primary">Correction: </span>
+          {profile.correctionNote}
         </p>
       )}
 

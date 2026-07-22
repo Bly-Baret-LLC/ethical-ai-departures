@@ -13,6 +13,20 @@ export const profileRowSchema = z.object({
   stated_reason: z.string().nullable(),
   departure_context: z.string().nullable().default(null),
   status: z.enum(["draft", "published", "archived"]),
+  // Evidence model (remediation brief 2026-07-22). `.catch()` defaults keep
+  // rows parseable before the evidence-model migration has been applied.
+  departure_type: z
+    .enum(["resigned", "fired", "laid_off", "team_eliminated", "unknown"])
+    .catch("unknown"),
+  motive_evidence: z
+    .enum(["direct", "reported", "alleged", "contextual"])
+    .catch("contextual"),
+  headline_counted: z.boolean().catch(false),
+  motive_quote: z.string().nullish().catch(null),
+  claim_status: z.enum(["uncontested", "contested", "pending"]).nullish().catch(null),
+  last_reviewed_at: z.string().nullish().catch(null),
+  reviewer: z.string().nullish().catch(null),
+  correction_note: z.string().nullish().catch(null),
   created_at: z.string(),
   updated_at: z.string(),
 })
@@ -23,6 +37,10 @@ export const profileSourceRowSchema = z.object({
   url: z.string().url(),
   title: z.string().nullable(),
   platform: z.string().nullable(),
+  source_type: z
+    .enum(["first_party", "reporting", "legal_filing", "official_document", "organization", "reference"])
+    .nullish()
+    .catch(null),
   published_date: z.string().nullable(),
   created_at: z.string(),
 })
@@ -56,6 +74,14 @@ export const profileSchema = profileRowSchema.transform((row) => ({
   statedReason: row.stated_reason,
   departureContext: row.departure_context,
   status: row.status,
+  departureType: row.departure_type,
+  motiveEvidence: row.motive_evidence,
+  headlineCounted: row.headline_counted,
+  motiveQuote: row.motive_quote ?? null,
+  claimStatus: row.claim_status ?? null,
+  lastReviewedAt: row.last_reviewed_at ?? null,
+  reviewer: row.reviewer ?? null,
+  correctionNote: row.correction_note ?? null,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
 }))
@@ -109,6 +135,14 @@ export const profileWithTagsSchema = profileWithTagsRowSchema.transform((row) =>
   statedReason: row.stated_reason,
   departureContext: row.departure_context,
   status: row.status,
+  departureType: row.departure_type,
+  motiveEvidence: row.motive_evidence,
+  headlineCounted: row.headline_counted,
+  motiveQuote: row.motive_quote ?? null,
+  claimStatus: row.claim_status ?? null,
+  lastReviewedAt: row.last_reviewed_at ?? null,
+  reviewer: row.reviewer ?? null,
+  correctionNote: row.correction_note ?? null,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
   concernTags: row.profile_concern_tags.map((pct) => ({
@@ -133,6 +167,7 @@ export const profileDetailRowSchema = profileRowSchema.extend({
     url: z.string(),
     title: z.string().nullable(),
     platform: z.string().nullable(),
+    source_type: z.string().nullish().catch(null),
     published_date: z.string().nullable(),
   })).default([]),
   publications: z.array(z.object({
@@ -157,6 +192,14 @@ export const profileDetailSchema = profileDetailRowSchema.transform((row) => ({
   statedReason: row.stated_reason,
   departureContext: row.departure_context,
   status: row.status,
+  departureType: row.departure_type,
+  motiveEvidence: row.motive_evidence,
+  headlineCounted: row.headline_counted,
+  motiveQuote: row.motive_quote ?? null,
+  claimStatus: row.claim_status ?? null,
+  lastReviewedAt: row.last_reviewed_at ?? null,
+  reviewer: row.reviewer ?? null,
+  correctionNote: row.correction_note ?? null,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
   concernTags: row.profile_concern_tags.map((pct) => ({
@@ -169,6 +212,7 @@ export const profileDetailSchema = profileDetailRowSchema.transform((row) => ({
     url: s.url,
     title: s.title,
     platform: s.platform,
+    sourceType: s.source_type ?? null,
     publishedDate: s.published_date,
   })),
   publications: row.publications.map((pub) => ({

@@ -3,26 +3,28 @@ import { render, screen, cleanup } from "@testing-library/react"
 
 vi.mock("@/lib/queries/ticker", () => ({
   getTickerStats: vi.fn().mockResolvedValue({
-    id: "d0000000-0000-4000-8000-000000000001",
     totalCount: 6,
     ninetyDayCount: 2,
-    seniorityBreakdown: { "Safety Lead": 1, "Research Director": 1 },
-    updatedAt: "2025-11-20T00:00:00Z",
+    contextualCount: 3,
+    allegedCount: 1,
   }),
 }))
 
 vi.mock("./TickerClient", () => ({
   TickerClient: ({
     totalCount,
-    ninetyDayCount,
+    contextualCount,
+    allegedCount,
   }: {
     totalCount: number
-    ninetyDayCount: number
+    contextualCount: number
+    allegedCount: number
   }) => (
     <div
       data-testid="ticker-client"
       data-total-count={totalCount}
-      data-ninety-day-count={ninetyDayCount}
+      data-contextual-count={contextualCount}
+      data-alleged-count={allegedCount}
     />
   ),
 }))
@@ -34,7 +36,7 @@ afterEach(() => {
 })
 
 describe("TickerBlock", () => {
-  it("passes totalCount to TickerClient", async () => {
+  it("passes the evidence-linked headline count to TickerClient", async () => {
     const jsx = await TickerBlock()
     render(jsx)
 
@@ -42,12 +44,13 @@ describe("TickerBlock", () => {
     expect(client).toHaveAttribute("data-total-count", "6")
   })
 
-  it("passes ninetyDayCount to TickerClient", async () => {
+  it("passes contextual and alleged counts to TickerClient", async () => {
     const jsx = await TickerBlock()
     render(jsx)
 
     const client = screen.getByTestId("ticker-client")
-    expect(client).toHaveAttribute("data-ninety-day-count", "2")
+    expect(client).toHaveAttribute("data-contextual-count", "3")
+    expect(client).toHaveAttribute("data-alleged-count", "1")
   })
 
   it("returns null when getTickerStats fails", async () => {
@@ -68,11 +71,10 @@ describe("TickerBlock", () => {
   it("passes zero counts correctly", async () => {
     const { getTickerStats } = await import("@/lib/queries/ticker")
     vi.mocked(getTickerStats).mockResolvedValueOnce({
-      id: "d0000000-0000-4000-8000-000000000001",
       totalCount: 0,
       ninetyDayCount: 0,
-      seniorityBreakdown: {},
-      updatedAt: "2025-11-20T00:00:00Z",
+      contextualCount: 0,
+      allegedCount: 0,
     })
 
     const jsx = await TickerBlock()
@@ -80,6 +82,5 @@ describe("TickerBlock", () => {
 
     const client = screen.getByTestId("ticker-client")
     expect(client).toHaveAttribute("data-total-count", "0")
-    expect(client).toHaveAttribute("data-ninety-day-count", "0")
   })
 })

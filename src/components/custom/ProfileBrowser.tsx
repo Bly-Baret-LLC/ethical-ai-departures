@@ -133,6 +133,7 @@ export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
                 statedReason={profile.statedReason}
                 createdAt={profile.createdAt}
                 concernTags={profile.concernTags}
+                motiveEvidence={profile.motiveEvidence}
               />
             ))}
           </div>

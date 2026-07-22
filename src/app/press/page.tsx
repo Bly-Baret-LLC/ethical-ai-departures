@@ -42,8 +42,8 @@ export default function PressPage() {
         </p>
         <div className="mt-4 rounded-lg border border-border-light bg-surface-card p-4">
           <p className="font-mono text-sm text-text-primary">
-            Ethical AI Departures. &quot;[Profile Name] — Why They Left
-            [Company].&quot; <em>Ethical AI Departures</em>,
+            Ethical AI Departures. &quot;[Name] — Departure from [Company]
+            ([Year]).&quot; <em>Ethical AI Departures</em>,
             ethicalaidepartures.fyi/profiles/[slug]. Accessed [date].
           </p>
         </div>
@@ -71,8 +71,10 @@ export default function PressPage() {
             in data journalism.
           </li>
           <li>
-            All source links on profile pages point to the original reporting
-            — please verify sources independently.
+            Profile sources may include first-party statements, original
+            documents, legal filings, and independent reporting, each labeled
+            by source type. Readers should review the underlying material and
+            note when a claim is disputed or unresolved.
           </li>
         </ul>
       </section>

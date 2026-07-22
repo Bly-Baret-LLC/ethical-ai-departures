@@ -1,14 +1,62 @@
 import { createClient } from "@/lib/supabase/server"
-import { tickerStatsSchema } from "@/lib/schemas/profile"
+import { z } from "zod"
+import {
+  headlineCount,
+  contextualCount,
+  allegedCount,
+  type MotiveEvidence,
+} from "@/lib/evidence"
 
-/** Fetch the current ticker stats (single row) */
-export async function getTickerStats() {
+const tickerRowSchema = z.object({
+  departure_date: z.string(),
+  motive_evidence: z
+    .enum(["direct", "reported", "alleged", "contextual"])
+    .catch("contextual"),
+  headline_counted: z.boolean().catch(false),
+})
+
+export interface TickerStats {
+  totalCount: number
+  ninetyDayCount: number
+  contextualCount: number
+  allegedCount: number
+}
+
+/**
+ * Derive ticker stats from the canonical profiles selector (remediation brief
+ * §2.3): the headline number counts only evidence-linked (direct/reported)
+ * records; contextual and alleged records are reported separately. Replaces
+ * the manually maintained ticker_stats row so every surface shares one source
+ * of truth.
+ */
+export async function getTickerStats(): Promise<TickerStats> {
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from("ticker_stats")
-    .select("*")
-    .single()
+    .from("profiles")
+    .select("departure_date, motive_evidence, headline_counted")
+    .eq("status", "published")
 
   if (error) throw error
-  return tickerStatsSchema.parse(data)
+
+  const rows = (data ?? []).map((r) => {
+    const parsed = tickerRowSchema.parse(r)
+    return {
+      departureDate: parsed.departure_date,
+      motiveEvidence: parsed.motive_evidence as MotiveEvidence,
+      headlineCounted: parsed.headline_counted,
+    }
+  })
+
+  const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .slice(0, 10)
+
+  return {
+    totalCount: headlineCount(rows),
+    ninetyDayCount: headlineCount(
+      rows.filter((r) => r.departureDate >= ninetyDaysAgo)
+    ),
+    contextualCount: contextualCount(rows),
+    allegedCount: allegedCount(rows),
+  }
 }

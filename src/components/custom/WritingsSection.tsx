@@ -107,7 +107,7 @@ export function WritingsSection({ publications, concernCounts }: WritingsSection
                 <>
                   <span aria-hidden="true">&middot;</span>
                   <span className="capitalize">
-                    {pub.publicationType.replace("_", " ")}
+                    {pub.publicationType.replace(/_/g, " ")}
                   </span>
                 </>
               )}

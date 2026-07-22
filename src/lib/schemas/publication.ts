@@ -7,7 +7,19 @@ export const publicationRowSchema = z.object({
   profile_id: z.string().uuid(),
   title: z.string(),
   url: z.string().nullable(),
-  publication_type: z.enum(["paper", "white_paper", "report", "preprint"]).nullable(),
+  publication_type: z
+    .enum([
+      "paper",
+      "white_paper",
+      "report",
+      "preprint",
+      "essay",
+      "resignation_letter",
+      "legal_analysis",
+      "forecast_essay",
+      "testimony",
+    ])
+    .nullable(),
   publisher: z.string().nullable(),
   published_date: z.string().nullable(),
   abstract: z.string().nullable(),

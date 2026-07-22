@@ -68,14 +68,23 @@ export function PublicationsTabs({
     [predictions]
   )
 
+  // Remediation brief §5: contemporaneous claims are excluded from prediction
+  // tallies, and aggregate scores are suppressed while any record is under
+  // editorial review.
+  const trackerUnderReview = useMemo(
+    () => predictions.some((p) => p.underReview),
+    [predictions]
+  )
+
   const counts = useMemo(() => {
-    const confirmed = predictions.filter((p) => p.status === "confirmed").length
-    const open = predictions.filter((p) => p.status === "open").length
-    const disproven = predictions.filter((p) => p.status === "disproven").length
-    const partial = predictions.filter(
+    const adjudicated = predictions.filter((p) => p.recordKind === "prediction")
+    const confirmed = adjudicated.filter((p) => p.status === "confirmed").length
+    const open = adjudicated.filter((p) => p.status === "open").length
+    const disproven = adjudicated.filter((p) => p.status === "disproven").length
+    const partial = adjudicated.filter(
       (p) => p.status === "partially_resolved"
     ).length
-    return { confirmed, open, disproven, partial, total: predictions.length }
+    return { confirmed, open, disproven, partial, total: adjudicated.length }
   }, [predictions])
 
   const [statusFilter, setStatusFilter] = useState<string | null>(null)
@@ -142,10 +151,20 @@ export function PublicationsTabs({
 
       {activeTab === "predictions" && (
         <section className="mt-4">
+          {trackerUnderReview && (
+            <p className="mb-4 rounded-md border border-border-light bg-surface-secondary px-4 py-3 text-sm leading-relaxed text-text-secondary">
+              <span className="font-medium text-text-primary">
+                Under editorial review:
+              </span>{" "}
+              this tracker&apos;s resolution criteria and adjudications are
+              being re-reviewed. Individual records remain visible; aggregate
+              confirmation scores are hidden until the review is complete.
+            </p>
+          )}
           {predictions.length > 0 ? (
             <>
               <div className="flex flex-wrap gap-2">
-                {statusFilter && (
+                {!trackerUnderReview && statusFilter && (
                   <button
                     type="button"
                     onClick={() => setStatusFilter(null)}
@@ -154,7 +173,7 @@ export function PublicationsTabs({
                     All ({counts.total})
                   </button>
                 )}
-                {counts.confirmed > 0 && (
+                {!trackerUnderReview && counts.confirmed > 0 && (
                   <button
                     type="button"
                     onClick={() => setStatusFilter(statusFilter === "confirmed" ? null : "confirmed")}
@@ -167,7 +186,7 @@ export function PublicationsTabs({
                     Confirmed ({counts.confirmed})
                   </button>
                 )}
-                {counts.open > 0 && (
+                {!trackerUnderReview && counts.open > 0 && (
                   <button
                     type="button"
                     onClick={() => setStatusFilter(statusFilter === "open" ? null : "open")}
@@ -180,7 +199,7 @@ export function PublicationsTabs({
                     Open ({counts.open})
                   </button>
                 )}
-                {counts.disproven > 0 && (
+                {!trackerUnderReview && counts.disproven > 0 && (
                   <button
                     type="button"
                     onClick={() => setStatusFilter(statusFilter === "disproven" ? null : "disproven")}
@@ -193,7 +212,7 @@ export function PublicationsTabs({
                     Disproven ({counts.disproven})
                   </button>
                 )}
-                {counts.partial > 0 && (
+                {!trackerUnderReview && counts.partial > 0 && (
                   <button
                     type="button"
                     onClick={() => setStatusFilter(statusFilter === "partially_resolved" ? null : "partially_resolved")}

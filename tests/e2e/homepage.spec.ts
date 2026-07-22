@@ -10,7 +10,9 @@ test.describe("Homepage", () => {
 
     // Ticker headline (h1) is present
     const heading = page.getByRole("heading", { level: 1 })
-    await expect(heading).toContainText("over ethical concerns")
+    await expect(heading).toContainText(
+      "Documented departures and removals linked to AI safety"
+    )
   })
 
   test("has correct page title", async ({ page }) => {

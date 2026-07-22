@@ -9,11 +9,15 @@ import { AnimatedCount } from "./AnimatedCount"
 
 interface TickerClientProps {
   totalCount: number
-  ninetyDayCount: number
-  topCompanies?: string[]
+  contextualCount: number
+  allegedCount: number
 }
 
-export function TickerClient({ totalCount, topCompanies = [] }: TickerClientProps) {
+export function TickerClient({
+  totalCount,
+  contextualCount,
+  allegedCount,
+}: TickerClientProps) {
   const { liveCount } = useTickerSubscription()
 
   const displayCount = liveCount ?? totalCount
@@ -51,13 +55,25 @@ export function TickerClient({ totalCount, topCompanies = [] }: TickerClientProp
                   className="font-display text-[72px] font-black uppercase leading-tight tracking-wider tabular-nums sm:text-[88px] md:text-[104px] lg:text-[120px] ticker-gradient"
                 />
               </div>
-              <h1 className="max-w-[400px] font-serif text-base font-normal leading-snug text-text-primary sm:text-lg md:text-xl">
-                {topCompanies.length > 0
-                  ? <>AI employees (and counting) have walked away from {topCompanies.slice(0, -1).join(", ")}{topCompanies.length > 1 ? `, and ${topCompanies[topCompanies.length - 1]}` : topCompanies[0]} over ethical concerns. <br /><strong>What are they saying?</strong></>
-                  : <>AI employees (and counting) have walked away from major companies over ethical concerns. <br /><strong>What are they saying?</strong></>
-
-                }
-              </h1>
+              <div className="max-w-[440px]">
+                <h1 className="font-serif text-base font-normal leading-snug text-text-primary sm:text-lg md:text-xl">
+                  Documented departures and removals linked to AI safety,
+                  ethics, governance, and accountability.
+                </h1>
+                <p className="mt-2 text-sm leading-snug text-text-secondary">
+                  Each record is labeled by evidence type: explicit statement,
+                  independent reporting, allegation, or context.
+                </p>
+                <p className="mt-2 text-sm font-medium leading-snug text-text-primary">
+                  {totalCount} evidence-linked departures
+                  <span className="font-normal text-text-secondary">
+                    {" "}· {contextualCount} additional contextual records
+                    {allegedCount > 0
+                      ? ` · ${allegedCount} unresolved allegation${allegedCount === 1 ? "" : "s"} shown separately`
+                      : ""}
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
 

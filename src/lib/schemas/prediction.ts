@@ -16,6 +16,10 @@ export const predictionRowSchema = z.object({
   resolved_by: z.string().nullable(),
   reviewed_by: z.string().nullable(),
   review_notes: z.string().nullable(),
+  // Remediation-brief fields; `.catch()` keeps rows parseable pre-migration.
+  record_kind: z.enum(["prediction", "claim"]).catch("prediction"),
+  under_review: z.boolean().catch(false),
+  event_date: z.string().nullish().catch(null),
   created_at: z.string(),
   updated_at: z.string(),
 })
@@ -36,6 +40,9 @@ export const predictionSchema = predictionRowSchema.transform((row) => ({
   resolvedBy: row.resolved_by,
   reviewedBy: row.reviewed_by,
   reviewNotes: row.review_notes,
+  recordKind: row.record_kind,
+  underReview: row.under_review,
+  eventDate: row.event_date ?? null,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
 }))
@@ -66,6 +73,9 @@ export const predictionWithProfileSchema = predictionRowSchema
     resolvedBy: row.resolved_by,
     reviewedBy: row.reviewed_by,
     reviewNotes: row.review_notes,
+    recordKind: row.record_kind,
+    underReview: row.under_review,
+    eventDate: row.event_date ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }))

@@ -158,6 +158,7 @@ describe("getProfileBySlug", () => {
         url: "https://example.com/article",
         title: "Why I Left OpenAI",
         platform: "Blog",
+        sourceType: null,
         publishedDate: "2025-11-16",
       },
     ])

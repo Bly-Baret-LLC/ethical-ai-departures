@@ -21,11 +21,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Ethical AI Departures — Who Quit OpenAI, Google, Anthropic Over Safety Concerns",
+    default: "Ethical AI Departures — Documented AI Safety & Ethics Departures",
     template: "%s · Ethical AI Departures",
   },
   description:
-    "59 researchers and executives who quit or were fired from OpenAI, Google DeepMind, Anthropic, Meta, and xAI over AI safety concerns. Sourced departures, writings, and prediction tracking.",
+    "Documented departures and removals linked to AI safety, ethics, governance, and accountability. Each record is labeled by evidence type: explicit statement, independent reporting, allegation, or context.",
   keywords: [
     "AI safety departures",
     "who quit OpenAI",

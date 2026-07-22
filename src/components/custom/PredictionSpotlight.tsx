@@ -12,8 +12,13 @@ export async function PredictionSpotlight() {
 
   if (!predictions.length) return null
 
-  const confirmed = predictions.filter((p) => p.status === "confirmed")
-  const total = predictions.length
+  // Remediation brief §5: the aggregate confirmation score stays hidden while
+  // any prediction is under editorial review; claims are excluded entirely.
+  const adjudicated = predictions.filter(
+    (p) => p.recordKind === "prediction" && !p.underReview
+  )
+  const confirmed = adjudicated.filter((p) => p.status === "confirmed")
+  const total = adjudicated.length
 
   if (!confirmed.length) return null
 

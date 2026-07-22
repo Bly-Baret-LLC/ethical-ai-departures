@@ -1,5 +1,6 @@
 import type { ProfileWithTags } from "@/lib/schemas/profile"
 import type { FilterState } from "@/hooks/useProfileFilters"
+import { EVIDENCE_LABELS, isHeadlineCounted } from "@/lib/evidence"
 
 function escapeCsvField(value: string): string {
   if (value.includes(",") || value.includes('"') || value.includes("\n")) {
@@ -24,6 +25,10 @@ export function profilesToCsv(profiles: ProfileWithTags[]): string {
     "Stated Reason",
     "Concern Tags",
     "Permalink",
+    "Departure Type",
+    "Evidence",
+    "Claim Status",
+    "Headline Counted",
   ]
 
   const rows = profiles.map((p) => [
@@ -34,6 +39,10 @@ export function profilesToCsv(profiles: ProfileWithTags[]): string {
     escapeCsvField(p.statedReason ?? ""),
     escapeCsvField(p.concernTags.map((t) => t.name).join("; ")),
     buildPermalink(p.slug),
+    p.departureType,
+    EVIDENCE_LABELS[p.motiveEvidence],
+    p.claimStatus ?? "",
+    String(isHeadlineCounted(p)),
   ])
 
   return [headers.join(","), ...rows.map((r) => r.join(","))].join("\n")
@@ -48,6 +57,11 @@ export function profilesToJson(profiles: ProfileWithTags[]): string {
     statedReason: p.statedReason,
     concernTags: p.concernTags.map((t) => t.name),
     permalink: buildPermalink(p.slug),
+    departureType: p.departureType,
+    motiveEvidence: p.motiveEvidence,
+    evidenceLabel: EVIDENCE_LABELS[p.motiveEvidence],
+    claimStatus: p.claimStatus,
+    headlineCounted: isHeadlineCounted(p),
   }))
 
   return JSON.stringify(data, null, 2)

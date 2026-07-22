@@ -21,14 +21,15 @@ export default function AboutPage() {
           Our Mission
         </h2>
         <p className="mt-3 text-text-secondary leading-relaxed">
-          Ethical AI Departures is an independent accountability resource that
-          tracks safety-motivated departures from AI companies. When
-          researchers, engineers, and executives leave their positions because
-          of safety and ethics concerns, their decisions carry important
-          signals about the state of AI development. We document these
-          departures with sourced, verifiable accounts to help journalists,
-          policymakers, and the public understand patterns in AI safety
-          culture.
+          Ethical AI Departures documents departures and removals connected to
+          public concerns about AI safety, ethics, governance, and
+          accountability. Records are classified by the strength and type of
+          evidence linking the departure to the concern, so readers can
+          distinguish what a person said themselves, what independent reporting
+          established, what remains an unresolved allegation, and what is
+          documented only as context. We maintain sourced, verifiable accounts
+          to help journalists, policymakers, and the public understand patterns
+          in AI safety culture.
         </p>
       </section>
 
@@ -53,9 +54,16 @@ export default function AboutPage() {
           Inclusion Criteria
         </h2>
         <p className="mt-3 text-text-secondary leading-relaxed">
-          Profiles are included when a departure is tied to a public
-          statement — a LinkedIn post, tweet, news article, published interview,
-          or other verifiable source.
+          A record may be classified as <strong>Direct</strong> (the person
+          explicitly linked their departure to the concern),{" "}
+          <strong>Reported</strong> (reputable independent reporting explicitly
+          establishes the connection), <strong>Alleged</strong> (the individual
+          or a legal complaint alleges the link, and the claim may be disputed
+          or unresolved), or <strong>Contextual</strong> (the departure is
+          relevant to the chronology or team pattern, but the person&apos;s
+          motive is not established). Only Direct and Reported records are
+          included in the primary tally. Contextual records document relevant
+          team or leadership changes without asserting an unproven motive.
         </p>
       </section>
 

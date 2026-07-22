@@ -1,15 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest"
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
 
-const mockTickerData = {
-  id: "d0000000-0000-4000-8000-000000000001",
-  total_count: 6,
-  ninety_day_count: 2,
-  seniority_breakdown: { "Safety Lead": 1, "Research Director": 1 },
-  updated_at: "2025-11-20T00:00:00Z",
-}
-
-let singleResponse: { data: unknown | null; error: unknown } = {
-  data: mockTickerData,
+let queryResponse: { data: unknown[] | null; error: unknown } = {
+  data: [],
   error: null,
 }
 
@@ -17,7 +9,7 @@ vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn().mockResolvedValue({
     from: () => ({
       select: () => ({
-        single: () => singleResponse,
+        eq: () => queryResponse,
       }),
     }),
   }),
@@ -25,25 +17,67 @@ vi.mock("@/lib/supabase/server", () => ({
 
 import { getTickerStats } from "./ticker"
 
+const row = (
+  departure_date: string,
+  motive_evidence: string,
+  headline_counted: boolean
+) => ({ departure_date, motive_evidence, headline_counted })
+
 beforeEach(() => {
-  singleResponse = { data: mockTickerData, error: null }
+  vi.useFakeTimers()
+  vi.setSystemTime(new Date("2026-07-22T12:00:00.000Z"))
 })
 
-describe("getTickerStats", () => {
-  it("returns ticker stats with camelCase keys", async () => {
-    const stats = await getTickerStats()
+afterEach(() => {
+  vi.useRealTimers()
+})
 
-    expect(stats.totalCount).toBe(6)
-    expect(stats.ninetyDayCount).toBe(2)
-    expect(stats.seniorityBreakdown).toEqual({
-      "Safety Lead": 1,
-      "Research Director": 1,
-    })
-    expect(stats.updatedAt).toBe("2025-11-20T00:00:00Z")
+describe("getTickerStats (canonical evidence-model counts)", () => {
+  it("counts only direct/reported headline-flagged records in totalCount", async () => {
+    queryResponse = {
+      data: [
+        row("2024-05-14", "direct", true),
+        row("2021-04-28", "reported", true),
+        row("2026-02-12", "contextual", false),
+        row("2025-09-30", "alleged", false),
+      ],
+      error: null,
+    }
+
+    const stats = await getTickerStats()
+    expect(stats.totalCount).toBe(2)
+    expect(stats.contextualCount).toBe(1)
+    expect(stats.allegedCount).toBe(1)
+  })
+
+  it("never counts contextual records even if headline_counted is true", async () => {
+    queryResponse = {
+      data: [row("2024-05-14", "contextual", true)],
+      error: null,
+    }
+
+    const stats = await getTickerStats()
+    expect(stats.totalCount).toBe(0)
+    expect(stats.contextualCount).toBe(1)
+  })
+
+  it("computes ninetyDayCount from headline records only", async () => {
+    queryResponse = {
+      data: [
+        row("2026-07-01", "direct", true), // within 90 days
+        row("2026-07-01", "contextual", false), // within window but contextual
+        row("2024-05-14", "direct", true), // outside window
+      ],
+      error: null,
+    }
+
+    const stats = await getTickerStats()
+    expect(stats.ninetyDayCount).toBe(1)
+    expect(stats.totalCount).toBe(2)
   })
 
   it("throws on Supabase error", async () => {
-    singleResponse = {
+    queryResponse = {
       data: null,
       error: { message: "connection refused", code: "PGRST000" },
     }
