@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { getPredictions } from "@/lib/queries/predictions"
 import { SpotlightCarousel, type SpotlightSlide } from "./SpotlightCarousel"
+import { forecastSummary, isForecast, isWarningOrClaim } from "@/lib/forecasts"
 
 export async function PredictionSpotlight() {
   let predictions
@@ -12,20 +13,22 @@ export async function PredictionSpotlight() {
 
   if (!predictions.length) return null
 
-  // Remediation brief §5: the aggregate confirmation score stays hidden while
-  // any prediction is under editorial review; claims are excluded entirely.
-  const adjudicated = predictions.filter(
-    (p) => p.recordKind === "prediction" && !p.underReview
-  )
-  const confirmed = adjudicated.filter((p) => p.status === "confirmed")
-  const total = adjudicated.length
+  // Tracker Review (2026-07-22): no accuracy score is shown. The spotlight
+  // rotates through adjudicated records — open forecasts first, then
+  // warnings/claims — with under-review records excluded from slides.
+  const adjudicated = predictions.filter((p) => !p.underReview)
+  const summary = forecastSummary(predictions)
+  const spotlightRecords = [
+    ...adjudicated.filter((p) => isForecast(p) && p.status === "open"),
+    ...adjudicated.filter((p) => isWarningOrClaim(p)),
+  ]
 
-  if (!confirmed.length) return null
+  if (!spotlightRecords.length) return null
 
   // Fetch linked publications for each confirmed prediction
   const supabase = await createClient()
   const slides: SpotlightSlide[] = await Promise.all(
-    confirmed.map(async (pred) => {
+    spotlightRecords.map(async (pred) => {
       const { data: links } = await supabase
         .from("publication_predictions")
         .select("publications(title, url)")
@@ -40,6 +43,8 @@ export async function PredictionSpotlight() {
         title: pred.title,
         sourceQuote: pred.sourceQuote,
         status: pred.status,
+        recordKind: pred.recordKind,
+        underReview: pred.underReview,
         profileName: pred.profileName,
         profileSlug: pred.profileSlug,
         resolutionEvidenceUrl: pred.resolutionEvidenceUrl,
@@ -57,7 +62,9 @@ export async function PredictionSpotlight() {
     >
       <SpotlightCarousel
         slides={slides}
-        total={total}
+        openForecasts={summary.openForecasts}
+        warningsAndClaims={summary.warningsAndClaims}
+        underReview={summary.underReview}
       />
     </section>
   )
