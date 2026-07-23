@@ -11,9 +11,27 @@ const statusConfig: Record<string, { label: string; className: string }> = {
     label: "Disproven",
     className: "bg-stone-200 text-stone-600 line-through",
   },
+  contradicted: {
+    label: "Contradicted",
+    className: "bg-stone-200 text-stone-600 line-through",
+  },
   partially_resolved: {
     label: "Partially Resolved",
     className: "bg-accent-amber/10 text-accent-amber",
+  },
+  pending_review: {
+    label: "Pending review",
+    className: "border border-border-light text-text-secondary bg-transparent",
+  },
+  unresolvable: {
+    label: "Unresolvable",
+    className: "bg-stone-200 text-stone-600",
+  },
+  // Warnings / contemporaneous claims are not scored; they carry no
+  // open/confirmed state (Prediction Tracker Review, 2026-07-22).
+  not_applicable: {
+    label: "Not scored",
+    className: "border border-border-light text-text-secondary bg-transparent",
   },
 }
 

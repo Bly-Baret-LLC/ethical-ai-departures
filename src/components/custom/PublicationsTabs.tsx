@@ -1,11 +1,12 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import type { PublicationWithProfile } from "@/lib/schemas/publication"
 import type { PredictionWithProfile } from "@/lib/schemas/prediction"
 import { WritingsSection } from "./WritingsSection"
 import { PredictionCard } from "./PredictionCard"
+import { forecastSummaryLine } from "@/lib/forecasts"
 
 const TABS = [
   {
@@ -16,9 +17,9 @@ const TABS = [
   },
   {
     key: "predictions",
-    label: "Predictions",
+    label: "Forecasts & Warnings",
     description:
-      "Falsifiable claims extracted from researcher statements — tracked against real-world outcomes.",
+      "Forecasts are future-facing statements with observable outcomes. Warnings and claims capture important insider assessments that are not suitable for an accuracy score. Resolution criteria added after an original statement are dated and disclosed.",
   },
 ] as const
 
@@ -29,6 +30,8 @@ const STATUS_ORDER: Record<string, number> = {
   partially_resolved: 1,
   open: 2,
   disproven: 3,
+  contradicted: 3,
+  not_applicable: 4,
 }
 
 interface PublicationsTabsProps {
@@ -76,25 +79,9 @@ export function PublicationsTabs({
     [predictions]
   )
 
-  const counts = useMemo(() => {
-    const adjudicated = predictions.filter((p) => p.recordKind === "prediction")
-    const confirmed = adjudicated.filter((p) => p.status === "confirmed").length
-    const open = adjudicated.filter((p) => p.status === "open").length
-    const disproven = adjudicated.filter((p) => p.status === "disproven").length
-    const partial = adjudicated.filter(
-      (p) => p.status === "partially_resolved"
-    ).length
-    return { confirmed, open, disproven, partial, total: adjudicated.length }
-  }, [predictions])
-
-  const [statusFilter, setStatusFilter] = useState<string | null>(null)
-
-  const filteredPredictions = useMemo(
-    () =>
-      statusFilter
-        ? sortedPredictions.filter((p) => p.status === statusFilter)
-        : sortedPredictions,
-    [sortedPredictions, statusFilter]
+  const summaryLine = useMemo(
+    () => forecastSummaryLine(predictions),
+    [predictions]
   )
 
   const activeTabConfig = TABS.find((t) => t.key === activeTab)!
@@ -163,75 +150,11 @@ export function PublicationsTabs({
           )}
           {predictions.length > 0 ? (
             <>
-              <div className="flex flex-wrap gap-2">
-                {!trackerUnderReview && statusFilter && (
-                  <button
-                    type="button"
-                    onClick={() => setStatusFilter(null)}
-                    className="rounded-full bg-surface-secondary px-3 py-1 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-secondary/80"
-                  >
-                    All ({counts.total})
-                  </button>
-                )}
-                {!trackerUnderReview && counts.confirmed > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => setStatusFilter(statusFilter === "confirmed" ? null : "confirmed")}
-                    className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
-                      statusFilter === "confirmed"
-                        ? "bg-accent-amber text-white"
-                        : "bg-accent-amber/10 text-accent-amber hover:bg-accent-amber/20"
-                    }`}
-                  >
-                    Confirmed ({counts.confirmed})
-                  </button>
-                )}
-                {!trackerUnderReview && counts.open > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => setStatusFilter(statusFilter === "open" ? null : "open")}
-                    className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
-                      statusFilter === "open"
-                        ? "bg-accent-amber text-white"
-                        : "bg-accent-amber/10 text-accent-amber hover:bg-accent-amber/20"
-                    }`}
-                  >
-                    Open ({counts.open})
-                  </button>
-                )}
-                {!trackerUnderReview && counts.disproven > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => setStatusFilter(statusFilter === "disproven" ? null : "disproven")}
-                    className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
-                      statusFilter === "disproven"
-                        ? "bg-accent-amber text-white"
-                        : "bg-accent-amber/10 text-accent-amber hover:bg-accent-amber/20"
-                    }`}
-                  >
-                    Disproven ({counts.disproven})
-                  </button>
-                )}
-                {!trackerUnderReview && counts.partial > 0 && (
-                  <button
-                    type="button"
-                    onClick={() => setStatusFilter(statusFilter === "partially_resolved" ? null : "partially_resolved")}
-                    className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
-                      statusFilter === "partially_resolved"
-                        ? "bg-accent-amber text-white"
-                        : "bg-accent-amber/10 text-accent-amber hover:bg-accent-amber/20"
-                    }`}
-                  >
-                    Partial ({counts.partial})
-                  </button>
-                )}
-              </div>
-              <p className="mt-3 text-sm text-text-secondary">
-                {filteredPredictions.length} prediction{filteredPredictions.length !== 1 ? "s" : ""}
-                {statusFilter ? ` matching "${statusFilter.replace("_", " ")}"` : " total"}
+              <p className="text-sm font-medium text-text-primary">
+                {summaryLine}
               </p>
               <div className="mt-3 space-y-4">
-                {filteredPredictions.map((p) => (
+                {sortedPredictions.map((p) => (
                   <PredictionCard key={p.id} prediction={p} />
                 ))}
               </div>

@@ -79,3 +79,21 @@ describe("ShareButtons", () => {
     expect(link.getAttribute("href")).toContain(encodeURIComponent(defaultProps.url))
   })
 })
+
+describe("ShareButtons URL hygiene (corrections log 2026-07-22)", () => {
+  it("strips whitespace and newlines from share URLs", () => {
+    render(
+      <ShareButtons
+        url={"https://ethicalaidepartures.fyi\n/profiles/test"}
+        twitterText="Test"
+      />
+    )
+    const links = screen.getAllByRole("link")
+    for (const link of links) {
+      const href = link.getAttribute("href") ?? ""
+      expect(href).not.toContain("%0A")
+      expect(href).not.toContain("%20%20")
+      expect(decodeURIComponent(href)).not.toMatch(/https:\/\/ethicalaidepartures\.fyi\s/)
+    }
+  })
+})

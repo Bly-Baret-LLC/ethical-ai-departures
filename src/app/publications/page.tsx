@@ -11,7 +11,7 @@ import { PublicationsTabs } from "@/components/custom/PublicationsTabs"
 
 export const revalidate = 300
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi"
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()
 
 export const metadata: Metadata = {
   title: "AI Safety Writings & Predictions — Papers, Essays, and Prediction Tracker",

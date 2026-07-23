@@ -8,7 +8,10 @@ interface ShareButtonsProps {
   linkedInText?: string
 }
 
-export function ShareButtons({ url, twitterText, linkedInText }: ShareButtonsProps) {
+export function ShareButtons({ url: rawUrl, twitterText, linkedInText }: ShareButtonsProps) {
+  // Defense in depth: share URLs must never contain whitespace (a corrupted
+  // env var once produced %0A-embedded URLs — see corrections log 2026-07-22).
+  const url = rawUrl.replace(/\s+/g, "")
   const [copied, setCopied] = useState(false)
 
   const handleCopy = useCallback(async () => {

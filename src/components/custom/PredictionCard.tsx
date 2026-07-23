@@ -5,6 +5,7 @@ import Link from "next/link"
 import type { PredictionWithProfile } from "@/lib/schemas/prediction"
 import { PredictionStatusBadge } from "./PredictionStatusBadge"
 import { ExpandableText } from "./ExpandableText"
+import { RECORD_KIND_LABELS, isForecast } from "@/lib/forecasts"
 
 interface PredictionCardProps {
   prediction: PredictionWithProfile
@@ -16,7 +17,18 @@ export function PredictionCard({ prediction }: PredictionCardProps) {
   return (
     <div id={`prediction-${prediction.id}`} className="scroll-mt-24 rounded-lg border border-border-light bg-surface-card px-5 py-5">
       <div className="flex items-start gap-3">
-        <PredictionStatusBadge status={prediction.status} />
+        {isForecast(prediction) ? (
+          <PredictionStatusBadge status={prediction.status} />
+        ) : (
+          <span className="inline-flex items-center rounded-full border border-border-light bg-transparent px-2.5 py-0.5 text-xs font-medium text-text-secondary">
+            {RECORD_KIND_LABELS[prediction.recordKind]}
+          </span>
+        )}
+        {prediction.underReview && (
+          <span className="inline-flex items-center rounded-full bg-surface-secondary px-2.5 py-0.5 text-xs font-medium text-text-secondary">
+            Under review
+          </span>
+        )}
         <h3 className="font-medium text-text-primary leading-snug">
           {prediction.title}
         </h3>
@@ -37,9 +49,12 @@ export function PredictionCard({ prediction }: PredictionCardProps) {
               {new Date(prediction.predictedDate + "T00:00:00").toLocaleDateString(undefined, {
                 year: "numeric",
               })}
-              {prediction.resolutionDate && prediction.status !== "open" && (
+              {prediction.resolutionDate &&
+                (prediction.status === "disproven" ||
+                  prediction.status === "contradicted" ||
+                  prediction.status === "confirmed") && (
                 <>
-                  , {prediction.status === "disproven" ? "disproven" : "confirmed"}{" "}
+                  , {prediction.status === "confirmed" ? "confirmed" : "contradicted"}{" "}
                   {new Date(prediction.resolutionDate + "T00:00:00").toLocaleDateString(undefined, {
                     year: "numeric",
                   })}
@@ -57,10 +72,27 @@ export function PredictionCard({ prediction }: PredictionCardProps) {
             clampLines={3}
             className="text-sm italic text-text-secondary"
           />
+          <p className="mt-1 text-xs text-text-secondary">
+            {prediction.isVerbatimQuote === false
+              ? "Paraphrase — not a verbatim quotation."
+              : prediction.isVerbatimQuote === true
+                ? "Verbatim excerpt."
+                : null}
+            {prediction.sourceUrl && (
+              <a
+                href={prediction.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ml-1 text-accent-info underline hover:text-accent-info/80"
+              >
+                Source
+              </a>
+            )}
+          </p>
         </blockquote>
       )}
 
-      {prediction.resolutionCriteria && (
+      {prediction.resolutionCriteria && isForecast(prediction) && (
         <div className="mt-3">
           <button
             type="button"
@@ -73,9 +105,18 @@ export function PredictionCard({ prediction }: PredictionCardProps) {
             </span>
           </button>
           {showCriteria && (
-            <p className="mt-2 text-sm text-text-secondary rounded-md bg-surface-secondary/30 px-3 py-2">
-              {prediction.resolutionCriteria}
-            </p>
+            <div className="mt-2 text-sm text-text-secondary rounded-md bg-surface-secondary/30 px-3 py-2">
+              <p>{prediction.resolutionCriteria}</p>
+              {prediction.criteriaAdoptedAt && (
+                <p className="mt-1 text-xs">
+                  Resolution criteria adopted{" "}
+                  {new Date(prediction.criteriaAdoptedAt + "T00:00:00").toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}
+                  {prediction.predictedDate &&
+                    prediction.criteriaAdoptedAt > prediction.predictedDate &&
+                    " — after the original statement."}
+                </p>
+              )}
+            </div>
           )}
         </div>
       )}

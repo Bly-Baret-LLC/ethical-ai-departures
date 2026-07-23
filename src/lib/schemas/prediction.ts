@@ -7,7 +7,10 @@ export const predictionRowSchema = z.object({
   description: z.string().nullable(),
   source_quote: z.string(),
   resolution_criteria: z.string(),
-  status: z.enum(["open", "pending_review", "confirmed", "disproven", "partially_resolved"]),
+  status: z.enum([
+    "open", "pending_review", "confirmed", "disproven", "partially_resolved",
+    "contradicted", "unresolvable", "not_applicable",
+  ]),
   resolution_date: z.string().nullable(),
   resolution_outcome: z.enum(["true", "false", "partial"]).nullable(),
   resolution_rationale: z.string().nullable(),
@@ -17,9 +20,15 @@ export const predictionRowSchema = z.object({
   reviewed_by: z.string().nullable(),
   review_notes: z.string().nullable(),
   // Remediation-brief fields; `.catch()` keeps rows parseable pre-migration.
-  record_kind: z.enum(["prediction", "claim"]).catch("prediction"),
+  record_kind: z
+    .enum(["prediction", "probabilistic_forecast", "warning", "contemporaneous_claim", "editorial_synthesis"])
+    .catch("prediction"),
   under_review: z.boolean().catch(false),
   event_date: z.string().nullish().catch(null),
+  is_verbatim_quote: z.boolean().nullish().catch(null),
+  source_url: z.string().nullish().catch(null),
+  criteria_adopted_at: z.string().nullish().catch(null),
+  resolution_deadline: z.string().nullish().catch(null),
   created_at: z.string(),
   updated_at: z.string(),
 })
@@ -43,6 +52,10 @@ export const predictionSchema = predictionRowSchema.transform((row) => ({
   recordKind: row.record_kind,
   underReview: row.under_review,
   eventDate: row.event_date ?? null,
+  isVerbatimQuote: row.is_verbatim_quote ?? null,
+  sourceUrl: row.source_url ?? null,
+  criteriaAdoptedAt: row.criteria_adopted_at ?? null,
+  resolutionDeadline: row.resolution_deadline ?? null,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
 }))
@@ -76,6 +89,10 @@ export const predictionWithProfileSchema = predictionRowSchema
     recordKind: row.record_kind,
     underReview: row.under_review,
     eventDate: row.event_date ?? null,
+    isVerbatimQuote: row.is_verbatim_quote ?? null,
+    sourceUrl: row.source_url ?? null,
+    criteriaAdoptedAt: row.criteria_adopted_at ?? null,
+    resolutionDeadline: row.resolution_deadline ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }))

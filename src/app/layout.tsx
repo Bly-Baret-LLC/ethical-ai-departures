@@ -16,7 +16,7 @@ const playfairDisplay = Playfair_Display({
   display: "optional",
 })
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi"
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

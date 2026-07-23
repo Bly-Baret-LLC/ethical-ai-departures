@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 }
 
 export default function WidgetsPage() {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi"
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">

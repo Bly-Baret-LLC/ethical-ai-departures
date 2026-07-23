@@ -33,7 +33,7 @@ export async function generateMetadata({
   const year = new Date(profile.departureDate + "T00:00:00").getFullYear()
   const primaryConcern = profile.concernTags[0]?.name ?? "safety concerns"
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi"
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()
   const ogParams = new URLSearchParams({
     type: "profile",
     name: profile.name,
@@ -297,8 +297,8 @@ export default async function ProfileDetailPage({
       {/* Share */}
       <div className="mt-8">
         <ShareButtons
-          url={`${process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi"}/profiles/${profile.slug}`}
-          twitterText={`${profile.name} left ${profile.company} over safety concerns. Read their sourced account on @WarningCollect:`}
+          url={`${(process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()}/profiles/${profile.slug}`}
+          twitterText={`${profile.name} — departure from ${profile.company}. Read the sourced, evidence-labeled account on @WarningCollect:`}
         />
       </div>
 

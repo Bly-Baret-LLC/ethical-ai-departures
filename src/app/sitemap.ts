@@ -7,7 +7,7 @@ export function normalizeLoc(url: string): string {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi"
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()
 
   // NOTE: there is deliberately no /profiles index entry — that route does not
   // exist (profiles are browsed on the homepage); a stale entry here returned

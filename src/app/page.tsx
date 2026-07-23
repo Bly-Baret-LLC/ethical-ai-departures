@@ -9,7 +9,7 @@ import { PredictionSpotlight } from "@/components/custom/PredictionSpotlight"
 // Revalidate at the shorter ticker interval (profiles use 300s but ticker uses 60s)
 export const revalidate = 60
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi"
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()
 
 const websiteJsonLd = {
   "@context": "https://schema.org",

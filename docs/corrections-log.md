@@ -96,3 +96,39 @@ Implemented from `Ethical_AI_Departures_Implementation_Brief.md` (prepared
   documents, legal filings, and reporting — not solely "original reporting."
 - Sitemap: removed nonexistent `/profiles` entry; all `<loc>` values
   normalized against whitespace.
+
+## 2026-07-22 — Prediction Tracker Review (adjudication addendum)
+
+Implemented from `Ethical_AI_Departures_Prediction_Tracker_Review.md`.
+Adjudicated the seven records on the Hinton, Sutskever, Leike, and
+Aschenbrenner profiles; the six other records (Kokotajlo ×4, Saunders,
+Hitzig) remain under review pending the next batch.
+
+- **Zero predictions are now reported as confirmed.** Both prior Leike
+  confirmations were removed: "safety culture has taken a back seat" is a
+  contemporaneous claim, not a forecast; "alignment failures will occur in
+  deployed systems" is an editorial synthesis whose confirmation grouped
+  evidence that supported only part of the claim.
+- Reclassified as warnings/claims (excluded from all scoring):
+  Leike ×2, Aschenbrenner ×2 (lab security; government preparedness).
+- Retained as open forecasts with dated, prospective resolution criteria:
+  Hinton (disinformation), Sutskever & Leike (RLHF will not scale —
+  attribution corrected to joint), and Hinton's extinction estimate —
+  corrected from a conflated "5–20 year" framing to the reported 10–20% /
+  30-year probabilistic forecast (Guardian, Dec. 27, 2024), typed so it can
+  never enter a binary accuracy percentage.
+- **Quotation repairs:** five displayed quotes could not be located verbatim
+  in their sources; each was replaced with an exact excerpt or an explicitly
+  labeled paraphrase. Every tracker quote now carries a verbatim flag and a
+  direct source link.
+- Retracted the prior PRED-04 rationale that implied Ilya Sutskever publicly
+  cited safety deprioritization; his departure statement did not say that.
+- New public summary: "3 open forecasts · 4 warnings and contemporaneous
+  claims · 6 records under review." No confirmation percentage is shown, and
+  none will be until a forecast reaches a valid resolution point.
+- **Technical:** fixed share URLs that embedded an encoded newline (%0A) —
+  root cause was a trailing newline stored in the NEXT_PUBLIC_SITE_URL
+  environment variable; the variable was replaced and all site-URL reads and
+  the ShareButtons component now strip whitespace, with a regression test.
+  Share text also neutralized ("departure from" rather than "left over
+  safety concerns") to match the evidence model.
