@@ -44,8 +44,8 @@ export default async function CompanyDetailPage({
         {company.company}
       </h1>
       <p className="mt-2 text-lg text-text-secondary">
-        {company.profiles.length} safety-motivated departure
-        {company.profiles.length !== 1 ? "s" : ""} tracked
+        {company.profiles.length} departure
+        {company.profiles.length !== 1 ? "s and removals" : " or removal"} tracked
       </p>
 
       {/* Overview */}

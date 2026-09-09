@@ -20,6 +20,27 @@ INSERT INTO concern_tags (id, name, slug, description) VALUES
 INSERT INTO ticker_stats (id, total_count, ninety_day_count, seniority_breakdown) VALUES
   ('d0000000-0000-4000-8000-000000000001', 0, 0, '{}');
 
+-- Migrations add the newest profiles before this seed file creates the
+-- canonical concern taxonomy on a fresh local reset. Attach their concern
+-- tags here as well so reset databases match production.
+INSERT INTO profile_concern_tags (profile_id, concern_tag_id)
+SELECT p.id, ct.id
+FROM profiles p
+JOIN (VALUES
+  ('alex-turner', 'military-applications'),
+  ('alex-turner', 'inadequate-oversight'),
+  ('alex-turner', 'lack-of-transparency'),
+  ('rene-mayrhofer', 'military-applications'),
+  ('rene-mayrhofer', 'inadequate-oversight'),
+  ('rene-mayrhofer', 'lack-of-transparency'),
+  ('jacob-coxon', 'safety-deprioritization'),
+  ('jacob-coxon', 'inadequate-oversight'),
+  ('joshua-achiam', 'team-dissolution')
+) AS v(profile_slug, tag_slug)
+  ON p.slug = v.profile_slug
+JOIN concern_tags ct ON ct.slug = v.tag_slug
+ON CONFLICT DO NOTHING;
+
 -- Publications (only insert if matching profiles exist from admin seed)
 -- These use subqueries so they safely no-op on a fresh db reset before profile import
 

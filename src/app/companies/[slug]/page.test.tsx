@@ -63,7 +63,7 @@ describe("CompanyDetailPage", () => {
     const jsx = await CompanyDetailPage({ params })
     render(jsx)
     expect(screen.getByRole("heading", { name: "OpenAI" })).toBeInTheDocument()
-    expect(screen.getByText(/1 safety-motivated departure tracked/)).toBeInTheDocument()
+    expect(screen.getByText(/1 departure or removal tracked/)).toBeInTheDocument()
   })
 
   it("renders concern breakdown", async () => {
