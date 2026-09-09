@@ -34,8 +34,7 @@ JOIN (VALUES
   ('rene-mayrhofer', 'inadequate-oversight'),
   ('rene-mayrhofer', 'lack-of-transparency'),
   ('jacob-coxon', 'safety-deprioritization'),
-  ('jacob-coxon', 'inadequate-oversight'),
-  ('joshua-achiam', 'team-dissolution')
+  ('jacob-coxon', 'inadequate-oversight')
 ) AS v(profile_slug, tag_slug)
   ON p.slug = v.profile_slug
 JOIN concern_tags ct ON ct.slug = v.tag_slug
