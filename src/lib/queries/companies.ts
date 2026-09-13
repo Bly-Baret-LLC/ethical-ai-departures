@@ -1,10 +1,16 @@
 import { createClient } from "@/lib/supabase/server"
 import { profileWithTagsSchema } from "@/lib/schemas/profile"
+import { isHeadlineCounted } from "@/lib/evidence"
+import { countOrganizationEventsByCompanySlug } from "@/data/organization-events"
 
 export interface CompanySummary {
   company: string
   slug: string
   count: number
+  evidenceLinkedCount: number
+  contextualCount: number
+  allegedCount: number
+  eventCount: number
 }
 
 export interface CompanyDetail {
@@ -23,19 +29,49 @@ export async function getCompanies(): Promise<CompanySummary[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from("profiles")
-    .select("company")
+    .select("company, motive_evidence, headline_counted")
     .eq("status", "published")
 
   if (error) throw error
 
-  const counts = new Map<string, number>()
+  const counts = new Map<
+    string,
+    { count: number; evidenceLinkedCount: number; contextualCount: number; allegedCount: number }
+  >()
   for (const row of data) {
-    counts.set(row.company, (counts.get(row.company) ?? 0) + 1)
+    const current = counts.get(row.company) ?? {
+      count: 0,
+      evidenceLinkedCount: 0,
+      contextualCount: 0,
+      allegedCount: 0,
+    }
+    current.count++
+    if (
+      isHeadlineCounted({
+        motiveEvidence: row.motive_evidence,
+        headlineCounted: row.headline_counted,
+      })
+    ) {
+      current.evidenceLinkedCount++
+    } else if (row.motive_evidence === "contextual") {
+      current.contextualCount++
+    } else if (row.motive_evidence === "alleged") {
+      current.allegedCount++
+    }
+    counts.set(row.company, current)
   }
 
   return Array.from(counts.entries())
-    .map(([company, count]) => ({ company, slug: companySlug(company), count }))
-    .sort((a, b) => b.count - a.count)
+    .map(([company, categoryCounts]) => ({
+      company,
+      slug: companySlug(company),
+      ...categoryCounts,
+      eventCount: countOrganizationEventsByCompanySlug(companySlug(company)),
+    }))
+    .sort(
+      (a, b) =>
+        b.evidenceLinkedCount - a.evidenceLinkedCount || b.count - a.count
+    )
 }
 
 /** Fetch a company's profiles by slug. Returns null if no profiles found. */
@@ -63,6 +99,7 @@ export async function getCompanyBySlug(slug: string): Promise<CompanyDetail | nu
   // Build concern breakdown
   const concernMap = new Map<string, { name: string; slug: string; count: number }>()
   for (const p of profiles) {
+    if (!isHeadlineCounted(p)) continue
     for (const tag of p.concernTags) {
       const existing = concernMap.get(tag.slug)
       if (existing) {

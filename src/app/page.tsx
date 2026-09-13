@@ -5,6 +5,8 @@ import type { ProfileWithTags } from "@/lib/schemas/profile"
 import { TickerBlock } from "@/components/custom/TickerBlock"
 import { SubmitDepartureButton } from "@/components/custom/SubmitDepartureButton"
 import { PredictionSpotlight } from "@/components/custom/PredictionSpotlight"
+import { LatestDepartureCallout } from "@/components/custom/LatestDepartureCallout"
+import { EmailSignup } from "@/components/custom/EmailSignup"
 
 // Revalidate at the shorter ticker interval (profiles use 300s but ticker uses 60s)
 export const revalidate = 60
@@ -31,6 +33,7 @@ export default async function HomePage() {
   return (
     <main id="main-content" className="min-h-screen bg-surface-primary">
       <TickerBlock />
+      <LatestDepartureCallout />
       <PredictionSpotlight />
       <section
         id="profiles"
@@ -40,6 +43,12 @@ export default async function HomePage() {
         <Suspense>
           <ProfileBrowser profiles={profiles} />
         </Suspense>
+      </section>
+      <section
+        aria-label="Email updates"
+        className="mx-auto max-w-3xl px-6 pb-14"
+      >
+        <EmailSignup placement="homepage" />
       </section>
       <SubmitDepartureButton />
       <script

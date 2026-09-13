@@ -4,11 +4,44 @@ import Link from "next/link"
 import { getCompanyBySlug } from "@/lib/queries/companies"
 import { Avatar } from "@/components/custom/Avatar"
 import { getCompanyOverview } from "@/data/company-overviews"
+import { EVIDENCE_LABELS, isHeadlineCounted } from "@/lib/evidence"
+import type { ProfileWithTags } from "@/lib/schemas/profile"
+import { getOrganizationEventsByCompanySlug } from "@/data/organization-events"
+import { OrganizationEventCard } from "@/components/custom/OrganizationEventCard"
 
 export const revalidate = 300
 
 interface CompanyDetailPageProps {
   params: Promise<{ slug: string }>
+}
+
+function CompanyProfileList({ profiles }: { profiles: ProfileWithTags[] }) {
+  return (
+    <ul className="mt-4 space-y-4">
+      {profiles.map((profile) => {
+        const year = new Date(profile.departureDate + "T00:00:00").getFullYear()
+        return (
+          <li key={profile.slug}>
+            <Link
+              href={`/profiles/${profile.slug}`}
+              className="flex items-center gap-4 rounded-lg border border-border-light bg-surface-card px-5 py-4 hover:border-accent-amber/50"
+            >
+              <Avatar name={profile.name} photoUrl={profile.photoUrl} size={40} />
+              <div className="min-w-0 flex-1">
+                <p className="font-medium text-text-primary">{profile.name}</p>
+                <p className="text-sm text-text-secondary">
+                  {profile.role} · {year}
+                </p>
+              </div>
+              <span className="shrink-0 text-xs text-text-secondary">
+                {EVIDENCE_LABELS[profile.motiveEvidence]}
+              </span>
+            </Link>
+          </li>
+        )
+      })}
+    </ul>
+  )
 }
 
 export async function generateMetadata({
@@ -21,9 +54,12 @@ export async function generateMetadata({
     return { title: "Company Not Found · Ethical AI Departures" }
   }
 
+  const evidenceLinkedCount = company.profiles.filter(isHeadlineCounted).length
+  const eventCount = getOrganizationEventsByCompanySlug(slug).length
+
   return {
-    title: `Who Quit ${company.company} Over AI Safety — ${company.profiles.length} Departure${company.profiles.length !== 1 ? "s" : ""} Tracked`,
-    description: `${company.profiles.length} researcher${company.profiles.length !== 1 ? "s" : ""} and executive${company.profiles.length !== 1 ? "s" : ""} who quit or were fired from ${company.company} over AI safety and ethics concerns.`,
+    title: `${company.company} — ${evidenceLinkedCount} Evidence-Linked AI Departure${evidenceLinkedCount === 1 ? "" : "s"}`,
+    description: `Sourced records involving ${company.company}: ${evidenceLinkedCount} evidence-linked departure${evidenceLinkedCount === 1 ? "" : "s"}${eventCount > 0 ? ` and ${eventCount} documented organizational event${eventCount === 1 ? "" : "s"}` : ""}.`,
   }
 }
 
@@ -37,6 +73,12 @@ export default async function CompanyDetailPage({
     notFound()
   }
 
+  const evidenceLinkedProfiles = company.profiles.filter(isHeadlineCounted)
+  const allegedProfiles = company.profiles.filter(
+    (profile) => profile.motiveEvidence === "alleged"
+  )
+  const organizationEvents = getOrganizationEventsByCompanySlug(slug)
+
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
       {/* Header */}
@@ -44,8 +86,18 @@ export default async function CompanyDetailPage({
         {company.company}
       </h1>
       <p className="mt-2 text-lg text-text-secondary">
-        {company.profiles.length} departure
-        {company.profiles.length !== 1 ? "s and removals" : " or removal"} tracked
+        {evidenceLinkedProfiles.length} evidence-linked departure
+        {evidenceLinkedProfiles.length === 1 ? "" : "s"}
+        {(allegedProfiles.length > 0 || organizationEvents.length > 0) && (
+          <span className="text-base">
+            {allegedProfiles.length > 0
+              ? ` · ${allegedProfiles.length} unresolved`
+              : ""}
+            {organizationEvents.length > 0
+              ? ` · ${organizationEvents.length} organizational event${organizationEvents.length === 1 ? "" : "s"}`
+              : ""}
+          </span>
+        )}
       </p>
 
       {/* Overview */}
@@ -59,7 +111,7 @@ export default async function CompanyDetailPage({
       {company.concernBreakdown.length > 0 && (
         <section className="mt-8">
           <h2 className="font-serif text-xl font-semibold text-text-primary">
-            Concern Breakdown
+            Evidence-Linked Concern Breakdown
           </h2>
           <div className="mt-4 flex flex-wrap gap-2">
             {company.concernBreakdown.map((concern) => (
@@ -75,41 +127,44 @@ export default async function CompanyDetailPage({
         </section>
       )}
 
-      {/* Departure Timeline */}
-      <section className="mt-10">
-        <h2 className="font-serif text-xl font-semibold text-text-primary">
-          Departure Timeline
-        </h2>
-        <ul className="mt-4 space-y-4">
-          {company.profiles.map((profile) => {
-            const year = new Date(
-              profile.departureDate + "T00:00:00"
-            ).getFullYear()
-            return (
-              <li key={profile.slug}>
-                <Link
-                  href={`/profiles/${profile.slug}`}
-                  className="flex items-center gap-4 rounded-lg border border-border-light bg-surface-card px-5 py-4 hover:border-accent-amber/50"
-                >
-                  <Avatar
-                    name={profile.name}
-                    photoUrl={profile.photoUrl}
-                    size={40}
-                  />
-                  <div className="min-w-0 flex-1">
-                    <p className="font-medium text-text-primary">
-                      {profile.name}
-                    </p>
-                    <p className="text-sm text-text-secondary">
-                      {profile.role} · {year}
-                    </p>
-                  </div>
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-      </section>
+      {/* Evidence-linked timeline */}
+      {evidenceLinkedProfiles.length > 0 && (
+        <section className="mt-10">
+          <h2 className="font-serif text-xl font-semibold text-text-primary">
+            Evidence-Linked Departures
+          </h2>
+          <CompanyProfileList profiles={evidenceLinkedProfiles} />
+        </section>
+      )}
+
+      {organizationEvents.length > 0 && (
+        <section className="mt-10">
+          <h2 className="font-serif text-xl font-semibold text-text-primary">
+            Organizational Events
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-text-secondary">
+            Team-level changes are documented separately and never establish an
+            individual&apos;s motive or enter the departure count.
+          </p>
+          <div className="mt-4 space-y-4">
+            {organizationEvents.map((event) => (
+              <OrganizationEventCard key={event.slug} event={event} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {allegedProfiles.length > 0 && (
+        <section className="mt-10">
+          <h2 className="font-serif text-xl font-semibold text-text-primary">
+            Unresolved Allegations
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-text-secondary">
+            These claims are disputed or unresolved and are excluded from the primary tally.
+          </p>
+          <CompanyProfileList profiles={allegedProfiles} />
+        </section>
+      )}
 
       {/* JSON-LD */}
       <script

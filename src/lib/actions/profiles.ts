@@ -14,6 +14,34 @@ const profileInputSchema = z.object({
   status: z.enum(["draft", "published"]).default("draft"),
 })
 
+const optionalSourceUrlSchema = z.preprocess((value) => {
+  if (typeof value !== "string" || value.trim() === "") return undefined
+  const trimmed = value.trim()
+  return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`
+}, z.string().url("Please enter a valid source link").optional())
+
+const departureTipSchema = z
+  .object({
+    name: z.string().trim().optional(),
+    company: z.string().trim().optional(),
+    role: z.string().trim().optional(),
+    departureDate: z.string().trim().optional(),
+    statedReason: z.string().trim().optional(),
+    sourceUrl: optionalSourceUrlSchema,
+  })
+  .refine(
+    (tip) =>
+      Boolean(
+        tip.name ||
+          tip.company ||
+          tip.role ||
+          tip.departureDate ||
+          tip.statedReason ||
+          tip.sourceUrl
+      ),
+    { message: "Please include any detail you have about the departure" }
+  )
+
 export interface ProfileActionResult {
   success: boolean
   message: string
@@ -88,21 +116,27 @@ export async function createProfile(formData: FormData): Promise<ProfileActionRe
 }
 
 export async function submitDeparture(formData: FormData): Promise<ProfileActionResult> {
-  const name = (formData.get("name") as string) || ""
-  const company = (formData.get("company") as string) || ""
-  const role = (formData.get("role") as string) || ""
-  const departureDate = (formData.get("departureDate") as string) || ""
-  const statedReason = (formData.get("statedReason") as string) || undefined
-  const sourceUrl = (formData.get("sourceUrl") as string) || undefined
+  const parsed = departureTipSchema.safeParse({
+    name: formData.get("name") || undefined,
+    company: formData.get("company") || undefined,
+    role: formData.get("role") || undefined,
+    departureDate: formData.get("departureDate") || undefined,
+    statedReason: formData.get("statedReason") || undefined,
+    sourceUrl: formData.get("sourceUrl") || undefined,
+  })
+
+  if (!parsed.success) {
+    return { success: false, message: parsed.error.issues[0].message }
+  }
 
   try {
     await sendDepartureNotification({
-      name,
-      company,
-      role,
-      departureDate,
-      statedReason,
-      sourceUrl,
+      name: parsed.data.name ?? "Not provided",
+      company: parsed.data.company ?? "Not provided",
+      role: parsed.data.role ?? "Not provided",
+      departureDate: parsed.data.departureDate ?? "Not provided",
+      statedReason: parsed.data.statedReason,
+      sourceUrl: parsed.data.sourceUrl,
     })
 
     return { success: true, message: "Submission received — thank you." }

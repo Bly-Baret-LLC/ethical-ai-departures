@@ -15,6 +15,10 @@ function makeProfile(overrides: Partial<ProfileWithTags> = {}): ProfileWithTags 
     company: "OpenAI",
     role: "Engineer",
     departureDate: "2025-06-15",
+    departureDatePrecision: "day",
+    effectiveDepartureDate: null,
+    departureDateNote: null,
+    seoDescription: null,
     statedReason: null,
     departureContext: null,
     status: "published",
@@ -44,6 +48,7 @@ describe("parseFiltersFromParams", () => {
       concern: [],
       sort: "date",
       view: "card",
+      evidence: "evidence",
       q: "",
     })
   })
@@ -81,6 +86,24 @@ describe("parseFiltersFromParams", () => {
     const filters = parseFiltersFromParams(params)
 
     expect(filters.view).toBe("card")
+  })
+
+  it("defaults to the evidence-linked view", () => {
+    const filters = parseFiltersFromParams(new URLSearchParams())
+
+    expect(filters.evidence).toBe("evidence")
+  })
+
+  it("parses supported evidence views and rejects unknown values", () => {
+    expect(
+      parseFiltersFromParams(new URLSearchParams("evidence=alleged")).evidence
+    ).toBe("alleged")
+    expect(
+      parseFiltersFromParams(new URLSearchParams("evidence=contextual")).evidence
+    ).toBe("evidence")
+    expect(
+      parseFiltersFromParams(new URLSearchParams("evidence=unknown")).evidence
+    ).toBe("evidence")
   })
 })
 
@@ -169,17 +192,51 @@ describe("filterProfiles", () => {
     }),
   ]
 
-  it("returns all profiles with no filters", () => {
+  it("returns evidence-linked profiles in the default view", () => {
     const result = filterProfiles(profiles, {
       company: [],
       year: [],
       concern: [],
       sort: "date",
       view: "card",
+      evidence: "evidence",
       q: "",
     })
 
     expect(result).toHaveLength(3)
+  })
+
+  it("keeps archived-context and alleged records out of the default view", () => {
+    const mixedProfiles = [
+      ...profiles,
+      makeProfile({
+        slug: "context",
+        motiveEvidence: "contextual",
+        headlineCounted: false,
+      }),
+      makeProfile({
+        slug: "alleged",
+        motiveEvidence: "alleged",
+        headlineCounted: false,
+      }),
+    ]
+
+    const baseFilters = {
+      company: [],
+      year: [],
+      concern: [],
+      sort: "date" as const,
+      view: "card" as const,
+      q: "",
+    }
+
+    expect(
+      filterProfiles(mixedProfiles, { ...baseFilters, evidence: "evidence" })
+    ).toHaveLength(3)
+    expect(
+      filterProfiles(mixedProfiles, { ...baseFilters, evidence: "alleged" })
+        .map((profile) => profile.slug)
+    ).toEqual(["alleged"])
   })
 
   it("matches accented names with an ASCII search", () => {
@@ -191,6 +248,7 @@ describe("filterProfiles", () => {
         concern: [],
         sort: "date",
         view: "card",
+        evidence: "evidence",
         q: "Rene",
       }
     )
@@ -205,6 +263,7 @@ describe("filterProfiles", () => {
       concern: [],
       sort: "date",
       view: "card",
+      evidence: "evidence",
       q: "",
     })
 
@@ -219,6 +278,7 @@ describe("filterProfiles", () => {
       concern: [],
       sort: "date",
       view: "card",
+      evidence: "evidence",
       q: "",
     })
 
@@ -232,6 +292,7 @@ describe("filterProfiles", () => {
       concern: ["safety"],
       sort: "date",
       view: "card",
+      evidence: "evidence",
       q: "",
     })
 
@@ -246,6 +307,7 @@ describe("filterProfiles", () => {
       concern: [],
       sort: "date",
       view: "card",
+      evidence: "evidence",
       q: "",
     })
 
@@ -259,6 +321,7 @@ describe("filterProfiles", () => {
       concern: [],
       sort: "date",
       view: "card",
+      evidence: "evidence",
       q: "",
     })
 
@@ -274,6 +337,7 @@ describe("filterProfiles", () => {
       concern: [],
       sort: "name",
       view: "card",
+      evidence: "evidence",
       q: "",
     })
 
@@ -288,8 +352,9 @@ describe("filterProfiles", () => {
       year: [],
       concern: [],
       sort: "date",
-      view: "card",
-      q: "alice",
+        view: "card",
+        evidence: "evidence",
+        q: "alice",
     })
 
     expect(result).toHaveLength(1)
@@ -302,8 +367,9 @@ describe("filterProfiles", () => {
       year: [],
       concern: [],
       sort: "date",
-      view: "card",
-      q: "google",
+        view: "card",
+        evidence: "evidence",
+        q: "google",
     })
 
     expect(result).toHaveLength(1)
@@ -316,8 +382,9 @@ describe("filterProfiles", () => {
       year: [],
       concern: [],
       sort: "date",
-      view: "card",
-      q: "carol",
+        view: "card",
+        evidence: "evidence",
+        q: "carol",
     })
 
     expect(result).toHaveLength(1)

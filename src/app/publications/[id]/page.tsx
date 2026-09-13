@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { getPredictionById, getVoteCounts } from "@/lib/queries/predictions"
 import { getPublicationsByPredictionId } from "@/lib/queries/publications"
 import { InsiderVoteBar } from "@/components/custom/InsiderVoteBar"
+import { RECORD_KIND_LABELS, isForecast } from "@/lib/forecasts"
 
 export const revalidate = 300
 
@@ -16,8 +17,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const prediction = await getPredictionById(id)
   if (!prediction) return { title: "Prediction Not Found" }
 
+  const sectionLabel = isForecast(prediction) ? "Forecasts" : "Warnings"
+
   return {
-    title: `${prediction.title} · Predictions · Ethical AI Departures`,
+    title: `${prediction.title} · ${sectionLabel} · Ethical AI Departures`,
     description: prediction.description ?? prediction.resolutionCriteria,
   }
 }
@@ -48,30 +51,42 @@ export default async function PredictionDetailPage({ params }: PageProps) {
 
   if (!prediction) notFound()
 
+  const forecast = isForecast(prediction)
+
   const [votes, publications] = await Promise.all([
-    getVoteCounts(id),
+    forecast
+      ? getVoteCounts(id)
+      : Promise.resolve({ agree: 0, disagree: 0, total: 0 }),
     getPublicationsByPredictionId(id),
   ])
 
-  const isResolved = ["confirmed", "disproven", "partially_resolved"].includes(
-    prediction.status
-  )
+  const isResolved =
+    forecast &&
+    ["confirmed", "disproven", "partially_resolved"].includes(
+      prediction.status
+    )
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
       <Link
-        href="/publications"
+        href="/publications?tab=predictions"
         className="text-sm text-text-secondary hover:text-accent-amber"
       >
-        &larr; All Predictions
+        &larr; All Forecasts &amp; Warnings
       </Link>
 
       <div className="mt-6">
-        <span
-          className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${statusBadge[prediction.status] ?? "bg-surface-secondary text-text-secondary"}`}
-        >
-          {statusLabel[prediction.status] ?? prediction.status}
-        </span>
+        {forecast ? (
+          <span
+            className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${statusBadge[prediction.status] ?? "bg-surface-secondary text-text-secondary"}`}
+          >
+            {statusLabel[prediction.status] ?? prediction.status}
+          </span>
+        ) : (
+          <span className="inline-block rounded-full border border-border-light px-3 py-1 text-xs font-medium text-text-secondary">
+            {RECORD_KIND_LABELS[prediction.recordKind]}
+          </span>
+        )}
 
         <h1 className="mt-3 font-serif text-3xl font-semibold text-text-primary">
           {prediction.title}
@@ -100,12 +115,16 @@ export default async function PredictionDetailPage({ params }: PageProps) {
       </blockquote>
 
       {/* Resolution Criteria */}
-      <div className="mt-8">
-        <h2 className="text-lg font-semibold text-text-primary">
-          Resolution Criteria
-        </h2>
-        <p className="mt-2 text-text-secondary">{prediction.resolutionCriteria}</p>
-      </div>
+      {forecast && prediction.resolutionCriteria && (
+        <div className="mt-8">
+          <h2 className="text-lg font-semibold text-text-primary">
+            Resolution Criteria
+          </h2>
+          <p className="mt-2 text-text-secondary">
+            {prediction.resolutionCriteria}
+          </p>
+        </div>
+      )}
 
       {/* Resolution outcome */}
       {isResolved && prediction.resolutionOutcome && (
@@ -138,7 +157,7 @@ export default async function PredictionDetailPage({ params }: PageProps) {
       )}
 
       {/* Voting */}
-      {prediction.status === "open" && (
+      {forecast && prediction.status === "open" && (
         <div className="mt-8">
           <h2 className="text-lg font-semibold text-text-primary">
             Insider Assessment

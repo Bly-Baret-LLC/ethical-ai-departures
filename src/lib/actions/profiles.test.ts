@@ -167,7 +167,7 @@ describe("createProfile", () => {
 describe("submitDeparture", () => {
   it("sends email and returns success", async () => {
     const result = await submitDeparture(
-      makeFormData({ name: "Jane Smith", company: "Acme Corp", role: "Engineer", departureDate: "2025-06-15" })
+      makeFormData({ name: "Jane Smith", company: "Acme Corp", role: "Engineer", departureDate: "2025-06-15", sourceUrl: "https://example.com/source" })
     )
     expect(result.success).toBe(true)
     expect(result.message).toBe("Submission received — thank you.")
@@ -177,27 +177,50 @@ describe("submitDeparture", () => {
       role: "Engineer",
       departureDate: "2025-06-15",
       statedReason: undefined,
-      sourceUrl: undefined,
+      sourceUrl: "https://example.com/source",
     })
   })
 
-  it("accepts empty fields", async () => {
+  it("rejects a completely empty tip", async () => {
     const result = await submitDeparture(makeFormData({}))
+    expect(result.success).toBe(false)
+    expect(result.message).toBe("Please include any detail you have about the departure")
+    expect(sendDepartureNotification).not.toHaveBeenCalled()
+  })
+
+  it("accepts a tip without a source link", async () => {
+    const result = await submitDeparture(makeFormData({ name: "Jane Smith" }))
     expect(result.success).toBe(true)
-    expect(sendDepartureNotification).toHaveBeenCalledWith({
-      name: "",
-      company: "",
-      role: "",
-      departureDate: "",
-      statedReason: undefined,
-      sourceUrl: undefined,
-    })
+    expect(sendDepartureNotification).toHaveBeenCalledWith(
+      expect.objectContaining({ name: "Jane Smith", sourceUrl: undefined })
+    )
+  })
+
+  it("accepts and normalizes a typed source without a protocol", async () => {
+    const result = await submitDeparture(
+      makeFormData({ sourceUrl: "example.com/source" })
+    )
+    expect(result.success).toBe(true)
+    expect(sendDepartureNotification).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: "Not provided",
+        sourceUrl: "https://example.com/source",
+      })
+    )
+  })
+
+  it("rejects an invalid source link", async () => {
+    const result = await submitDeparture(
+      makeFormData({ name: "Jane Smith", sourceUrl: "not a url" })
+    )
+    expect(result.success).toBe(false)
+    expect(result.message).toBe("Please enter a valid source link")
   })
 
   it("returns error when email fails", async () => {
     vi.mocked(sendDepartureNotification).mockRejectedValueOnce(new Error("send failed"))
     const result = await submitDeparture(
-      makeFormData({ name: "Jane Smith", company: "Acme", role: "Eng", departureDate: "2025-01-01" })
+      makeFormData({ name: "Jane Smith", company: "Acme", role: "Eng", departureDate: "2025-01-01", sourceUrl: "https://example.com/source" })
     )
     expect(result.success).toBe(false)
     expect(result.message).toBe("Something went wrong. Please try again.")

@@ -60,6 +60,8 @@ const mockPrediction = {
   resolutionOutcome: null,
   resolutionRationale: null,
   resolutionEvidenceUrl: null,
+  recordKind: "prediction" as const,
+  underReview: false,
   createdAt: "2025-06-01T00:00:00Z",
   updatedAt: "2025-06-01T00:00:00Z",
 }
@@ -104,6 +106,25 @@ describe("PredictionDetailPage", () => {
     const jsx = await PredictionDetailPage({ params: Promise.resolve({ id: "p1" }) })
     render(jsx)
     expect(screen.getByTestId("vote-bar")).toBeInTheDocument()
+  })
+
+  it("does not show scoring controls or resolution criteria for warnings", async () => {
+    mockGetPredictionById.mockResolvedValue({
+      ...mockPrediction,
+      title: "Deployment pressure can weaken safety review",
+      recordKind: "warning",
+      status: "open",
+    })
+    mockGetVoteCounts.mockResolvedValue({ agree: 0, disagree: 0, total: 0 })
+    const jsx = await PredictionDetailPage({
+      params: Promise.resolve({ id: "p1" }),
+    })
+    render(jsx)
+
+    expect(screen.getByText("Warning")).toBeInTheDocument()
+    expect(screen.queryByText("Resolution Criteria")).not.toBeInTheDocument()
+    expect(screen.queryByTestId("vote-bar")).not.toBeInTheDocument()
+    expect(screen.queryByText("Open")).not.toBeInTheDocument()
   })
 
   it("shows resolution for resolved predictions", async () => {

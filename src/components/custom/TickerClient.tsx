@@ -5,24 +5,23 @@ import { STORAGE_KEYS } from "@/lib/constants"
 import { setStorageItem } from "@/lib/utils/storage"
 import { useTickerSubscription } from "@/hooks/useTickerSubscription"
 import Image from "next/image"
+import Link from "next/link"
 import { AnimatedCount } from "./AnimatedCount"
 
 interface TickerClientProps {
-  documentedCount: number
   evidenceLinkedCount: number
-  contextualCount: number
   allegedCount: number
 }
 
 export function TickerClient({
-  documentedCount,
   evidenceLinkedCount,
-  contextualCount,
   allegedCount,
 }: TickerClientProps) {
   const { liveCount } = useTickerSubscription()
 
-  const displayCount = liveCount ?? documentedCount
+  const hasValidLiveCount =
+    typeof liveCount === "number" && Number.isFinite(liveCount)
+  const displayCount = hasValidLiveCount ? liveCount : evidenceLinkedCount
 
   useEffect(() => {
     setStorageItem(STORAGE_KEYS.LAST_COUNT, String(displayCount))
@@ -53,7 +52,7 @@ export function TickerClient({
               <div className="shrink-0">
                 <AnimatedCount
                   value={displayCount}
-                  animate={liveCount !== null}
+                  animate={hasValidLiveCount}
                   className="font-display text-[72px] font-black uppercase leading-tight tracking-wider tabular-nums sm:text-[88px] md:text-[104px] lg:text-[120px] ticker-gradient"
                 />
               </div>
@@ -64,16 +63,25 @@ export function TickerClient({
                 </h1>
                 <p className="mt-2 text-sm leading-snug text-text-secondary">
                   Each record is labeled by evidence type: explicit statement,
-                  independent reporting, allegation, or context.
+                  independent reporting, or unresolved allegation.
                 </p>
                 <p className="mt-2 text-sm font-medium leading-snug text-text-primary">
                   {evidenceLinkedCount} evidence-linked departures
-                  <span className="font-normal text-text-secondary">
-                    {" "}· {contextualCount} contextual records
-                    {allegedCount > 0
-                      ? ` · ${allegedCount} unresolved allegation${allegedCount === 1 ? "" : "s"} shown separately`
-                      : ""}
-                  </span>
+                  {allegedCount > 0 && (
+                    <span className="font-normal text-text-secondary">
+                      {` · ${allegedCount} unresolved allegation${allegedCount === 1 ? "" : "s"} shown separately`}
+                    </span>
+                  )}
+                </p>
+                <p className="mt-2 text-xs leading-snug text-text-secondary">
+                  Following a September 2026 review, the headline count now
+                  reflects a stricter person-level evidence standard.{" "}
+                  <Link
+                    href="/corrections"
+                    className="underline underline-offset-2 transition-colors hover:text-text-primary"
+                  >
+                    What changed →
+                  </Link>
                 </p>
               </div>
             </div>

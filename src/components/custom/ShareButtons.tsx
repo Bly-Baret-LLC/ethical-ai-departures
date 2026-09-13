@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useCallback } from "react"
+import { trackEvent } from "@/lib/analytics"
 
 interface ShareButtonsProps {
   url: string
@@ -17,6 +18,7 @@ export function ShareButtons({ url: rawUrl, twitterText, linkedInText }: ShareBu
   const handleCopy = useCallback(async () => {
     try {
       await navigator.clipboard.writeText(url)
+      trackEvent("Profile Share", { method: "copy" })
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
@@ -33,6 +35,7 @@ export function ShareButtons({ url: rawUrl, twitterText, linkedInText }: ShareBu
         href={twitterUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackEvent("Profile Share", { method: "x" })}
         className="rounded-md border border-border-light px-3 py-1.5 text-sm text-text-secondary hover:bg-surface-secondary"
         aria-label={`Share on X (Twitter)${linkedInText ? "" : ""}`}
       >
@@ -42,6 +45,7 @@ export function ShareButtons({ url: rawUrl, twitterText, linkedInText }: ShareBu
         href={linkedInUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackEvent("Profile Share", { method: "linkedin" })}
         className="rounded-md border border-border-light px-3 py-1.5 text-sm text-text-secondary hover:bg-surface-secondary"
         aria-label="Share on LinkedIn"
       >

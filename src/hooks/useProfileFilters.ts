@@ -3,8 +3,10 @@
 import { useCallback, useMemo } from "react"
 import { useSearchParams, useRouter, usePathname } from "next/navigation"
 import type { ProfileWithTags } from "@/lib/schemas/profile"
+import { isHeadlineCounted } from "@/lib/evidence"
 
 export type ViewMode = "card" | "table"
+export type EvidenceView = "evidence" | "alleged"
 
 export interface FilterState {
   company: string[]
@@ -12,7 +14,12 @@ export interface FilterState {
   concern: string[]
   sort: "date" | "name"
   view: ViewMode
+  evidence: EvidenceView
   q: string
+}
+
+function parseEvidenceView(value: string | null): EvidenceView {
+  return value === "alleged" ? "alleged" : "evidence"
 }
 
 export function parseFiltersFromParams(params: URLSearchParams): FilterState {
@@ -22,6 +29,7 @@ export function parseFiltersFromParams(params: URLSearchParams): FilterState {
     concern: params.getAll("concern"),
     sort: params.get("sort") === "name" ? "name" : "date",
     view: params.get("view") === "table" ? "table" : "card",
+    evidence: parseEvidenceView(params.get("evidence")),
     q: params.get("q") ?? "",
   }
 }
@@ -34,6 +42,7 @@ function buildSearchParams(filters: FilterState): URLSearchParams {
   for (const t of filters.concern) params.append("concern", t)
   if (filters.sort !== "date") params.set("sort", filters.sort)
   if (filters.view !== "card") params.set("view", filters.view)
+  if (filters.evidence !== "evidence") params.set("evidence", filters.evidence)
   return params
 }
 
@@ -88,7 +97,9 @@ export function filterProfiles(
   profiles: ProfileWithTags[],
   filters: FilterState
 ): ProfileWithTags[] {
-  let result = profiles
+  let result = profiles.filter((profile) =>
+    matchesEvidenceView(profile, filters.evidence)
+  )
 
   // Text search
   if (filters.q) {
@@ -131,6 +142,14 @@ export function filterProfiles(
   })
 
   return result
+}
+
+export function matchesEvidenceView(
+  profile: ProfileWithTags,
+  evidence: EvidenceView
+): boolean {
+  if (evidence === "alleged") return profile.motiveEvidence === "alleged"
+  return isHeadlineCounted(profile)
 }
 
 export function useProfileFilters() {
@@ -184,14 +203,45 @@ export function useProfileFilters() {
     [filters, setFilters]
   )
 
+  const setEvidence = useCallback(
+    (evidence: EvidenceView) => {
+      setFilters({
+        ...filters,
+        evidence,
+        company: [],
+        year: [],
+        concern: [],
+        q: "",
+      })
+    },
+    [filters, setFilters]
+  )
+
   const clearAll = useCallback(() => {
-    setFilters({ company: [], year: [], concern: [], sort: "date", view: filters.view, q: "" })
-  }, [setFilters, filters.view])
+    setFilters({
+      company: [],
+      year: [],
+      concern: [],
+      sort: "date",
+      view: filters.view,
+      evidence: filters.evidence,
+      q: "",
+    })
+  }, [setFilters, filters.view, filters.evidence])
 
   const hasActiveFilters =
     filters.company.length > 0 ||
     filters.year.length > 0 ||
     filters.concern.length > 0
 
-  return { filters, toggleFilter, setSort, setView, setSearch, clearAll, hasActiveFilters }
+  return {
+    filters,
+    toggleFilter,
+    setSort,
+    setView,
+    setSearch,
+    setEvidence,
+    clearAll,
+    hasActiveFilters,
+  }
 }

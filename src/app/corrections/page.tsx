@@ -20,6 +20,16 @@ const severityColor: Record<string, string> = {
   critical: "text-status-error",
 }
 
+const sitewideCorrections = [
+  {
+    id: "2026-09-10-context-profile-audit",
+    date: "2026-09-10",
+    severity: "major",
+    description:
+      "We completed a sitewide audit of Context only profiles. Three records with person-level evidence were reclassified as Explicitly stated or Reported connection; 26 unsupported person records were archived; and one record was returned to draft pending primary-source verification. Organizational team dissolutions and reorganizations now appear in a separate record. The review changed the headline count from 69 published person records to 39 evidence-linked departures, with unresolved allegations shown separately. Jonathan Richard Schwarz's subsequently added, evidence-linked record brings the current count to 40.",
+  },
+] as const
+
 export default async function CorrectionsPage() {
   let corrections: Correction[]
   try {
@@ -27,6 +37,8 @@ export default async function CorrectionsPage() {
   } catch {
     corrections = []
   }
+
+  const displayedCorrections = [...sitewideCorrections, ...corrections]
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
@@ -38,7 +50,7 @@ export default async function CorrectionsPage() {
         corrections made to Ethical AI Departures content.
       </p>
 
-      {corrections.length === 0 ? (
+      {displayedCorrections.length === 0 ? (
         <div className="mt-10 rounded-lg border border-border-light bg-surface-card px-6 py-12 text-center">
           <p className="text-text-secondary">
             No corrections have been issued. If you believe any information is
@@ -47,7 +59,7 @@ export default async function CorrectionsPage() {
         </div>
       ) : (
         <ul className="mt-8 space-y-4">
-          {corrections.map((correction) => (
+          {displayedCorrections.map((correction) => (
             <li
               key={correction.id}
               className="rounded-lg border border-border-light bg-surface-card p-5"

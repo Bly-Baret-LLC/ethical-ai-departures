@@ -25,10 +25,14 @@ describe("CorrectionsPage", () => {
     expect(screen.getByRole("heading", { name: /Corrections Log/ })).toBeInTheDocument()
   })
 
-  it("shows empty state when no corrections", async () => {
+  it("shows the sitewide audit when there are no database corrections", async () => {
     const jsx = await CorrectionsPage()
     render(jsx)
-    expect(screen.getByText(/No corrections have been issued/)).toBeInTheDocument()
+    expect(
+      screen.getByText(/completed a sitewide audit of Context only profiles/)
+    ).toBeInTheDocument()
+    expect(screen.getByText(/from 69 published person records to 39 evidence-linked departures/)).toBeInTheDocument()
+    expect(screen.getByText("Major")).toBeInTheDocument()
   })
 
   it("renders corrections when they exist", async () => {

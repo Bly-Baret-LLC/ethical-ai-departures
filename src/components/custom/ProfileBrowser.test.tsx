@@ -37,6 +37,10 @@ function makeProfile(overrides: Partial<ProfileWithTags> = {}): ProfileWithTags 
     company: "OpenAI",
     role: "Engineer",
     departureDate: "2025-06-15",
+    departureDatePrecision: "day",
+    effectiveDepartureDate: null,
+    departureDateNote: null,
+    seoDescription: null,
     statedReason: null,
     departureContext: null,
     status: "published",
@@ -73,7 +77,24 @@ describe("ProfileBrowser", () => {
   it("shows total profile count", () => {
     render(<ProfileBrowser profiles={testProfiles} />)
 
-    expect(screen.getByText("3 profiles")).toBeInTheDocument()
+    expect(screen.getByText("3 evidence-linked records")).toBeInTheDocument()
+  })
+
+  it("defaults to evidence-linked records and does not expose archived context", () => {
+    const contextual = makeProfile({
+      slug: "context-person",
+      name: "Context Person",
+      motiveEvidence: "contextual",
+      headlineCounted: false,
+    })
+
+    render(<ProfileBrowser profiles={[...testProfiles, contextual]} />)
+
+    expect(screen.queryByText("Context Person")).not.toBeInTheDocument()
+    expect(
+      screen.getByRole("button", { name: "Evidence-linked (3)" })
+    ).toHaveAttribute("aria-pressed", "true")
+    expect(screen.queryByRole("button", { name: /Context only/ })).not.toBeInTheDocument()
   })
 
   it("renders filter panel with company options", () => {

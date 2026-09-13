@@ -79,6 +79,10 @@ export function profilesToJson(profiles: ProfileWithTags[]): string {
 export function buildExportFilename(filters: FilterState, ext: "csv" | "json"): string {
   const parts = ["ethical-ai-departures"]
 
+  if (filters.evidence !== "evidence") {
+    parts.push(filters.evidence)
+  }
+
   if (filters.company.length === 1) {
     parts.push(filters.company[0].toLowerCase().replace(/\s+/g, "-"))
   }

@@ -27,15 +27,15 @@ describe("EmailSignup", () => {
   it("renders heading and description", () => {
     render(<EmailSignup />)
 
-    expect(screen.getByText("Stay Informed")).toBeInTheDocument()
-    expect(screen.getByText(/Get notified/)).toBeInTheDocument()
+    expect(screen.getByText("Follow documented AI-safety departures")).toBeInTheDocument()
+    expect(screen.getByText(/source-verified profile/)).toBeInTheDocument()
   })
 
   it("renders GDPR consent text", () => {
     render(<EmailSignup />)
 
     expect(screen.getByText(/unsubscribe at any time/)).toBeInTheDocument()
-    expect(screen.getByText(/never share your email/)).toBeInTheDocument()
+    expect(screen.getByText(/never share your address/)).toBeInTheDocument()
   })
 
   it("shows success message after submission", async () => {

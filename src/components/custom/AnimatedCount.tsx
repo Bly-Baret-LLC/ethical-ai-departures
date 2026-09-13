@@ -15,34 +15,40 @@ function easeOutExpo(t: number): number {
 
 export function AnimatedCount({ value, className, animate = false, onComplete }: AnimatedCountProps) {
   const displayRef = useRef<HTMLSpanElement>(null)
-  const hasAnimated = useRef(false)
 
   useEffect(() => {
-    if (hasAnimated.current) return
-    hasAnimated.current = true
-
     const el = displayRef.current
     if (!el) { onComplete?.(); return }
 
+    const renderedValue = Number.parseInt(el.textContent ?? "", 10)
+    if (!animate || !Number.isFinite(renderedValue) || renderedValue === value) {
+      el.textContent = String(value)
+      onComplete?.()
+      return
+    }
+
     const duration = 2200
     const start = performance.now()
+    let frameId = 0
 
     function tick(now: number) {
       const elapsed = now - start
       const progress = Math.min(elapsed / duration, 1)
       const eased = easeOutExpo(progress)
-      el!.textContent = String(Math.round(eased * value))
+      el!.textContent = String(
+        Math.round(renderedValue + (value - renderedValue) * eased)
+      )
 
       if (progress < 1) {
-        requestAnimationFrame(tick)
+        frameId = requestAnimationFrame(tick)
       } else {
         onComplete?.()
       }
     }
 
-    el.textContent = "0"
-    requestAnimationFrame(tick)
-  }, [value, onComplete])
+    frameId = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frameId)
+  }, [value, animate, onComplete])
 
   return (
     <span

@@ -2,8 +2,13 @@
 
 import { useState, useRef } from "react"
 import { subscribeEmail, type SubscribeResult } from "@/lib/actions/subscribe"
+import { trackEvent } from "@/lib/analytics"
 
-export function EmailSignup() {
+interface EmailSignupProps {
+  placement?: "homepage" | "profile"
+}
+
+export function EmailSignup({ placement = "homepage" }: EmailSignupProps) {
   const [result, setResult] = useState<SubscribeResult | null>(null)
   const [pending, setPending] = useState(false)
   const formRef = useRef<HTMLFormElement>(null)
@@ -15,17 +20,17 @@ export function EmailSignup() {
     setPending(false)
     if (res.success) {
       formRef.current?.reset()
+      trackEvent("Newsletter Signup Request", { placement })
     }
   }
 
   return (
     <div className="rounded-lg border border-border-light bg-surface-card p-6">
       <h3 className="font-serif text-lg font-semibold text-text-primary">
-        Stay Informed
+        Follow documented AI-safety departures
       </h3>
       <p className="mt-1 text-sm text-text-secondary">
-        Get notified when new profiles are published or predictions are
-        resolved.
+        Get an email when a new, source-verified profile is published.
       </p>
 
       <form ref={formRef} action={handleSubmit} className="mt-4 flex gap-2">
@@ -58,10 +63,9 @@ export function EmailSignup() {
         </p>
       )}
 
-      <p className="mt-3 text-xs text-text-secondary/70">
-        We send occasional updates about new departures and prediction outcomes.
-        You can unsubscribe at any time via the link in each email. We never
-        share your email with third parties.
+      <p className="mt-3 text-xs text-text-secondary">
+        Confirm your address by email. You can unsubscribe at any time, and we
+        never share your address with third parties.
       </p>
     </div>
   )

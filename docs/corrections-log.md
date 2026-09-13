@@ -3,6 +3,34 @@
 A dated record of material profile, count, and methodology changes, per the
 editorial remediation brief (2026-07-22).
 
+## 2026-09-10 — Context-only profile audit
+
+Audited all 30 published Context only profiles against a stricter person-level
+standard. Team membership, timing, job title, a later safety-focused employer,
+or participation in a broader departure wave no longer supports a public person
+record by itself.
+
+- Promoted Daniela Amodei to **Explicitly stated** based on her Stanford
+  interview and corroborating TIME reporting.
+- Promoted Jeffrey Wu and Yuri Burda to **Reported connection** based on The
+  Information's person-specific reporting.
+- Moved Tom Brown to draft pending manual verification of the relevant passage
+  in his primary video interview; an accessible transcript was not available.
+- Archived 26 unsupported person records without deleting their source history.
+- Replaced the public Context only person category with a separate
+  **Organizational Events** record. Added OpenAI's Superalignment dissolution
+  Meta's Responsible Innovation reorganization, and the elimination of
+  Twitter's ML Ethics, Transparency and Accountability team. Events never
+  enter the person tally or establish an individual's motive.
+- Changed the headline number to the canonical evidence-linked count. Unresolved
+  allegations remain visible separately and excluded from that number.
+
+Expected local result after migration: 39 evidence-linked departures, 3
+unresolved allegations, and 3 organizational events.
+
+Jonathan Richard Schwarz's subsequently added evidence-linked profile brings
+the current local result to 40 departures.
+
 ## 2026-07-22 — Evidence-model remediation
 
 Implemented from `Ethical_AI_Departures_Implementation_Brief.md` (prepared

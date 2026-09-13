@@ -13,8 +13,21 @@ const mockCompanyDetail = {
       company: "OpenAI",
       role: "Safety Lead",
       departureDate: "2025-11-15",
+      departureDatePrecision: "day" as const,
+      effectiveDepartureDate: null,
+      departureDateNote: null,
+      seoDescription: null,
       statedReason: "Safety concerns deprioritized.",
+      departureContext: null,
       status: "published" as const,
+      departureType: "resigned" as const,
+      motiveEvidence: "direct" as const,
+      headlineCounted: true,
+      motiveQuote: null,
+      claimStatus: "uncontested" as const,
+      lastReviewedAt: null,
+      reviewer: null,
+      correctionNote: null,
       createdAt: "2025-11-20T00:00:00Z",
       updatedAt: "2025-11-20T00:00:00Z",
       concernTags: [
@@ -63,20 +76,20 @@ describe("CompanyDetailPage", () => {
     const jsx = await CompanyDetailPage({ params })
     render(jsx)
     expect(screen.getByRole("heading", { name: "OpenAI" })).toBeInTheDocument()
-    expect(screen.getByText(/1 departure or removal tracked/)).toBeInTheDocument()
+    expect(screen.getByText(/1 evidence-linked departure/)).toBeInTheDocument()
   })
 
   it("renders concern breakdown", async () => {
     const jsx = await CompanyDetailPage({ params })
     render(jsx)
-    expect(screen.getByRole("heading", { name: "Concern Breakdown" })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: "Evidence-Linked Concern Breakdown" })).toBeInTheDocument()
     expect(screen.getByText(/Safety Deprioritization/)).toBeInTheDocument()
   })
 
   it("renders departure timeline with profile links", async () => {
     const jsx = await CompanyDetailPage({ params })
     render(jsx)
-    expect(screen.getByRole("heading", { name: "Departure Timeline" })).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: "Evidence-Linked Departures" })).toBeInTheDocument()
     const profileLink = screen.getByRole("link", { name: /Elena Rodriguez/ })
     expect(profileLink).toHaveAttribute("href", "/profiles/elena-rodriguez")
   })

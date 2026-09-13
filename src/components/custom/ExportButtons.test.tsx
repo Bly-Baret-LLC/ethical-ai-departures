@@ -23,6 +23,10 @@ const mockProfiles: ProfileWithTags[] = [
     company: "OpenAI",
     role: "Safety Lead",
     departureDate: "2025-11-15",
+    departureDatePrecision: "day",
+    effectiveDepartureDate: null,
+    departureDateNote: null,
+    seoDescription: null,
     statedReason: "Safety concerns deprioritized.",
     departureContext: null,
     status: "published",
@@ -48,6 +52,7 @@ const defaultFilters: FilterState = {
   concern: [],
   sort: "date",
   view: "card",
+  evidence: "evidence",
   q: "",
 }
 

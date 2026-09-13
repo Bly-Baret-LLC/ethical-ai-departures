@@ -4,6 +4,7 @@ import {
   forecastSummaryLine,
   isForecast,
   isBinaryForecast,
+  recordDateVerb,
   type RecordKind,
 } from "./forecasts"
 
@@ -79,5 +80,19 @@ describe("forecast counting rules (Tracker Review acceptance checks)", () => {
       r("prediction", "open", true),
     ])
     expect(line).toContain("1 record under review")
+  })
+
+  it("uses accurate date language for each public record type", () => {
+    expect(recordDateVerb(r("prediction", "open"))).toBe("Predicted")
+    expect(recordDateVerb(r("probabilistic_forecast", "open"))).toBe(
+      "Predicted"
+    )
+    expect(recordDateVerb(r("warning", "not_applicable"))).toBe("Stated")
+    expect(recordDateVerb(r("contemporaneous_claim", "not_applicable"))).toBe(
+      "Stated"
+    )
+    expect(recordDateVerb(r("editorial_synthesis", "not_applicable"))).toBe(
+      "Published"
+    )
   })
 })

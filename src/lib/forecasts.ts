@@ -37,6 +37,16 @@ export function isWarningOrClaim(p: ForecastFields): boolean {
   return !isForecast(p)
 }
 
+/** Public date language should not describe a warning as a prediction. */
+export function recordDateVerb(p: Pick<ForecastFields, "recordKind">): string {
+  return p.recordKind === "editorial_synthesis"
+    ? "Published"
+    : p.recordKind === "prediction" ||
+        p.recordKind === "probabilistic_forecast"
+      ? "Predicted"
+      : "Stated"
+}
+
 /** Binary-scoreable forecasts only (probabilistic forecasts are excluded). */
 export function isBinaryForecast(p: ForecastFields): boolean {
   return p.recordKind === "prediction"

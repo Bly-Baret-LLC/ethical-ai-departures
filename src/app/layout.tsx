@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: "%s · Ethical AI Departures",
   },
   description:
-    "Documented departures and removals linked to AI safety, ethics, governance, and accountability. Each record is labeled by evidence type: explicit statement, independent reporting, allegation, or context.",
+    "Documented departures and removals linked to AI safety, ethics, governance, and accountability through explicit statements or independent reporting.",
   keywords: [
     "AI safety departures",
     "who quit OpenAI",

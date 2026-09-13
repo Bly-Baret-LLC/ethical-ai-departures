@@ -13,21 +13,15 @@ vi.mock("@/lib/queries/ticker", () => ({
 
 vi.mock("./TickerClient", () => ({
   TickerClient: ({
-    documentedCount,
     evidenceLinkedCount,
-    contextualCount,
     allegedCount,
   }: {
-    documentedCount: number
     evidenceLinkedCount: number
-    contextualCount: number
     allegedCount: number
   }) => (
     <div
       data-testid="ticker-client"
-      data-documented-count={documentedCount}
       data-total-count={evidenceLinkedCount}
-      data-contextual-count={contextualCount}
       data-alleged-count={allegedCount}
     />
   ),
@@ -46,15 +40,13 @@ describe("TickerBlock", () => {
 
     const client = screen.getByTestId("ticker-client")
     expect(client).toHaveAttribute("data-total-count", "6")
-    expect(client).toHaveAttribute("data-documented-count", "10")
   })
 
-  it("passes contextual and alleged counts to TickerClient", async () => {
+  it("passes alleged counts to TickerClient", async () => {
     const jsx = await TickerBlock()
     render(jsx)
 
     const client = screen.getByTestId("ticker-client")
-    expect(client).toHaveAttribute("data-contextual-count", "3")
     expect(client).toHaveAttribute("data-alleged-count", "1")
   })
 

@@ -1,12 +1,17 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
+import { createServiceClient } from "@/lib/supabase/server"
 import { subscribeInputSchema } from "@/lib/schemas/subscription"
+import { sendSubscriptionConfirmation } from "@/lib/email"
 
 export interface SubscribeResult {
   success: boolean
   message: string
 }
+
+const SUCCESS_MESSAGE =
+  "If this address isn't already subscribed, check your email to confirm."
+const RESEND_COOLDOWN_MS = 10 * 60 * 1000
 
 export async function subscribeEmail(formData: FormData): Promise<SubscribeResult> {
   const raw = { email: formData.get("email") }
@@ -19,49 +24,82 @@ export async function subscribeEmail(formData: FormData): Promise<SubscribeResul
   const { email } = parsed.data
 
   try {
-    const supabase = await createClient()
+    const supabase = createServiceClient()
 
     // Check if already subscribed
-    const { data: existing } = await supabase
+    const { data: existing, error: lookupError } = await supabase
       .from("email_subscriptions")
-      .select("id, status")
+      .select("id, status, confirmation_token, confirmation_sent_at")
       .eq("email", email)
-      .single()
+      .maybeSingle()
+
+    if (lookupError) throw lookupError
 
     if (existing) {
       if (existing.status === "confirmed") {
-        return { success: true, message: "You're already subscribed!" }
+        return { success: true, message: SUCCESS_MESSAGE }
       }
-      if (existing.status === "pending") {
-        return { success: true, message: "Check your email to confirm your subscription." }
+
+      const recentlySent =
+        existing.confirmation_sent_at &&
+        Date.now() - new Date(existing.confirmation_sent_at).getTime() <
+          RESEND_COOLDOWN_MS
+
+      if (existing.status === "pending" && recentlySent) {
+        return { success: true, message: SUCCESS_MESSAGE }
       }
-      // Resubscribe if previously unsubscribed
-      await supabase
+
+      const token = crypto.randomUUID()
+      const { error: updateError } = await supabase
         .from("email_subscriptions")
-        .update({ status: "pending", confirmation_token: crypto.randomUUID() })
+        .update({
+          status: "pending",
+          confirmation_token: token,
+          confirmation_sent_at: null,
+          confirmed_at: null,
+          unsubscribed_at: null,
+          updated_at: new Date().toISOString(),
+        })
         .eq("id", existing.id)
 
-      return { success: true, message: "Check your email to confirm your subscription." }
+      if (updateError) throw updateError
+
+      await sendSubscriptionConfirmation({ email, token })
+      await supabase
+        .from("email_subscriptions")
+        .update({ confirmation_sent_at: new Date().toISOString() })
+        .eq("id", existing.id)
+
+      return { success: true, message: SUCCESS_MESSAGE }
     }
 
     // New subscription
-    const { error } = await supabase.from("email_subscriptions").insert({
-      email,
-      status: "pending",
-      confirmation_token: crypto.randomUUID(),
-    })
+    const token = crypto.randomUUID()
+    const { data: inserted, error } = await supabase
+      .from("email_subscriptions")
+      .insert({
+        email,
+        status: "pending",
+        confirmation_token: token,
+      })
+      .select("id")
+      .single()
 
     if (error) {
       if (error.code === "23505") {
         // Unique constraint — race condition
-        return { success: true, message: "Check your email to confirm your subscription." }
+        return { success: true, message: SUCCESS_MESSAGE }
       }
       throw error
     }
 
-    // TODO: Send confirmation email via email provider (Resend, SendGrid, etc.)
+    await sendSubscriptionConfirmation({ email, token })
+    await supabase
+      .from("email_subscriptions")
+      .update({ confirmation_sent_at: new Date().toISOString() })
+      .eq("id", inserted.id)
 
-    return { success: true, message: "Check your email to confirm your subscription." }
+    return { success: true, message: SUCCESS_MESSAGE }
   } catch {
     return { success: false, message: "Something went wrong. Please try again." }
   }

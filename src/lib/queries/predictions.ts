@@ -51,7 +51,26 @@ const predictionDetailSchema = z
     description: z.string().nullable(),
     source_quote: z.string(),
     resolution_criteria: z.string(),
-    status: z.enum(["open", "pending_review", "confirmed", "disproven", "partially_resolved"]),
+    status: z.enum([
+      "open",
+      "pending_review",
+      "confirmed",
+      "disproven",
+      "partially_resolved",
+      "contradicted",
+      "unresolvable",
+      "not_applicable",
+    ]),
+    record_kind: z
+      .enum([
+        "prediction",
+        "probabilistic_forecast",
+        "warning",
+        "contemporaneous_claim",
+        "editorial_synthesis",
+      ])
+      .catch("prediction"),
+    under_review: z.boolean().catch(false),
     resolution_date: z.string().nullable(),
     resolution_outcome: z.enum(["true", "false", "partial"]).nullable(),
     resolution_rationale: z.string().nullable(),
@@ -75,6 +94,8 @@ const predictionDetailSchema = z
     resolutionOutcome: row.resolution_outcome,
     resolutionRationale: row.resolution_rationale,
     resolutionEvidenceUrl: row.resolution_evidence_url,
+    recordKind: row.record_kind,
+    underReview: row.under_review,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }))
@@ -181,4 +202,3 @@ export async function getTrackRecords(): Promise<TrackRecord[]> {
     .filter((r) => r.total > 0)
     .sort((a, b) => b.accuracy - a.accuracy)
 }
-

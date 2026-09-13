@@ -10,8 +10,24 @@ vi.mock("@/lib/queries/companies", () => ({
 import CompaniesPage from "./page"
 
 const mockCompanies = [
-  { company: "OpenAI", slug: "openai", count: 5 },
-  { company: "Anthropic", slug: "anthropic", count: 2 },
+  {
+    company: "OpenAI",
+    slug: "openai",
+    count: 5,
+    evidenceLinkedCount: 4,
+    contextualCount: 1,
+    allegedCount: 0,
+    eventCount: 1,
+  },
+  {
+    company: "Anthropic",
+    slug: "anthropic",
+    count: 2,
+    evidenceLinkedCount: 2,
+    contextualCount: 0,
+    allegedCount: 0,
+    eventCount: 0,
+  },
 ]
 
 beforeEach(() => {
@@ -34,9 +50,10 @@ describe("CompaniesPage", () => {
     const jsx = await CompaniesPage()
     render(jsx)
     expect(screen.getByText("OpenAI")).toBeInTheDocument()
-    expect(screen.getByText("5 departures")).toBeInTheDocument()
+    expect(screen.getByText("4 evidence-linked")).toBeInTheDocument()
+    expect(screen.getByText("1 organizational event")).toBeInTheDocument()
     expect(screen.getByText("Anthropic")).toBeInTheDocument()
-    expect(screen.getByText("2 departures")).toBeInTheDocument()
+    expect(screen.getByText("2 evidence-linked")).toBeInTheDocument()
   })
 
   it("links to company detail pages", async () => {

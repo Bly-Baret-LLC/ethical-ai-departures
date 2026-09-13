@@ -9,7 +9,6 @@ export async function GET(request: NextRequest) {
   const name = searchParams.get("name") ?? ""
   const company = searchParams.get("company") ?? ""
   const quote = searchParams.get("quote") ?? ""
-  const count = searchParams.get("count") ?? ""
 
   if (type === "profile") {
     return new ImageResponse(

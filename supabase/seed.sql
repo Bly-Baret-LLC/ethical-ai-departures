@@ -1,7 +1,7 @@
 -- Seed data for Ethical AI Departures
 -- Real concern taxonomy — profiles are imported via /admin/seed tool
 
--- Concern Tags (12 categories reflecting real departure patterns)
+-- Base concern taxonomy (later migrations may add categories)
 INSERT INTO concern_tags (id, name, slug, description) VALUES
   ('a0000000-0000-4000-8000-000000000001', 'Safety Deprioritization', 'safety-deprioritization', 'Company deprioritized safety research in favor of capabilities, shipping speed, or revenue.'),
   ('a0000000-0000-4000-8000-000000000002', 'Rushed Deployment', 'rushed-deployment', 'Models deployed to production without adequate safety testing or evaluation.'),

@@ -26,8 +26,9 @@ export default function AboutPage() {
           accountability. Records are classified by the strength and type of
           evidence linking the departure to the concern, so readers can
           distinguish what a person said themselves, what independent reporting
-          established, what remains an unresolved allegation, and what is
-          documented only as context. We maintain sourced, verifiable accounts
+          established, and what remains an unresolved allegation. Team
+          dissolutions and reorganizations are documented separately as
+          organizational events. We maintain sourced, verifiable accounts
           to help journalists, policymakers, and the public understand patterns
           in AI safety culture.
         </p>
@@ -59,11 +60,18 @@ export default function AboutPage() {
           <strong>Reported</strong> (reputable independent reporting explicitly
           establishes the connection), <strong>Alleged</strong> (the individual
           or a legal complaint alleges the link, and the claim may be disputed
-          or unresolved), or <strong>Contextual</strong> (the departure is
-          relevant to the chronology or team pattern, but the person&apos;s
-          motive is not established). Only Direct and Reported records are
-          included in the primary tally. Contextual records document relevant
-          team or leadership changes without asserting an unproven motive.
+          or unresolved). Only Direct and Reported records appear in the primary
+          tally and default directory. Alleged records are shown in a separate
+          view. We do not include someone
+          based only on their role, the timing of an exit, association with
+          another person, or a later employer.
+        </p>
+        <p className="mt-3 text-text-secondary leading-relaxed">
+          A team dissolution or reorganization can be included as an
+          organizational event when credible sources establish that a safety,
+          ethics, governance, or accountability function was eliminated or
+          materially reorganized. Events never enter the person tally and do not
+          establish the motives of people associated with the team.
         </p>
       </section>
 

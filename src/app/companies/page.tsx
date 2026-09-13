@@ -5,8 +5,8 @@ import { getCompanies } from "@/lib/queries/companies"
 export const revalidate = 300
 
 export const metadata: Metadata = {
-  title: "AI Companies With Safety Departures — OpenAI, Google, Anthropic, xAI",
-  description: "Which AI companies are losing researchers over safety concerns? Browse departures from OpenAI, Google DeepMind, Anthropic, Meta, xAI, and more.",
+  title: "Companies in the Ethical AI Departures Record",
+  description: "Browse companies represented in evidence-linked and unresolved records about AI safety and ethics departures, plus separately documented organizational events.",
 }
 
 export default async function CompaniesPage() {
@@ -33,7 +33,8 @@ export default async function CompaniesPage() {
         Companies
       </h1>
       <p className="mt-2 text-text-secondary">
-        AI companies with tracked ethically motivated departures, sorted by count.
+        Companies represented in the record, sorted by evidence-linked departures.
+        Unresolved allegations and organizational events are shown separately.
       </p>
 
       <ul className="mt-8 space-y-3">
@@ -46,8 +47,24 @@ export default async function CompaniesPage() {
               <span className="text-lg font-medium text-text-primary">
                 {c.company}
               </span>
-              <span className="text-sm text-text-secondary">
-                {c.count} departure{c.count !== 1 ? "s" : ""}
+              <span className="text-right text-sm text-text-secondary">
+                <span className="block font-medium text-text-primary">
+                  {c.evidenceLinkedCount} evidence-linked
+                </span>
+                {(c.allegedCount > 0 || c.eventCount > 0) && (
+                  <span className="block text-xs">
+                    {[
+                      c.allegedCount > 0
+                        ? `${c.allegedCount} unresolved`
+                        : null,
+                      c.eventCount > 0
+                        ? `${c.eventCount} organizational event${c.eventCount === 1 ? "" : "s"}`
+                        : null,
+                    ]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </span>
+                )}
               </span>
             </Link>
           </li>

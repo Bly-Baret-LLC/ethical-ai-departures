@@ -1,11 +1,14 @@
 "use client"
 
 import { useMemo } from "react"
+import Link from "next/link"
 import type { ProfileWithTags } from "@/lib/schemas/profile"
 import {
   useProfileFilters,
   extractFilterOptions,
   filterProfiles,
+  matchesEvidenceView,
+  type EvidenceView,
 } from "@/hooks/useProfileFilters"
 import { ProfileCard } from "./ProfileCard"
 import { FilterPanel } from "./FilterPanel"
@@ -16,12 +19,35 @@ interface ProfileBrowserProps {
 }
 
 export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
-  const { filters, toggleFilter, setSearch, clearAll, hasActiveFilters } =
-    useProfileFilters()
+  const {
+    filters,
+    toggleFilter,
+    setSearch,
+    setEvidence,
+    clearAll,
+    hasActiveFilters,
+  } = useProfileFilters()
+
+  const evidenceCounts = useMemo(
+    () => ({
+      evidence: profiles.filter((profile) =>
+        matchesEvidenceView(profile, "evidence")
+      ).length,
+      alleged: profiles.filter((profile) =>
+        matchesEvidenceView(profile, "alleged")
+      ).length,
+    }),
+    [profiles]
+  )
+
+  const evidenceViewProfiles = useMemo(
+    () => profiles.filter((profile) => matchesEvidenceView(profile, filters.evidence)),
+    [profiles, filters.evidence]
+  )
 
   const { companies, years, concerns } = useMemo(
-    () => extractFilterOptions(profiles),
-    [profiles]
+    () => extractFilterOptions(evidenceViewProfiles),
+    [evidenceViewProfiles]
   )
 
   const filtered = useMemo(
@@ -31,8 +57,79 @@ export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
 
   const hasSearch = filters.q.length > 0
 
+  const evidenceViews: Array<{
+    value: EvidenceView
+    label: string
+    countLabel: string
+    description: string
+  }> = [
+    {
+      value: "evidence",
+      label: "Evidence-linked",
+      countLabel: "evidence-linked",
+      description:
+        "The person explicitly connected the departure to a concern, or credible independent reporting established the connection.",
+    },
+    {
+      value: "alleged",
+      label: "Unresolved allegations",
+      countLabel: "unresolved-allegation",
+      description:
+        "The person or a legal complaint alleges retaliation or a related motive, but the claim is disputed or unresolved.",
+    },
+  ]
+
+  const selectedEvidenceView =
+    evidenceViews.find((view) => view.value === filters.evidence) ?? evidenceViews[0]
+
   return (
     <div className="mt-6">
+      <section aria-labelledby="record-view-heading" className="mb-8">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2
+              id="record-view-heading"
+              className="font-serif text-2xl font-semibold text-text-primary"
+            >
+              Browse the record
+            </h2>
+            <p className="mt-1 max-w-3xl text-sm leading-relaxed text-text-secondary">
+              {selectedEvidenceView.description}
+            </p>
+          </div>
+          <Link
+            href="/editorial-standards#evidence-categories"
+            className="shrink-0 text-sm text-accent-info hover:underline"
+          >
+            How we classify records →
+          </Link>
+        </div>
+
+        <div
+          className="mt-4 flex flex-wrap gap-2"
+          aria-label="Choose an evidence category"
+        >
+          {evidenceViews.map((view) => {
+            const selected = filters.evidence === view.value
+            return (
+              <button
+                key={view.value}
+                type="button"
+                onClick={() => setEvidence(view.value)}
+                aria-pressed={selected}
+                className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+                  selected
+                    ? "border-text-primary bg-text-primary text-surface-primary"
+                    : "border-border-light bg-surface-card text-text-secondary hover:border-accent-amber/50 hover:text-text-primary"
+                }`}
+              >
+                {view.label} ({evidenceCounts[view.value]})
+              </button>
+            )
+          })}
+        </div>
+      </section>
+
       <div className="flex flex-col gap-6 lg:flex-row">
       <FilterPanel
         companies={companies}
@@ -53,8 +150,8 @@ export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
         <div className="mb-4">
           <p className="text-sm text-text-secondary">
             {hasActiveFilters || hasSearch
-              ? `Showing ${filtered.length} of ${profiles.length} profiles`
-              : `${profiles.length} profile${profiles.length !== 1 ? "s" : ""}`}
+              ? `Showing ${filtered.length} of ${evidenceViewProfiles.length} records in this category`
+              : `${evidenceViewProfiles.length} ${selectedEvidenceView.countLabel} record${evidenceViewProfiles.length !== 1 ? "s" : ""}`}
           </p>
         </div>
 

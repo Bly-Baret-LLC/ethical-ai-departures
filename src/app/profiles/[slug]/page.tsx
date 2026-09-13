@@ -12,6 +12,12 @@ import { Avatar } from "@/components/custom/Avatar"
 import { SourceTooltip } from "@/components/custom/SourceTooltip"
 import { ShareButtons } from "@/components/custom/ShareButtons"
 import { PredictionStatusBadge } from "@/components/custom/PredictionStatusBadge"
+import { EmailSignup } from "@/components/custom/EmailSignup"
+import {
+  RECORD_KIND_LABELS,
+  forecastSummaryLine,
+  isForecast,
+} from "@/lib/forecasts"
 
 // ISR: 5-minute revalidation
 export const revalidate = 300
@@ -80,6 +86,8 @@ export default async function ProfileDetailPage({
   }
 
   const year = new Date(profile.departureDate + "T00:00:00").getFullYear()
+  const evidenceViewParam =
+    profile.motiveEvidence === "alleged" ? "&evidence=alleged" : ""
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
@@ -114,6 +122,17 @@ export default async function ProfileDetailPage({
               </span>
             )}
           </div>
+          {profile.lastReviewedAt && (
+            <p className="mt-2 text-xs text-text-secondary">
+              Evidence reviewed{" "}
+              <time dateTime={profile.lastReviewedAt}>
+                {new Date(`${profile.lastReviewedAt}T00:00:00`).toLocaleDateString(
+                  "en-US",
+                  { year: "numeric", month: "long", day: "numeric" }
+                )}
+              </time>
+            </p>
+          )}
         </div>
       </div>
 
@@ -162,7 +181,7 @@ export default async function ProfileDetailPage({
           {profile.concernTags.map((tag) => (
             <Link
               key={tag.id}
-              href={`/?concern=${tag.slug}`}
+              href={`/?concern=${tag.slug}${evidenceViewParam}`}
               className="rounded-full bg-accent-amber/10 px-3 py-1 text-sm font-medium text-accent-amber hover:bg-accent-amber/20"
             >
               {tag.name}
@@ -262,15 +281,14 @@ export default async function ProfileDetailPage({
         </section>
       )}
 
-      {/* Predictions */}
+      {/* Forecasts and warnings */}
       {predictions.length > 0 && (
         <section className="mt-10">
           <h2 className="font-serif text-xl font-semibold text-text-primary">
-            Predictions
+            Forecasts &amp; Warnings
           </h2>
           <p className="mt-1 text-sm text-text-secondary">
-            {predictions.filter((p) => p.status === "confirmed").length} of{" "}
-            {predictions.length} confirmed
+            {forecastSummaryLine(predictions)}
           </p>
           <ul className="mt-4 space-y-3">
             {predictions.map((pred) => (
@@ -279,7 +297,13 @@ export default async function ProfileDetailPage({
                 className="rounded-lg border border-border-light bg-surface-card px-5 py-4"
               >
                 <div className="flex items-start gap-2">
-                  <PredictionStatusBadge status={pred.status} />
+                  {isForecast(pred) ? (
+                    <PredictionStatusBadge status={pred.status} />
+                  ) : (
+                    <span className="inline-flex shrink-0 items-center rounded-full border border-border-light px-2.5 py-0.5 text-xs font-medium text-text-secondary">
+                      {RECORD_KIND_LABELS[pred.recordKind]}
+                    </span>
+                  )}
                   <div className="min-w-0 flex-1">
                     <p className="font-medium text-text-primary text-sm leading-snug">
                       {pred.title}
@@ -289,7 +313,9 @@ export default async function ProfileDetailPage({
                         &ldquo;{pred.sourceQuote}&rdquo;
                       </p>
                     )}
-                    {pred.resolutionRationale && pred.status !== "open" && (
+                    {isForecast(pred) &&
+                      pred.resolutionRationale &&
+                      pred.status !== "open" && (
                       <div className="mt-2 rounded-md bg-surface-secondary/50 px-3 py-2">
                         <p className="text-xs text-text-secondary">
                           {pred.resolutionRationale}
@@ -320,6 +346,10 @@ export default async function ProfileDetailPage({
           url={`${(process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()}/profiles/${profile.slug}`}
           twitterText={`${profile.name} — departure from ${profile.company}. Read the sourced, evidence-labeled account on @WarningCollect:`}
         />
+      </div>
+
+      <div className="mt-10">
+        <EmailSignup placement="profile" />
       </div>
 
       {/* JSON-LD */}

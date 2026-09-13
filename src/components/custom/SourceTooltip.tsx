@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback, useEffect } from "react"
 import type { OgPreviewData } from "@/app/api/og-preview/route"
+import { trackEvent } from "@/lib/analytics"
 
 interface SourceTooltipProps {
   url: string
@@ -99,6 +100,17 @@ export function SourceTooltip({ url, children }: SourceTooltipProps) {
   }, [])
 
   const hasContent = preview && (preview.title || preview.description)
+  const sourceDomain = (() => {
+    try {
+      return new URL(url).hostname.replace(/^www\./, "")
+    } catch {
+      return "unknown"
+    }
+  })()
+
+  const trackSourceClick = () => {
+    trackEvent("Source Click", { domain: sourceDomain })
+  }
 
   return (
     <span className="relative inline">
@@ -107,6 +119,7 @@ export function SourceTooltip({ url, children }: SourceTooltipProps) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={trackSourceClick}
         onMouseEnter={show}
         onMouseLeave={hide}
         onFocus={show}
@@ -168,6 +181,7 @@ export function SourceTooltip({ url, children }: SourceTooltipProps) {
             href={url}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={trackSourceClick}
             className="mt-2 block text-xs text-accent-info hover:underline"
           >
             Open in new tab ↗

@@ -5,7 +5,11 @@ import Link from "next/link"
 import type { PredictionWithProfile } from "@/lib/schemas/prediction"
 import { PredictionStatusBadge } from "./PredictionStatusBadge"
 import { ExpandableText } from "./ExpandableText"
-import { RECORD_KIND_LABELS, isForecast } from "@/lib/forecasts"
+import {
+  RECORD_KIND_LABELS,
+  isForecast,
+  recordDateVerb,
+} from "@/lib/forecasts"
 
 interface PredictionCardProps {
   prediction: PredictionWithProfile
@@ -45,7 +49,7 @@ export function PredictionCard({ prediction }: PredictionCardProps) {
           <>
             <span aria-hidden="true">&middot;</span>
             <span>
-              Predicted{" "}
+              {recordDateVerb(prediction)}{" "}
               {new Date(prediction.predictedDate + "T00:00:00").toLocaleDateString(undefined, {
                 year: "numeric",
               })}
@@ -121,32 +125,34 @@ export function PredictionCard({ prediction }: PredictionCardProps) {
         </div>
       )}
 
-      {prediction.resolutionRationale && prediction.status !== "open" && (
-        <div className="mt-3 rounded-md bg-surface-secondary/50 px-4 py-3">
-          <p className="text-xs font-medium text-text-secondary uppercase tracking-wide">
-            Resolution
-            {prediction.resolutionDate && (
-              <span className="ml-2 font-normal normal-case">
-                — {new Date(prediction.resolutionDate + "T00:00:00").toLocaleDateString(undefined, { year: "numeric", month: "short" })}
-              </span>
+      {prediction.resolutionRationale &&
+        isForecast(prediction) &&
+        prediction.status !== "open" && (
+          <div className="mt-3 rounded-md bg-surface-secondary/50 px-4 py-3">
+            <p className="text-xs font-medium text-text-secondary uppercase tracking-wide">
+              Resolution
+              {prediction.resolutionDate && (
+                <span className="ml-2 font-normal normal-case">
+                  — {new Date(prediction.resolutionDate + "T00:00:00").toLocaleDateString(undefined, { year: "numeric", month: "short" })}
+                </span>
+              )}
+            </p>
+            <p className="mt-1 text-sm text-text-secondary">
+              {prediction.resolutionRationale}
+            </p>
+            {prediction.resolutionEvidenceUrl && (
+              <a
+                href={prediction.resolutionEvidenceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-accent-red/80 hover:text-accent-red hover:underline"
+              >
+                View evidence
+                <span aria-hidden="true">⤴</span>
+              </a>
             )}
-          </p>
-          <p className="mt-1 text-sm text-text-secondary">
-            {prediction.resolutionRationale}
-          </p>
-          {prediction.resolutionEvidenceUrl && (
-            <a
-              href={prediction.resolutionEvidenceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-accent-red/80 hover:text-accent-red hover:underline"
-            >
-              View evidence
-              <span aria-hidden="true">⤴</span>
-            </a>
-          )}
-        </div>
-      )}
+          </div>
+        )}
     </div>
   )
 }

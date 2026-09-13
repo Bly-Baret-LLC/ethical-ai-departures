@@ -110,6 +110,20 @@ describe("ProfileDetailPage", () => {
     expect(screen.getByText("First-party departure statement")).toBeInTheDocument()
   })
 
+  it("shows the latest evidence review date", async () => {
+    mockGetProfileBySlug.mockResolvedValueOnce({
+      ...mockProfile,
+      lastReviewedAt: "2026-09-10",
+    })
+
+    const jsx = await ProfileDetailPage({ params })
+    render(jsx)
+
+    expect(screen.getByText(/Evidence reviewed/)).toHaveTextContent(
+      "Evidence reviewed September 10, 2026"
+    )
+  })
+
   it("renders concern tags as links", async () => {
     const jsx = await ProfileDetailPage({ params })
     render(jsx)

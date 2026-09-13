@@ -17,6 +17,10 @@ const mockProfiles: ProfileWithTags[] = [
     company: "OpenAI",
     role: "Safety Lead",
     departureDate: "2025-11-15",
+    departureDatePrecision: "day",
+    effectiveDepartureDate: null,
+    departureDateNote: null,
+    seoDescription: null,
     statedReason: "Safety concerns deprioritized.",
     departureContext: null,
     status: "published",
@@ -42,6 +46,10 @@ const mockProfiles: ProfileWithTags[] = [
     company: "Anthropic",
     role: "Engineer",
     departureDate: "2025-06-01",
+    departureDatePrecision: "day",
+    effectiveDepartureDate: null,
+    departureDateNote: null,
+    seoDescription: null,
     statedReason: null,
     departureContext: null,
     status: "published",
@@ -65,6 +73,7 @@ const defaultFilters: FilterState = {
   concern: [],
   sort: "date",
   view: "card",
+  evidence: "evidence",
   q: "",
 }
 
@@ -156,6 +165,13 @@ describe("buildExportFilename", () => {
   it("skips multi-value filters", () => {
     const filters = { ...defaultFilters, company: ["OpenAI", "Anthropic"] }
     expect(buildExportFilename(filters, "csv")).toBe("ethical-ai-departures.csv")
+  })
+
+  it("labels exports from a non-default evidence view", () => {
+    const filters = { ...defaultFilters, evidence: "alleged" as const }
+    expect(buildExportFilename(filters, "csv")).toBe(
+      "ethical-ai-departures-alleged.csv"
+    )
   })
 })
 

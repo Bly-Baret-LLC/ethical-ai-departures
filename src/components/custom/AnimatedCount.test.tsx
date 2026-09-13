@@ -1,5 +1,5 @@
 import { describe, it, expect, afterEach } from "vitest"
-import { render, screen, cleanup } from "@testing-library/react"
+import { render, cleanup } from "@testing-library/react"
 import { AnimatedCount } from "./AnimatedCount"
 
 afterEach(() => {
@@ -34,6 +34,7 @@ describe("AnimatedCount", () => {
 
     const liveRegion = container.querySelector("[aria-live='polite']")
     expect(liveRegion).not.toHaveClass("digit-roll-in")
+    expect(liveRegion).toHaveTextContent("7")
   })
 
   it("adds digit-roll-in when animate prop is true", () => {

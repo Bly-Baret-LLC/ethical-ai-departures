@@ -9,6 +9,7 @@ import {
   buildExportFilename,
   downloadFile,
 } from "@/lib/utils/export"
+import { trackEvent } from "@/lib/analytics"
 
 interface ExportButtonsProps {
   profiles: ProfileWithTags[]
@@ -20,12 +21,14 @@ export function ExportButtons({ profiles, filters }: ExportButtonsProps) {
     const csv = profilesToCsv(profiles)
     const filename = buildExportFilename(filters, "csv")
     downloadFile(csv, filename, "text/csv;charset=utf-8;")
+    trackEvent("Dataset Export", { format: "csv", records: profiles.length })
   }, [profiles, filters])
 
   const handleJsonExport = useCallback(() => {
     const json = profilesToJson(profiles)
     const filename = buildExportFilename(filters, "json")
     downloadFile(json, filename, "application/json")
+    trackEvent("Dataset Export", { format: "json", records: profiles.length })
   }, [profiles, filters])
 
   if (profiles.length === 0) return null

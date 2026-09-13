@@ -39,9 +39,7 @@ const mockLocalStorage = {
 }
 
 const defaultProps = {
-  documentedCount: 10,
   evidenceLinkedCount: 6,
-  contextualCount: 3,
   allegedCount: 1,
 }
 
@@ -62,26 +60,35 @@ describe("TickerClient", () => {
       render(<TickerClient {...defaultProps} />)
     })
 
-    expect(screen.getByText("10")).toBeInTheDocument()
+    expect(screen.getByText("6")).toBeInTheDocument()
     expect(
       screen.getByText(
         /Documented departures and removals linked to AI safety/
       )
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/labeled by evidence type/)
+      screen.getByText(
+        /Each record is labeled by evidence type: explicit statement, independent reporting, or unresolved allegation/
+      )
     ).toBeInTheDocument()
     expect(
       screen.getByText(/6 evidence-linked departures/)
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/3 contextual records/)
+      screen.getByText(/1 unresolved allegation shown separately/)
     ).toBeInTheDocument()
+    expect(
+      screen.getByText(/headline count now reflects a stricter person-level evidence standard/)
+    ).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /What changed/ })).toHaveAttribute(
+      "href",
+      "/corrections"
+    )
   })
 
   it("updates stored count after render", async () => {
     await act(async () => {
-      render(<TickerClient {...defaultProps} documentedCount={42} />)
+      render(<TickerClient {...defaultProps} evidenceLinkedCount={42} />)
     })
 
     expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
@@ -104,11 +111,20 @@ describe("TickerClient", () => {
   it("renders with zero count without errors", async () => {
     await act(async () => {
       render(
-        <TickerClient documentedCount={0} evidenceLinkedCount={0} contextualCount={0} allegedCount={0} />
+        <TickerClient evidenceLinkedCount={0} allegedCount={0} />
       )
     })
 
     expect(screen.getByText("0")).toBeInTheDocument()
+  })
+
+  it("falls back to the evidence-linked count when the live count is invalid", async () => {
+    mockLiveCount.current = Number.NaN
+    await act(async () => {
+      render(<TickerClient {...defaultProps} />)
+    })
+
+    expect(screen.getByText("6")).toBeInTheDocument()
   })
 
   it("uses live count when available", async () => {

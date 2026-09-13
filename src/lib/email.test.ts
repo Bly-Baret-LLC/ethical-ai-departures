@@ -10,7 +10,11 @@ vi.mock("resend", () => ({
   },
 }))
 
-import { sendDepartureNotification, type DepartureSubmission } from "./email"
+import {
+  sendDepartureNotification,
+  sendSubscriptionConfirmation,
+  type DepartureSubmission,
+} from "./email"
 
 const validSubmission: DepartureSubmission = {
   name: "Jane Smith",
@@ -86,5 +90,40 @@ describe("sendDepartureNotification", () => {
     await sendDepartureNotification(validSubmission)
 
     expect(mockSend).not.toHaveBeenCalled()
+  })
+})
+
+describe("sendSubscriptionConfirmation", () => {
+  it("sends a confirmation link using the configured site URL", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SITE_URL", "http://localhost:3700/")
+    vi.stubEnv("EMAIL_FROM", "Ethical AI Departures <updates@example.com>")
+    mockSend.mockResolvedValue({ data: { id: "email-2" }, error: null })
+
+    await sendSubscriptionConfirmation({
+      email: "reader@example.com",
+      token: "11111111-1111-4111-8111-111111111111",
+    })
+
+    expect(mockSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        from: "Ethical AI Departures <updates@example.com>",
+        to: "reader@example.com",
+        subject: "Confirm your Ethical AI Departures updates",
+        text: expect.stringContaining(
+          "http://localhost:3700/subscribe/confirm?token=11111111-1111-4111-8111-111111111111"
+        ),
+      })
+    )
+  })
+
+  it("fails closed when email delivery is not configured", async () => {
+    vi.stubEnv("RESEND_API_KEY", "")
+
+    await expect(
+      sendSubscriptionConfirmation({
+        email: "reader@example.com",
+        token: "11111111-1111-4111-8111-111111111111",
+      })
+    ).rejects.toThrow("RESEND_API_KEY")
   })
 })

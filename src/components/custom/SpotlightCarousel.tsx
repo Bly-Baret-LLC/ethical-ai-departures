@@ -3,7 +3,12 @@
 import { useState } from "react"
 import Link from "next/link"
 import { PredictionStatusBadge } from "./PredictionStatusBadge"
-import { RECORD_KIND_LABELS, isForecast, type RecordKind } from "@/lib/forecasts"
+import {
+  RECORD_KIND_LABELS,
+  isForecast,
+  recordDateVerb,
+  type RecordKind,
+} from "@/lib/forecasts"
 
 export interface SpotlightSlide {
   id: string
@@ -105,7 +110,7 @@ export function SpotlightCarousel({
                     <>
                       <span aria-hidden="true">&middot;</span>
                       <span>
-                        Predicted{" "}
+                        {recordDateVerb(current)}{" "}
                         {new Date(current.predictedDate + "T00:00:00").toLocaleDateString(undefined, { year: "numeric" })}
                         {current.resolutionDate && current.status === "confirmed" && (
                           <>

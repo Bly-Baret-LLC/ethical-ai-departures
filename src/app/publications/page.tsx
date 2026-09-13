@@ -14,8 +14,8 @@ export const revalidate = 300
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()
 
 export const metadata: Metadata = {
-  title: "AI Safety Writings & Predictions — Papers, Essays, and Prediction Tracker",
-  description: "Papers, essays, and public statements from researchers who departed leading AI companies, alongside a prediction tracker currently under editorial review.",
+  title: "AI Safety Writings, Forecasts & Warnings",
+  description: "Papers, essays, reports, forecasts, and public warnings from people in the Ethical AI Departures record.",
   alternates: {
     canonical: `${siteUrl}/publications`,
   },
@@ -45,25 +45,17 @@ export default async function ThemesAndWritingsPage() {
 
       <div className="mt-6 space-y-4 text-text-secondary leading-relaxed">
         <p>
-          Across dozens of departures from OpenAI, Google, xAI, Anthropic, Meta, and Stability AI,
-          the same concerns surface again and again across their writings. Safety teams are dissolved or absorbed
-          into product work. Deployment timelines are compressed past the point where
-          meaningful evaluation is possible. Researchers who raise objections internally
-          find their concerns deprioritized, and sometimes face retaliation for speaking up.
+          Public statements and writings by people in the record provide context
+          for the concerns they raised about AI safety, ethics, governance, and
+          accountability. The collection includes peer-reviewed papers, policy
+          reports, essays, and departure statements, each linked to the person
+          and concern it helps document.
         </p>
         <p>
-          These are not abstract worries about a distant future. Many of the people who
-          left were senior scientists, alignment leads, and ethics researchers — some of
-          them architects of the safety frameworks at their former employers. Their
-          departures span several major AI organizations and accelerated through 2024
-          and into 2026, coinciding with the industry&apos;s pivot from cautious research
-          to aggressive commercialization.
-        </p>
-        <p>
-          The writings below — peer-reviewed papers, policy reports, public resignation
-          letters, and long-form essays — represent the intellectual foundation behind
-          these warnings. They document what these researchers saw, what they tried to
-          build, and why they ultimately decided they could no longer stay.
+          Forecasts &amp; Warnings separately records future-facing statements
+          with observable outcomes, dated warnings, and contemporaneous claims.
+          Each item preserves the original source and identifies how it is
+          classified.
         </p>
       </div>
 

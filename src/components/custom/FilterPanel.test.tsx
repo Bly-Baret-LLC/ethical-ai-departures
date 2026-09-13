@@ -32,6 +32,7 @@ const defaultFilters: FilterState = {
   concern: [],
   sort: "date",
   view: "card",
+  evidence: "evidence",
   q: "",
 }
 

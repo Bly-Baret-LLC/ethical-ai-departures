@@ -128,13 +128,14 @@ export function SubmitDepartureButton() {
             </div>
 
             <p className="mt-1 text-sm text-text-secondary">
-              Know someone who left over ethical concerns? Share with us.
+              See someone we missed? Share whatever you have—a name, company,
+              reason, or source. Incomplete tips are welcome.
             </p>
 
             <form ref={formRef} action={handleSubmit} className="mt-4 space-y-4">
               <div>
                 <label htmlFor="submit-name" className="block text-sm font-medium text-text-primary">
-                  Name
+                  Name <span className="font-normal text-text-secondary">(optional)</span>
                 </label>
                 <input
                   id="submit-name"
@@ -192,13 +193,16 @@ export function SubmitDepartureButton() {
 
               <div>
                 <label htmlFor="submit-source" className="block text-sm font-medium text-text-primary">
-                  Source Link
+                  Source Link <span className="font-normal text-text-secondary">(optional)</span>
                 </label>
                 <input
                   id="submit-source"
                   name="sourceUrl"
-                  type="url"
-                  placeholder="Article, tweet, LinkedIn post, etc."
+                  type="text"
+                  inputMode="url"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  placeholder="example.com/article or a social post"
                   className="mt-1 w-full rounded-md border border-border-light bg-bg-primary px-3 py-2 text-sm text-text-primary placeholder:text-text-secondary/50 focus:border-accent-amber focus:outline-none focus:ring-1 focus:ring-accent-amber"
                 />
               </div>

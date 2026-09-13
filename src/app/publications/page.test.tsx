@@ -54,11 +54,11 @@ describe("ThemesAndWritingsPage", () => {
     expect(screen.getByRole("heading", { name: /Publications/ })).toBeInTheDocument()
   })
 
-  it("renders thematic overview paragraphs", async () => {
+  it("renders the collection and classification overview", async () => {
     const jsx = await ThemesAndWritingsPage()
     render(jsx)
-    expect(screen.getByText(/the same concerns surface again and again/)).toBeInTheDocument()
-    expect(screen.getByText(/peer-reviewed papers, policy reports/)).toBeInTheDocument()
+    expect(screen.getByText(/Public statements and writings by people in the record/)).toBeInTheDocument()
+    expect(screen.getByText(/Forecasts & Warnings separately records/)).toBeInTheDocument()
   })
 
   it("forwards publications to the tabs component", async () => {
