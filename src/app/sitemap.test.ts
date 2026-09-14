@@ -32,6 +32,31 @@ describe("sitemap (SITE-04 / SITE-05)", () => {
     }
   })
 
+  it("includes editorial trust pages", async () => {
+    const entries = await sitemap()
+    const urls = entries.map((entry) => entry.url)
+
+    expect(urls).toContain("https://ethicalaidepartures.fyi/editorial-standards")
+    expect(urls).toContain("https://ethicalaidepartures.fyi/corrections")
+    expect(urls).toContain("https://ethicalaidepartures.fyi/contact")
+  })
+
+  it("does not invent a fresh last-modified date for static pages", async () => {
+    const entries = await sitemap()
+    const homepage = entries.find((entry) => entry.url === "https://ethicalaidepartures.fyi")
+
+    expect(homepage?.lastModified).toBeUndefined()
+  })
+
+  it("uses profile update dates for derived company pages", async () => {
+    const entries = await sitemap()
+    const google = entries.find(
+      (entry) => entry.url === "https://ethicalaidepartures.fyi/companies/google"
+    )
+
+    expect(google?.lastModified).toEqual(new Date("2026-01-01T00:00:00Z"))
+  })
+
   it("normalizeLoc strips embedded whitespace and line breaks", () => {
     expect(normalizeLoc(" https://example.com/a \n")).toBe(
       "https://example.com/a"

@@ -26,6 +26,17 @@ interface ProfileDetailPageProps {
   params: Promise<{ slug: string }>
 }
 
+function seoTitleForProfile(
+  profile: { slug: string; name: string; company: string },
+  year: number
+): string {
+  if (profile.slug === "jacob-coxon") {
+    return "Jacob Coxon resigns from Anthropic over AI safety concerns"
+  }
+
+  return profileTitle(profile.name, profile.company, year)
+}
+
 export async function generateMetadata({
   params,
 }: ProfileDetailPageProps): Promise<Metadata> {
@@ -54,13 +65,25 @@ export async function generateMetadata({
         ? `with an unresolved allegation concerning ${primaryConcern.toLowerCase()}`
         : "documented for context"
 
+  const title = seoTitleForProfile(profile, year)
+  const description =
+    profile.seoDescription ??
+    `${profile.name} departed ${profile.company} in ${year}, ${evidenceClause}. Sourced account with evidence labels, linked statements, and papers.`
+  const canonicalUrl = `${siteUrl}/profiles/${profile.slug}`
+
   return {
-    title: profileTitle(profile.name, profile.company, year),
-    description: profile.seoDescription ?? `${profile.name} departed ${profile.company} in ${year}, ${evidenceClause}. Sourced account with evidence labels, linked statements, and papers.`,
+    title: profile.slug === "jacob-coxon" ? { absolute: title } : title,
+    description,
     alternates: {
-      canonical: `${siteUrl}/profiles/${profile.slug}`,
+      canonical: canonicalUrl,
     },
     openGraph: {
+      type: "article",
+      title,
+      description,
+      url: canonicalUrl,
+      publishedTime: profile.createdAt,
+      modifiedTime: profile.updatedAt,
       images: [`${siteUrl}/api/og?${ogParams}`],
     },
     twitter: {
@@ -88,6 +111,12 @@ export default async function ProfileDetailPage({
   const year = new Date(profile.departureDate + "T00:00:00").getFullYear()
   const evidenceViewParam =
     profile.motiveEvidence === "alleged" ? "&evidence=alleged" : ""
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()
+  const canonicalUrl = `${siteUrl}/profiles/${profile.slug}`
+  const seoTitle = seoTitleForProfile(profile, year)
+  const seoDescription =
+    profile.seoDescription ??
+    `${profile.name} departed ${profile.company} in ${year}. Read the sourced, evidence-labeled account.`
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
@@ -138,9 +167,19 @@ export default async function ProfileDetailPage({
 
       {/* Stated Reason */}
       {profile.statedReason && (
-        <blockquote className="mt-8 border-l-[3px] border-accent-amber pl-4 text-lg italic text-text-secondary">
-          {profile.statedReason}
-        </blockquote>
+        <section className="mt-8" aria-labelledby="what-happened-heading">
+          <h2
+            id="what-happened-heading"
+            className="font-serif text-xl font-semibold text-text-primary"
+          >
+            {profile.slug === "jacob-coxon"
+              ? "Jacob Coxon’s resignation from Anthropic"
+              : "What happened"}
+          </h2>
+          <p className="mt-3 border-l-[3px] border-accent-amber pl-4 text-lg leading-relaxed text-text-secondary">
+            {profile.statedReason}
+          </p>
+        </section>
       )}
 
       {profile.departureDateNote && (
@@ -352,20 +391,37 @@ export default async function ProfileDetailPage({
         <EmailSignup placement="profile" />
       </div>
 
-      {/* JSON-LD */}
+      {/* JSON-LD: the page is an editorial record about the person. */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Person",
-            name: profile.name,
-            jobTitle: profile.role,
-            worksFor: {
+            "@type": "Article",
+            headline: seoTitle,
+            description: seoDescription,
+            mainEntityOfPage: canonicalUrl,
+            url: canonicalUrl,
+            datePublished: profile.createdAt,
+            dateModified: profile.updatedAt,
+            author: {
               "@type": "Organization",
-              name: profile.company,
+              name: "Ethical AI Departures",
+              url: siteUrl,
             },
-            url: `${(process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()}/profiles/${profile.slug}`,
+            publisher: {
+              "@type": "Organization",
+              name: "Ethical AI Departures",
+              url: siteUrl,
+            },
+            about: {
+              "@type": "Person",
+              name: profile.name,
+              jobTitle: profile.role,
+              description: `${profile.role}, formerly at ${profile.company}`,
+              url: canonicalUrl,
+            },
+            image: `${siteUrl}/api/og?type=profile&name=${encodeURIComponent(profile.name)}&company=${encodeURIComponent(profile.company)}`,
           }),
         }}
       />

@@ -113,6 +113,10 @@ describe("generateMetadata", () => {
   it("returns company metadata", async () => {
     const metadata = await generateMetadata({ params })
     expect(metadata.title).toContain("OpenAI")
+    expect(metadata.alternates?.canonical).toContain("/companies/openai")
+    expect(metadata.openGraph).toMatchObject({
+      url: expect.stringContaining("/companies/openai"),
+    })
   })
 
   it("returns not found metadata for missing company", async () => {

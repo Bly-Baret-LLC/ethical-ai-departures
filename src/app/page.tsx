@@ -1,3 +1,4 @@
+import type { Metadata } from "next"
 import { Suspense } from "react"
 import { getPublishedProfiles } from "@/lib/queries/profiles"
 import { ProfileBrowser } from "@/components/custom/ProfileBrowser"
@@ -13,13 +14,22 @@ export const revalidate = 60
 
 const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()
 
+export const metadata: Metadata = {
+  alternates: {
+    canonical: siteUrl,
+  },
+  openGraph: {
+    url: siteUrl,
+  },
+}
+
 const websiteJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   name: "Ethical AI Departures",
   url: siteUrl,
   description:
-    "Documenting departures and removals linked to AI safety, ethics, governance, and accountability, labeled by evidence type. An open record for journalists, researchers, and the public.",
+    "Documenting departures linked to AI safety, ethics, governance, and accountability, labeled by evidence type. An open record for journalists, researchers, and the public.",
 }
 
 export default async function HomePage() {

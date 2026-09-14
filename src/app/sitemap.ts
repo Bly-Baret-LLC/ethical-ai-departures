@@ -13,21 +13,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // exist (profiles are browsed on the homepage); a stale entry here returned
   // 404 to crawlers (SITE-04).
   const staticPages: MetadataRoute.Sitemap = [
-    { url: normalizeLoc(siteUrl), lastModified: new Date(), changeFrequency: "daily", priority: 1 },
-    { url: normalizeLoc(`${siteUrl}/companies`), lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: normalizeLoc(`${siteUrl}/organizational-events`), lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
-    { url: normalizeLoc(`${siteUrl}/publications`), lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
-    { url: normalizeLoc(`${siteUrl}/about`), lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
-    { url: normalizeLoc(`${siteUrl}/press`), lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
+    { url: normalizeLoc(siteUrl), changeFrequency: "daily", priority: 1 },
+    { url: normalizeLoc(`${siteUrl}/companies`), changeFrequency: "weekly", priority: 0.8 },
+    { url: normalizeLoc(`${siteUrl}/organizational-events`), changeFrequency: "monthly", priority: 0.7 },
+    { url: normalizeLoc(`${siteUrl}/publications`), changeFrequency: "weekly", priority: 0.8 },
+    { url: normalizeLoc(`${siteUrl}/about`), changeFrequency: "monthly", priority: 0.5 },
+    { url: normalizeLoc(`${siteUrl}/press`), changeFrequency: "monthly", priority: 0.5 },
+    { url: normalizeLoc(`${siteUrl}/editorial-standards`), changeFrequency: "monthly", priority: 0.5 },
+    { url: normalizeLoc(`${siteUrl}/corrections`), changeFrequency: "monthly", priority: 0.5 },
+    { url: normalizeLoc(`${siteUrl}/contact`), changeFrequency: "yearly", priority: 0.3 },
   ]
 
   try {
     const supabase = await createClient()
 
-    // Profile pages
+    // Profiles provide both their own canonical update dates and the latest
+    // meaningful update date for each derived company page.
     const { data: profiles } = await supabase
       .from("profiles")
-      .select("slug, updated_at")
+      .select("slug, company, updated_at")
       .eq("status", "published")
 
     const profilePages: MetadataRoute.Sitemap = (profiles ?? []).map((p) => ({
@@ -37,19 +41,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }))
 
-    // Company pages (derived from unique companies)
-    const { data: companyData } = await supabase
-      .from("profiles")
-      .select("company")
-      .eq("status", "published")
+    const companyUpdates = new Map<string, Date>()
+    for (const profile of profiles ?? []) {
+      const updatedAt = new Date(profile.updated_at)
+      const current = companyUpdates.get(profile.company)
+      if (!current || updatedAt > current) {
+        companyUpdates.set(profile.company, updatedAt)
+      }
+    }
 
-    const uniqueCompanies = new Set((companyData ?? []).map((r) => r.company))
-    const companyPages: MetadataRoute.Sitemap = Array.from(uniqueCompanies).map((name) => ({
-      url: normalizeLoc(`${siteUrl}/companies/${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`),
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
-    }))
+    const companyPages: MetadataRoute.Sitemap = Array.from(companyUpdates).map(
+      ([name, lastModified]) => ({
+        url: normalizeLoc(`${siteUrl}/companies/${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`),
+        lastModified,
+        changeFrequency: "weekly" as const,
+        priority: 0.6,
+      })
+    )
 
     return [...staticPages, ...profilePages, ...companyPages]
   } catch {

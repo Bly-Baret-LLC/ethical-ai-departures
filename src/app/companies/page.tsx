@@ -4,9 +4,17 @@ import { getCompanies } from "@/lib/queries/companies"
 
 export const revalidate = 300
 
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()
+
 export const metadata: Metadata = {
   title: "Companies in the Ethical AI Departures Record",
   description: "Browse companies represented in evidence-linked and unresolved records about AI safety and ethics departures, plus separately documented organizational events.",
+  alternates: {
+    canonical: `${siteUrl}/companies`,
+  },
+  openGraph: {
+    url: `${siteUrl}/companies`,
+  },
 }
 
 export default async function CompaniesPage() {

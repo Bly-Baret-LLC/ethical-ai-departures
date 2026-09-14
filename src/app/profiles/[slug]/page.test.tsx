@@ -90,9 +90,8 @@ describe("ProfileDetailPage", () => {
     const jsx = await ProfileDetailPage({ params })
     render(jsx)
 
-    expect(
-      screen.getByText("Safety concerns deprioritized.")
-    ).toBeInTheDocument()
+    expect(screen.getByRole("heading", { name: "What happened" })).toBeInTheDocument()
+    expect(screen.getByText("Safety concerns deprioritized.")).toBeInTheDocument()
   })
 
   it("renders a public date note and first-party motive quote", async () => {
@@ -166,9 +165,13 @@ describe("ProfileDetailPage", () => {
     const script = container.querySelector('script[type="application/ld+json"]')
     expect(script).not.toBeNull()
     const jsonLd = JSON.parse(script!.textContent!)
-    expect(jsonLd["@type"]).toBe("Person")
-    expect(jsonLd.name).toBe("Elena Rodriguez")
-    expect(jsonLd.worksFor.name).toBe("OpenAI")
+    expect(jsonLd["@type"]).toBe("Article")
+    expect(jsonLd.about["@type"]).toBe("Person")
+    expect(jsonLd.about.name).toBe("Elena Rodriguez")
+    expect(jsonLd.about.description).toContain("formerly at OpenAI")
+    expect(jsonLd.author.name).toBe("Ethical AI Departures")
+    expect(jsonLd.datePublished).toBe(mockProfile.createdAt)
+    expect(jsonLd.dateModified).toBe(mockProfile.updatedAt)
   })
 
   it("calls notFound when profile does not exist", async () => {
@@ -256,6 +259,28 @@ describe("generateMetadata", () => {
     const metadata = await generateMetadata({ params })
 
     expect(metadata.description).toBe("Custom editorial description.")
+  })
+
+  it("uses a query-aligned factual title for Jacob Coxon", async () => {
+    mockGetProfileBySlug.mockResolvedValueOnce({
+      ...mockProfile,
+      slug: "jacob-coxon",
+      name: "Jacob Coxon",
+      company: "Anthropic",
+      departureDate: "2026-09-08",
+    })
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ slug: "jacob-coxon" }),
+    })
+
+    expect(metadata.title).toEqual({
+      absolute: "Jacob Coxon resigns from Anthropic over AI safety concerns",
+    })
+    expect(metadata.openGraph).toMatchObject({
+      type: "article",
+      url: expect.stringContaining("/profiles/jacob-coxon"),
+    })
   })
 
   it("returns not found metadata when profile missing", async () => {
