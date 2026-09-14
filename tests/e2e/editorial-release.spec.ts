@@ -8,9 +8,12 @@ test.describe("Editorial release", () => {
 
     await expect(page.getByText("NaN", { exact: true })).toHaveCount(0)
     const ticker = page.getByRole("region", { name: "Departure ticker" })
-    const headlineCount = await ticker.locator("[aria-live='polite']").textContent()
-    await expect(ticker.getByText(/evidence-linked departures/)).toContainText(
-      `${headlineCount} evidence-linked departures`
+    await expect(ticker.locator("[aria-live='polite']")).toHaveText(/^\d+$/)
+    await expect(ticker).toContainText(
+      "Every entry is backed by the person's own statement or independent reporting."
+    )
+    await expect(ticker).toContainText(
+      /\d+ disputed cases? (?:is|are) listed separately\./
     )
     await expect(
       page.getByRole("button", { name: /^Evidence-linked \(/ })
