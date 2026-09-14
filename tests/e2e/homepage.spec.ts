@@ -11,7 +11,7 @@ test.describe("Homepage", () => {
     // Ticker headline (h1) is present
     const heading = page.getByRole("heading", { level: 1 })
     await expect(heading).toContainText(
-      "Documented departures and removals linked to AI safety"
+      "Documented departures linked to AI safety"
     )
   })
 

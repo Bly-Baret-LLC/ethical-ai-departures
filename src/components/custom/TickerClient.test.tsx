@@ -63,12 +63,7 @@ describe("TickerClient", () => {
     expect(screen.getByText("6")).toBeInTheDocument()
     expect(
       screen.getByText(
-        /Documented departures and removals linked to AI safety/
-      )
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText(
-        /Each record is labeled by evidence type: explicit statement, independent reporting, or unresolved allegation/
+        /Documented departures linked to AI safety/
       )
     ).toBeInTheDocument()
     expect(
@@ -78,7 +73,9 @@ describe("TickerClient", () => {
       screen.getByText(/1 unresolved allegation shown separately/)
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/headline count now reflects a stricter person-level evidence standard/)
+      screen.getByText(
+        /September 2026 update: The headline count now reflects a stricter person-level evidence standard/
+      )
     ).toBeInTheDocument()
     expect(screen.getByRole("link", { name: /What changed/ })).toHaveAttribute(
       "href",

@@ -48,8 +48,8 @@ export function TickerClient({
               />
             </div>
 
-            <div className="flex flex-col gap-4 pr-24 sm:flex-row sm:items-center sm:gap-6 sm:pr-32 md:pr-0">
-              <div className="shrink-0">
+            <div className="flex flex-col gap-4 pr-24 sm:flex-row sm:items-start sm:gap-6 sm:pr-32 md:pr-0">
+              <div className="shrink-0 sm:-translate-y-[34px] md:-translate-y-[41px] lg:-translate-y-[48px]">
                 <AnimatedCount
                   value={displayCount}
                   animate={hasValidLiveCount}
@@ -58,13 +58,9 @@ export function TickerClient({
               </div>
               <div className="max-w-[440px]">
                 <h1 className="font-serif text-base font-normal leading-snug text-text-primary sm:text-lg md:text-xl">
-                  Documented departures and removals linked to AI safety,
+                  Documented departures linked to AI safety,
                   ethics, governance, and accountability.
                 </h1>
-                <p className="mt-2 text-sm leading-snug text-text-secondary">
-                  Each record is labeled by evidence type: explicit statement,
-                  independent reporting, or unresolved allegation.
-                </p>
                 <p className="mt-2 text-sm font-medium leading-snug text-text-primary">
                   {evidenceLinkedCount} evidence-linked departures
                   {allegedCount > 0 && (
@@ -73,9 +69,9 @@ export function TickerClient({
                     </span>
                   )}
                 </p>
-                <p className="mt-2 text-xs leading-snug text-text-secondary">
-                  Following a September 2026 review, the headline count now
-                  reflects a stricter person-level evidence standard.{" "}
+                <p className="mt-10 border-t border-text-secondary/20 pt-3 text-[11px] leading-snug text-text-secondary">
+                  September 2026 update: The headline count now reflects a
+                  stricter person-level evidence standard.{" "}
                   <Link
                     href="/corrections"
                     className="underline underline-offset-2 transition-colors hover:text-text-primary"
