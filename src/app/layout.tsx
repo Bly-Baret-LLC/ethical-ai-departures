@@ -5,6 +5,7 @@ import { Suspense } from "react"
 import { PlausiblePageViewTracker } from "@/components/custom/PlausiblePageViewTracker"
 import { VisitTracker } from "@/components/custom/VisitTracker"
 import { SkipLinks } from "@/components/shared/SkipLinks"
+import { SiteFooter } from "@/components/shared/SiteFooter"
 import { SiteHeader } from "@/components/shared/SiteHeader"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import "./globals.css"
@@ -73,6 +74,7 @@ export default function RootLayout({
           <VisitTracker />
           <SiteHeader />
           {children}
+          <SiteFooter />
         </TooltipProvider>
       </body>
     </html>

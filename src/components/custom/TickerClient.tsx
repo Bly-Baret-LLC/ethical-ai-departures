@@ -5,7 +5,6 @@ import { STORAGE_KEYS } from "@/lib/constants"
 import { setStorageItem } from "@/lib/utils/storage"
 import { useTickerSubscription } from "@/hooks/useTickerSubscription"
 import Image from "next/image"
-import Link from "next/link"
 import { AnimatedCount } from "./AnimatedCount"
 
 interface TickerClientProps {
@@ -58,26 +57,18 @@ export function TickerClient({
               </div>
               <div className="max-w-[440px]">
                 <h1 className="font-serif text-base font-normal leading-snug text-text-primary sm:text-lg md:text-xl">
-                  Documented departures linked to AI safety,
-                  ethics, governance, and accountability.
+                  Researchers, engineers, and executives who left OpenAI,
+                  Google, Anthropic, and other AI companies over safety or
+                  ethics concerns.
                 </h1>
                 <p className="mt-2 text-sm font-medium leading-snug text-text-primary">
-                  {evidenceLinkedCount} evidence-linked departures
+                  Every entry is backed by the person&apos;s own statement or
+                  independent reporting.
                   {allegedCount > 0 && (
                     <span className="font-normal text-text-secondary">
-                      {` · ${allegedCount} unresolved allegation${allegedCount === 1 ? "" : "s"} shown separately`}
+                      {` ${allegedCount} disputed case${allegedCount === 1 ? " is" : "s are"} listed separately.`}
                     </span>
                   )}
-                </p>
-                <p className="mt-10 border-t border-text-secondary/20 pt-3 text-[11px] leading-snug text-text-secondary">
-                  September 2026 update: The headline count now reflects a
-                  stricter person-level evidence standard.{" "}
-                  <Link
-                    href="/corrections"
-                    className="underline underline-offset-2 transition-colors hover:text-text-primary"
-                  >
-                    What changed →
-                  </Link>
                 </p>
               </div>
             </div>

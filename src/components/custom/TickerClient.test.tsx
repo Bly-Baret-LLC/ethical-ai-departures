@@ -63,24 +63,17 @@ describe("TickerClient", () => {
     expect(screen.getByText("6")).toBeInTheDocument()
     expect(
       screen.getByText(
-        /Documented departures linked to AI safety/
+        /Researchers, engineers, and executives who left OpenAI/
       )
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/6 evidence-linked departures/)
+      screen.getByText(/Every entry is backed by the person's own statement or independent reporting/)
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/1 unresolved allegation shown separately/)
+      screen.getByText(/1 disputed case is listed separately/)
     ).toBeInTheDocument()
-    expect(
-      screen.getByText(
-        /September 2026 update: The headline count now reflects a stricter person-level evidence standard/
-      )
-    ).toBeInTheDocument()
-    expect(screen.getByRole("link", { name: /What changed/ })).toHaveAttribute(
-      "href",
-      "/corrections"
-    )
+    expect(screen.queryByText(/September 2026 update/)).not.toBeInTheDocument()
+    expect(screen.queryByRole("link", { name: /What changed/ })).not.toBeInTheDocument()
   })
 
   it("updates stored count after render", async () => {
