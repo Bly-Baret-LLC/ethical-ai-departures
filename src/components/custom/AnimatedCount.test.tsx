@@ -1,9 +1,11 @@
-import { describe, it, expect, afterEach } from "vitest"
-import { render, cleanup } from "@testing-library/react"
+import { describe, it, expect, afterEach, vi } from "vitest"
+import { render, cleanup, act } from "@testing-library/react"
 import { AnimatedCount } from "./AnimatedCount"
 
 afterEach(() => {
   cleanup()
+  vi.restoreAllMocks()
+  vi.unstubAllGlobals()
 })
 
 describe("AnimatedCount", () => {
@@ -42,6 +44,40 @@ describe("AnimatedCount", () => {
 
     const liveRegion = container.querySelector("[aria-live='polite']")
     expect(liveRegion).toHaveClass("digit-roll-in")
+  })
+
+  it("counts from zero to the target value on first load", () => {
+    let animationFrame: FrameRequestCallback | undefined
+    vi.spyOn(performance, "now").mockReturnValue(1000)
+    vi.stubGlobal(
+      "requestAnimationFrame",
+      vi.fn((callback: FrameRequestCallback) => {
+        animationFrame = callback
+        return 1
+      })
+    )
+    vi.stubGlobal("cancelAnimationFrame", vi.fn())
+
+    const { container } = render(<AnimatedCount value={40} animate />)
+    const liveRegion = container.querySelector("[aria-live='polite']")
+
+    expect(liveRegion).toHaveTextContent("0")
+
+    act(() => animationFrame?.(3500))
+
+    expect(liveRegion).toHaveTextContent("40")
+  })
+
+  it("shows the final value immediately when reduced motion is preferred", () => {
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn(() => ({ matches: true }))
+    )
+
+    const { container } = render(<AnimatedCount value={40} animate />)
+    const liveRegion = container.querySelector("[aria-live='polite']")
+
+    expect(liveRegion).toHaveTextContent("40")
   })
 
   it("has an invisible placeholder span for stable width", () => {

@@ -15,19 +15,26 @@ function easeOutExpo(t: number): number {
 
 export function AnimatedCount({ value, className, animate = false, onComplete }: AnimatedCountProps) {
   const displayRef = useRef<HTMLSpanElement>(null)
+  const previousValueRef = useRef<number | null>(null)
 
   useEffect(() => {
     const el = displayRef.current
     if (!el) { onComplete?.(); return }
 
-    const renderedValue = Number.parseInt(el.textContent ?? "", 10)
-    if (!animate || !Number.isFinite(renderedValue) || renderedValue === value) {
+    const prefersReducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    const startValue = previousValueRef.current ?? 0
+
+    if (!animate || prefersReducedMotion || startValue === value) {
       el.textContent = String(value)
+      previousValueRef.current = value
       onComplete?.()
       return
     }
 
-    const duration = 2200
+    el.textContent = String(startValue)
+    const duration = 2500
     const start = performance.now()
     let frameId = 0
 
@@ -36,12 +43,13 @@ export function AnimatedCount({ value, className, animate = false, onComplete }:
       const progress = Math.min(elapsed / duration, 1)
       const eased = easeOutExpo(progress)
       el!.textContent = String(
-        Math.round(renderedValue + (value - renderedValue) * eased)
+        Math.round(startValue + (value - startValue) * eased)
       )
 
       if (progress < 1) {
         frameId = requestAnimationFrame(tick)
       } else {
+        previousValueRef.current = value
         onComplete?.()
       }
     }

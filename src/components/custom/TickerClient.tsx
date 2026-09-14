@@ -51,7 +51,7 @@ export function TickerClient({
               <div className="shrink-0 sm:-translate-y-[34px] md:-translate-y-[41px] lg:-translate-y-[48px]">
                 <AnimatedCount
                   value={displayCount}
-                  animate={hasValidLiveCount}
+                  animate
                   className="font-display text-[72px] font-black uppercase leading-tight tracking-wider tabular-nums sm:text-[88px] md:text-[104px] lg:text-[120px] ticker-gradient"
                 />
               </div>

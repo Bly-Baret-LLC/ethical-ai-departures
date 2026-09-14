@@ -14,8 +14,8 @@ vi.mock("@/hooks/useTickerSubscription", () => ({
 
 // Mock AnimatedCount to render count directly for testing
 vi.mock("./AnimatedCount", () => ({
-  AnimatedCount: ({ value, className }: { value: number; className?: string }) => (
-    <span className={className} aria-live="polite">{value}</span>
+  AnimatedCount: ({ value, className, animate }: { value: number; className?: string; animate?: boolean }) => (
+    <span className={className} aria-live="polite" data-animate={animate}>{value}</span>
   ),
 }))
 
@@ -61,6 +61,7 @@ describe("TickerClient", () => {
     })
 
     expect(screen.getByText("6")).toBeInTheDocument()
+    expect(screen.getByText("6")).toHaveAttribute("data-animate", "true")
     expect(
       screen.getByText(
         /Researchers, engineers, and executives who left OpenAI/
