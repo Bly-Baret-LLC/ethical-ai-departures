@@ -1,9 +1,10 @@
 import { createClient } from "@/lib/supabase/server"
+import { createPublicClient } from "@/lib/supabase/public"
 import { profileWithTagsSchema, profileDetailSchema } from "@/lib/schemas/profile"
 
 /** Fetch all published profiles with concern tags, ordered by most recent departure */
 export async function getPublishedProfiles() {
-  const supabase = await createClient()
+  const supabase = createPublicClient()
   const { data, error } = await supabase
     .from("profiles")
     .select(`

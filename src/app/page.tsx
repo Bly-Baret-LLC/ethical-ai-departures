@@ -8,6 +8,7 @@ import { SubmitDepartureButton } from "@/components/custom/SubmitDepartureButton
 import { PredictionSpotlight } from "@/components/custom/PredictionSpotlight"
 import { LatestDepartureCallout } from "@/components/custom/LatestDepartureCallout"
 import { EmailSignup } from "@/components/custom/EmailSignup"
+import { allegedCount, headlineCount } from "@/lib/evidence"
 
 // Revalidate at the shorter ticker interval (profiles use 300s but ticker uses 60s)
 export const revalidate = 60
@@ -42,7 +43,10 @@ export default async function HomePage() {
 
   return (
     <main id="main-content" className="min-h-screen bg-surface-primary">
-      <TickerBlock />
+      <TickerBlock
+        evidenceLinkedCount={headlineCount(profiles)}
+        allegedCount={allegedCount(profiles)}
+      />
       <LatestDepartureCallout />
       <PredictionSpotlight />
       <section

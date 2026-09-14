@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server"
+import { createPublicClient } from "@/lib/supabase/public"
 import { getPredictions } from "@/lib/queries/predictions"
 import { SpotlightCarousel, type SpotlightSlide } from "./SpotlightCarousel"
 import { forecastSummary, isForecast, isWarningOrClaim } from "@/lib/forecasts"
@@ -25,35 +25,45 @@ export async function PredictionSpotlight() {
 
   if (!spotlightRecords.length) return null
 
-  // Fetch linked publications for each confirmed prediction
-  const supabase = await createClient()
-  const slides: SpotlightSlide[] = await Promise.all(
-    spotlightRecords.map(async (pred) => {
-      const { data: links } = await supabase
-        .from("publication_predictions")
-        .select("publications(title, url)")
-        .eq("prediction_id", pred.id)
+  // Fetch all linked publications in one request rather than one query per
+  // spotlight record.
+  const supabase = createPublicClient()
+  const { data: links } = await supabase
+    .from("publication_predictions")
+    .select("prediction_id, publications(title, url)")
+    .in("prediction_id", spotlightRecords.map((prediction) => prediction.id))
 
-      const linkedPublications = (links ?? [])
-        .map((l) => l.publications as unknown as { title: string; url: string | null })
-        .filter(Boolean)
+  const linksByPrediction = new Map<
+    string,
+    { title: string; url: string | null }[]
+  >()
 
-      return {
-        id: pred.id,
-        title: pred.title,
-        sourceQuote: pred.sourceQuote,
-        status: pred.status,
-        recordKind: pred.recordKind,
-        underReview: pred.underReview,
-        profileName: pred.profileName,
-        profileSlug: pred.profileSlug,
-        resolutionEvidenceUrl: pred.resolutionEvidenceUrl,
-        resolutionDate: pred.resolutionDate,
-        predictedDate: pred.predictedDate,
-        linkedPublications,
-      }
-    })
-  )
+  for (const link of links ?? []) {
+    const publication = link.publications as unknown as {
+      title: string
+      url: string | null
+    } | null
+    if (!publication) continue
+
+    const existing = linksByPrediction.get(link.prediction_id) ?? []
+    existing.push(publication)
+    linksByPrediction.set(link.prediction_id, existing)
+  }
+
+  const slides: SpotlightSlide[] = spotlightRecords.map((pred) => ({
+    id: pred.id,
+    title: pred.title,
+    sourceQuote: pred.sourceQuote,
+    status: pred.status,
+    recordKind: pred.recordKind,
+    underReview: pred.underReview,
+    profileName: pred.profileName,
+    profileSlug: pred.profileSlug,
+    resolutionEvidenceUrl: pred.resolutionEvidenceUrl,
+    resolutionDate: pred.resolutionDate,
+    predictedDate: pred.predictedDate,
+    linkedPublications: linksByPrediction.get(pred.id) ?? [],
+  }))
 
   return (
     <section

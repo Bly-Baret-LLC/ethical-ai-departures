@@ -9,6 +9,7 @@ export function SiteFooter() {
           person-level evidence standard.{" "}
           <Link
             href="/corrections"
+            prefetch={false}
             className="underline underline-offset-2 transition-colors hover:text-text-primary"
           >
             What changed →
@@ -16,6 +17,7 @@ export function SiteFooter() {
         </p>
         <Link
           href="/about"
+          prefetch={false}
           className="shrink-0 text-xs font-medium text-text-secondary underline-offset-2 transition-colors hover:text-text-primary hover:underline"
         >
           How we decide who&apos;s included →

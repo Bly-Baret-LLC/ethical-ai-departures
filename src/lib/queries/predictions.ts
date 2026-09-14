@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import { createPublicClient } from "@/lib/supabase/public"
 import {
   predictionWithProfileSchema,
   type PredictionWithProfile,
@@ -11,7 +12,7 @@ export async function getPredictions(filters?: {
   researcher?: string
   sort?: string
 }): Promise<PredictionWithProfile[]> {
-  const supabase = await createClient()
+  const supabase = createPublicClient()
 
   let query = supabase
     .from("predictions")

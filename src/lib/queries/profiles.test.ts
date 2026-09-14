@@ -83,6 +83,30 @@ vi.mock("@/lib/supabase/server", () => ({
   }),
 }))
 
+vi.mock("@/lib/supabase/public", () => ({
+  createPublicClient: vi.fn(() => ({
+    from: (...args: unknown[]) => {
+      mockFrom(...args)
+      const eqChain: Record<string, unknown> = {
+        order: (...oArgs: unknown[]) => {
+          mockOrder(...oArgs)
+          return listResponse
+        },
+      }
+      eqChain.eq = (...eqArgs: unknown[]) => {
+        mockEq(...eqArgs)
+        return eqChain
+      }
+      return {
+        select: (...sArgs: unknown[]) => {
+          mockSelect(...sArgs)
+          return { eq: eqChain.eq }
+        },
+      }
+    },
+  })),
+}))
+
 import { getPublishedProfiles, getProfileBySlug } from "./profiles"
 
 beforeEach(() => {

@@ -29,6 +29,7 @@ export function LatestDepartureCallout() {
         </div>
         <Link
           href="/profiles/jacob-coxon"
+          prefetch={false}
           onClick={() =>
             trackEvent("Latest Departure Click", { profile: "jacob-coxon" })
           }

@@ -57,6 +57,7 @@ export function SpotlightCarousel({
         </p>
         <Link
           href="/publications?tab=predictions"
+          prefetch={false}
           className="text-xs text-text-secondary transition-colors hover:text-accent-amber sm:shrink-0"
         >
           See all →
@@ -96,6 +97,7 @@ export function SpotlightCarousel({
                 )}
                 <Link
                   href={`/publications?tab=predictions#prediction-${current.id}`}
+                  prefetch={false}
                   className="group mt-2 block sm:mt-0"
                 >
                   <p className="font-medium text-text-primary leading-snug text-sm group-hover:text-accent-amber transition-colors">

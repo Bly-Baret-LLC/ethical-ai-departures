@@ -64,6 +64,7 @@ export function ProfileCard({
     <article className="relative">
       <Link
         href={`/profiles/${slug}`}
+        prefetch={false}
         aria-label={`${name}, ${role} at ${company}, ${year}`}
         className="group flex h-[192px] flex-col rounded-lg border border-border-light bg-surface-card p-5 transition-shadow duration-150 hover:shadow-md"
       >

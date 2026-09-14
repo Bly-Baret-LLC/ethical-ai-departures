@@ -1,19 +1,18 @@
-import { getTickerStats } from "@/lib/queries/ticker"
 import { TickerClient } from "./TickerClient"
 
-export async function TickerBlock() {
-  let stats
-  try {
-    stats = await getTickerStats()
-  } catch (error) {
-    console.error("Failed to load ticker stats:", error)
-    return null
-  }
+interface TickerBlockProps {
+  evidenceLinkedCount: number
+  allegedCount: number
+}
 
+export function TickerBlock({
+  evidenceLinkedCount,
+  allegedCount,
+}: TickerBlockProps) {
   return (
     <TickerClient
-      evidenceLinkedCount={stats.totalCount}
-      allegedCount={stats.allegedCount}
+      evidenceLinkedCount={evidenceLinkedCount}
+      allegedCount={allegedCount}
     />
   )
 }

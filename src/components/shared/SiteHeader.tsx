@@ -44,7 +44,11 @@ export function SiteHeader() {
   return (
     <header className="border-b-2 border-accent-red bg-surface-primary">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-        <Link href="/" className="font-display text-base font-black uppercase tracking-[0.15em] text-text-primary">
+        <Link
+          href="/"
+          prefetch={false}
+          className="font-display text-base font-black uppercase tracking-[0.15em] text-text-primary"
+        >
           Ethical AI Departures
         </Link>
 
@@ -54,6 +58,7 @@ export function SiteHeader() {
             <Link
               key={link.href}
               href={link.href}
+              prefetch={false}
               className={`text-sm ${
                 pathname === link.href
                   ? "font-medium text-text-primary"
@@ -108,6 +113,7 @@ export function SiteHeader() {
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  prefetch={false}
                   onClick={() => setMenuOpen(false)}
                   className={`block rounded-md px-3 py-2 text-sm ${
                     pathname === link.href
