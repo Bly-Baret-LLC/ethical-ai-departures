@@ -9,15 +9,17 @@ afterEach(() => {
 })
 
 describe("LatestDepartureCallout", () => {
-  it("links the factual homepage update to Jacob Coxon's profile", () => {
+  it("links the factual homepage update to Robert O'Callahan's profile", () => {
     render(<LatestDepartureCallout />)
 
     expect(
-      screen.getByRole("heading", { name: /Jacob Coxon resigns from Anthropic/ })
+      screen.getByRole("heading", {
+        name: /Robert O'Callahan resigns from Google DeepMind/,
+      })
     ).toBeInTheDocument()
     expect(screen.getByRole("link", { name: /Read the sourced record/ })).toHaveAttribute(
       "href",
-      "/profiles/jacob-coxon"
+      "/profiles/robert-ocallahan"
     )
   })
 
@@ -29,7 +31,7 @@ describe("LatestDepartureCallout", () => {
     fireEvent.click(screen.getByRole("link", { name: /Read the sourced record/ }))
 
     expect(plausible).toHaveBeenCalledWith("Latest Departure Click", {
-      props: { profile: "jacob-coxon" },
+      props: { profile: "robert-ocallahan" },
     })
   })
 })

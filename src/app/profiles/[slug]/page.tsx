@@ -34,6 +34,22 @@ function seoTitleForProfile(
     return "Jacob Coxon resigns from Anthropic over AI safety concerns"
   }
 
+  if (profile.slug === "bilal-chughtai") {
+    return "Bilal Chughtai resigns from Google DeepMind over AI safety concerns"
+  }
+
+  if (profile.slug === "joe-benton") {
+    return "Joe Benton leaves Anthropic over AI safety concerns"
+  }
+
+  if (profile.slug === "josh-engels") {
+    return "Josh Engels leaves Google DeepMind over AI safety concerns"
+  }
+
+  if (profile.slug === "robert-ocallahan") {
+    return "Robert O'Callahan resigns from Google DeepMind over AI safety concerns"
+  }
+
   return profileTitle(profile.name, profile.company, year)
 }
 

@@ -34,7 +34,17 @@ JOIN (VALUES
   ('rene-mayrhofer', 'inadequate-oversight'),
   ('rene-mayrhofer', 'lack-of-transparency'),
   ('jacob-coxon', 'safety-deprioritization'),
-  ('jacob-coxon', 'inadequate-oversight')
+  ('jacob-coxon', 'inadequate-oversight'),
+  ('bilal-chughtai', 'competitive-race-dynamics'),
+  ('bilal-chughtai', 'alignment-research-gaps'),
+  ('bilal-chughtai', 'lack-of-transparency'),
+  ('joe-benton', 'competitive-race-dynamics'),
+  ('joe-benton', 'safety-deprioritization'),
+  ('joe-benton', 'alignment-research-gaps'),
+  ('joe-benton', 'lack-of-transparency'),
+  ('josh-engels', 'alignment-research-gaps'),
+  ('robert-ocallahan', 'competitive-race-dynamics'),
+  ('robert-ocallahan', 'workforce-displacement')
 ) AS v(profile_slug, tag_slug)
   ON p.slug = v.profile_slug
 JOIN concern_tags ct ON ct.slug = v.tag_slug

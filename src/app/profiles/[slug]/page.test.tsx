@@ -283,6 +283,64 @@ describe("generateMetadata", () => {
     })
   })
 
+  it("names Google DeepMind and AI safety in Bilal Chughtai metadata", async () => {
+    mockGetProfileBySlug.mockResolvedValueOnce({
+      ...mockProfile,
+      slug: "bilal-chughtai",
+      name: "Bilal Chughtai",
+      company: "Google",
+      departureDate: "2026-08-31",
+    })
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ slug: "bilal-chughtai" }),
+    })
+
+    expect(metadata.title).toBe(
+      "Bilal Chughtai resigns from Google DeepMind over AI safety concerns"
+    )
+    expect(metadata.alternates?.canonical).toContain(
+      "/profiles/bilal-chughtai"
+    )
+  })
+
+  it.each([
+    {
+      slug: "joe-benton",
+      name: "Joe Benton",
+      company: "Anthropic",
+      title: "Joe Benton leaves Anthropic over AI safety concerns",
+    },
+    {
+      slug: "josh-engels",
+      name: "Josh Engels",
+      company: "Google",
+      title: "Josh Engels leaves Google DeepMind over AI safety concerns",
+    },
+    {
+      slug: "robert-ocallahan",
+      name: "Robert O'Callahan",
+      company: "Google",
+      title:
+        "Robert O'Callahan resigns from Google DeepMind over AI safety concerns",
+    },
+  ])("uses a factual SEO title for $name", async ({ slug, name, company, title }) => {
+    mockGetProfileBySlug.mockResolvedValueOnce({
+      ...mockProfile,
+      slug,
+      name,
+      company,
+      departureDate: "2026-08-01",
+    })
+
+    const metadata = await generateMetadata({
+      params: Promise.resolve({ slug }),
+    })
+
+    expect(metadata.title).toBe(title)
+    expect(metadata.alternates?.canonical).toContain(`/profiles/${slug}`)
+  })
+
   it("returns not found metadata when profile missing", async () => {
     mockGetProfileBySlug.mockResolvedValueOnce(null)
 
