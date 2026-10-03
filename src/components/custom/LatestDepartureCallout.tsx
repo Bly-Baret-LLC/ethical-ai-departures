@@ -12,26 +12,25 @@ export function LatestDepartureCallout() {
       <div className="rounded-lg border border-accent-amber/40 bg-accent-amber/5 px-5 py-4 sm:flex sm:items-center sm:justify-between sm:gap-6">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-accent-amber">
-            Latest verified departure · September 24, 2026
+            Latest verified record · September 2026
           </p>
           <h2
             id="latest-departure-heading"
             className="mt-1 font-serif text-lg font-semibold leading-snug text-text-primary"
           >
-            Robert O&apos;Callahan resigns from Google DeepMind over the pace
-            of AI development
+            David Robinson resigns from OpenAI over its approach to AI safety
           </h2>
           <p className="mt-1 text-sm leading-relaxed text-text-secondary">
-            His first-party statement connects his resignation to concern that
-            his chip-design work would make AI cheaper, faster, and more
-            pervasive.
+            His first-party account says OpenAI&apos;s launch-driven,
+            trial-and-error approach is not careful enough for increasingly
+            capable systems.
           </p>
         </div>
         <Link
-          href="/profiles/robert-ocallahan"
+          href="/profiles/david-robinson"
           prefetch={false}
           onClick={() =>
-            trackEvent("Latest Departure Click", { profile: "robert-ocallahan" })
+            trackEvent("Latest Departure Click", { profile: "david-robinson" })
           }
           className="mt-3 inline-flex shrink-0 text-sm font-medium text-accent-info hover:underline sm:mt-0"
         >
