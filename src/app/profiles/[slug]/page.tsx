@@ -50,6 +50,10 @@ function seoTitleForProfile(
     return "Robert O'Callahan resigns from Google DeepMind over AI safety concerns"
   }
 
+  if (profile.slug === "david-robinson") {
+    return "David Robinson resigns from OpenAI over AI safety concerns"
+  }
+
   return profileTitle(profile.name, profile.company, year)
 }
 

@@ -324,6 +324,12 @@ describe("generateMetadata", () => {
       title:
         "Robert O'Callahan resigns from Google DeepMind over AI safety concerns",
     },
+    {
+      slug: "david-robinson",
+      name: "David Robinson",
+      company: "OpenAI",
+      title: "David Robinson resigns from OpenAI over AI safety concerns",
+    },
   ])("uses a factual SEO title for $name", async ({ slug, name, company, title }) => {
     mockGetProfileBySlug.mockResolvedValueOnce({
       ...mockProfile,

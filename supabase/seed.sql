@@ -44,7 +44,11 @@ JOIN (VALUES
   ('joe-benton', 'lack-of-transparency'),
   ('josh-engels', 'alignment-research-gaps'),
   ('robert-ocallahan', 'competitive-race-dynamics'),
-  ('robert-ocallahan', 'workforce-displacement')
+  ('robert-ocallahan', 'workforce-displacement'),
+  ('david-robinson', 'safety-deprioritization'),
+  ('david-robinson', 'rushed-deployment'),
+  ('david-robinson', 'inadequate-oversight'),
+  ('david-robinson', 'alignment-research-gaps')
 ) AS v(profile_slug, tag_slug)
   ON p.slug = v.profile_slug
 JOIN concern_tags ct ON ct.slug = v.tag_slug
