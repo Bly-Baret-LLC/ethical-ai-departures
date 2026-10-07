@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { getProfileBySlug } from "@/lib/queries/profiles"
+import { concernHref } from "@/data/concern-guides"
 import {
   profileTitle,
   EVIDENCE_LABELS,
@@ -240,7 +241,7 @@ export default async function ProfileDetailPage({
           {profile.concernTags.map((tag) => (
             <Link
               key={tag.id}
-              href={`/?concern=${tag.slug}${evidenceViewParam}`}
+              href={concernHref(tag.slug, evidenceViewParam)}
               className="rounded-full bg-accent-amber/10 px-3 py-1 text-sm font-medium text-accent-amber hover:bg-accent-amber/20"
             >
               {tag.name}
@@ -251,7 +252,7 @@ export default async function ProfileDetailPage({
 
       {/* Sources */}
       {profile.sources.length > 0 && (
-        <section className="mt-10">
+        <section id="sources" className="mt-10 scroll-mt-6">
           <h2 className="font-serif text-xl font-semibold text-text-primary">
             Sources
           </h2>

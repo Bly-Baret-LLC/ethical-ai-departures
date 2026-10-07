@@ -128,7 +128,7 @@ describe("ProfileDetailPage", () => {
     render(jsx)
 
     const tagLink = screen.getByRole("link", { name: "Safety Deprioritization" })
-    expect(tagLink).toHaveAttribute("href", "/?concern=safety-deprioritization")
+    expect(tagLink).toHaveAttribute("href", "/concerns/safety-deprioritization")
   })
 
   it("renders sources section with links", async () => {

@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   description: "Papers, essays, reports, forecasts, and public warnings from people in the Ethical AI Departures record.",
   alternates: {
     canonical: `${siteUrl}/publications`,
+    types: {
+      "application/rss+xml": `${siteUrl}/publications/feed.xml`,
+    },
   },
 }
 

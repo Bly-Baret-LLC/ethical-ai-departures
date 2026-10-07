@@ -2,7 +2,19 @@ import { describe, it, expect, vi } from "vitest"
 
 vi.mock("@/lib/supabase/server", () => ({
   createClient: vi.fn().mockResolvedValue({
-    from: () => ({
+    from: (table: string) => table === "predictions" ? ({
+      select: () => ({
+        neq: (column: string, value: string) => ({
+          eq: (profileColumn: string, profileValue: string) => ({
+            data: column === "status" && value === "pending_review" &&
+              profileColumn === "profiles.status" && profileValue === "published"
+              ? [{ id: "forecast-1", updated_at: "2026-02-01T00:00:00Z" }]
+              : [],
+            error: null,
+          }),
+        }),
+      }),
+    }) : ({
       select: () => ({
         eq: () => ({
           data: [
@@ -39,6 +51,19 @@ describe("sitemap (SITE-04 / SITE-05)", () => {
     expect(urls).toContain("https://ethicalaidepartures.fyi/editorial-standards")
     expect(urls).toContain("https://ethicalaidepartures.fyi/corrections")
     expect(urls).toContain("https://ethicalaidepartures.fyi/contact")
+  })
+
+  it("discovers public forecast details and research resources", async () => {
+    const entries = await sitemap()
+    const urls = entries.map((entry) => entry.url)
+    expect(urls).toContain("https://ethicalaidepartures.fyi/themes")
+    expect(urls).toContain("https://ethicalaidepartures.fyi/widgets")
+    expect(urls).toContain("https://ethicalaidepartures.fyi/concerns")
+    expect(urls).toContain("https://ethicalaidepartures.fyi/concerns/safety-deprioritization")
+    expect(urls).toContain("https://ethicalaidepartures.fyi/concerns/inadequate-oversight")
+    expect(urls).toContain("https://ethicalaidepartures.fyi/concerns/lack-of-transparency")
+    expect(entries.find((entry) => entry.url.endsWith("/publications/forecast-1")))
+      .toMatchObject({ lastModified: new Date("2026-02-01T00:00:00Z") })
   })
 
   it("does not invent a fresh last-modified date for static pages", async () => {

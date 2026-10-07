@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next"
 import { createClient } from "@/lib/supabase/server"
+import { concernGuides } from "@/data/concern-guides"
 
 /** Harden <loc> values: strip whitespace/line breaks that some crawlers reject (SITE-05). */
 export function normalizeLoc(url: string): string {
@@ -17,6 +18,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: normalizeLoc(`${siteUrl}/companies`), changeFrequency: "weekly", priority: 0.8 },
     { url: normalizeLoc(`${siteUrl}/organizational-events`), changeFrequency: "monthly", priority: 0.7 },
     { url: normalizeLoc(`${siteUrl}/publications`), changeFrequency: "weekly", priority: 0.8 },
+    { url: normalizeLoc(`${siteUrl}/themes`), changeFrequency: "weekly", priority: 0.7 },
+    { url: normalizeLoc(`${siteUrl}/concerns`), changeFrequency: "weekly", priority: 0.8 },
+    ...concernGuides.map(({ slug }) => ({
+      url: normalizeLoc(`${siteUrl}/concerns/${slug}`),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    { url: normalizeLoc(`${siteUrl}/widgets`), changeFrequency: "monthly", priority: 0.4 },
     { url: normalizeLoc(`${siteUrl}/about`), changeFrequency: "monthly", priority: 0.5 },
     { url: normalizeLoc(`${siteUrl}/press`), changeFrequency: "monthly", priority: 0.5 },
     { url: normalizeLoc(`${siteUrl}/editorial-standards`), changeFrequency: "monthly", priority: 0.5 },
@@ -33,6 +42,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .from("profiles")
       .select("slug, company, updated_at")
       .eq("status", "published")
+
+    // Detail routes use prediction IDs, not IDs from the publications table.
+    // Only discover reviewed records attached to published profiles.
+    const { data: predictions } = await supabase
+      .from("predictions")
+      .select("id, updated_at, profiles!inner(status)")
+      .neq("status", "pending_review")
+      .eq("profiles.status", "published")
+
+    const predictionPages: MetadataRoute.Sitemap = (predictions ?? []).map((p) => ({
+      url: normalizeLoc(`${siteUrl}/publications/${p.id}`),
+      lastModified: new Date(p.updated_at),
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    }))
 
     const profilePages: MetadataRoute.Sitemap = (profiles ?? []).map((p) => ({
       url: normalizeLoc(`${siteUrl}/profiles/${p.slug}`),
@@ -59,7 +83,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
     )
 
-    return [...staticPages, ...profilePages, ...companyPages]
+    return [...staticPages, ...profilePages, ...companyPages, ...predictionPages]
   } catch {
     return staticPages
   }

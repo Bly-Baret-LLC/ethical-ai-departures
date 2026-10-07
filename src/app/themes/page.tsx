@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import { getThemeData, type ThemeData } from "@/lib/queries/themes"
+import { concernHref } from "@/data/concern-guides"
 
 export const revalidate = 3600
 
@@ -40,7 +41,8 @@ export default async function ThemesPage() {
       </h1>
       <p className="mt-2 text-text-secondary">
         The most common concerns cited by researchers departing AI companies,
-        weighted by frequency.
+        weighted by evidence-linked departure count. Alleged and contextual
+        records are excluded; a person can appear under multiple concerns.
       </p>
 
       {themes.length === 0 ? (
@@ -58,7 +60,7 @@ export default async function ThemesPage() {
               return (
                 <Link
                   key={theme.slug}
-                  href={`/?concern=${theme.slug}`}
+                  href={concernHref(theme.slug)}
                   className="rounded-lg border border-border-light bg-surface-card px-4 py-3 transition-colors hover:border-accent-amber/30"
                   style={{ fontSize: `${0.875 + size * 0.5}rem` }}
                 >
@@ -86,7 +88,7 @@ export default async function ThemesPage() {
               >
                 <div className="flex items-center justify-between">
                   <Link
-                    href={`/?concern=${theme.slug}`}
+                    href={concernHref(theme.slug)}
                     className="font-medium text-text-primary hover:text-accent-amber"
                   >
                     {theme.name}

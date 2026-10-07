@@ -1,4 +1,13 @@
 import { createClient } from "@/lib/supabase/server"
+import { isHeadlineCounted, type MotiveEvidence } from "@/lib/evidence"
+
+interface ThemeProfile {
+  company: string
+  departure_date: string
+  status: string
+  motive_evidence: MotiveEvidence
+  headline_counted: boolean
+}
 
 export interface ThemeData {
   slug: string
@@ -23,7 +32,7 @@ export async function getThemeData(): Promise<ThemeData[]> {
   // Get all profile-tag associations with profile data
   const { data: associations } = await supabase
     .from("profile_concern_tags")
-    .select("concern_tag_id, profiles(company, departure_date, status)")
+    .select("concern_tag_id, profiles(company, departure_date, status, motive_evidence, headline_counted)")
 
   if (!associations?.length) return tags.map((t) => ({
     slug: t.slug,
@@ -41,15 +50,18 @@ export async function getThemeData(): Promise<ThemeData[]> {
   const themes: ThemeData[] = tags.map((tag) => {
     const tagAssocs = associations.filter((a) => a.concern_tag_id === tag.id)
     const publishedAssocs = tagAssocs.filter((a) => {
-      const profile = a.profiles as unknown as { company: string; departure_date: string; status: string } | null
-      return profile?.status === "published"
+      const profile = a.profiles as unknown as ThemeProfile | null
+      return profile?.status === "published" && isHeadlineCounted({
+        motiveEvidence: profile.motive_evidence,
+        headlineCounted: profile.headline_counted,
+      })
     })
 
     const companyCounts = new Map<string, number>()
     let recentCount = 0
 
     for (const a of publishedAssocs) {
-      const profile = a.profiles as unknown as { company: string; departure_date: string; status: string }
+      const profile = a.profiles as unknown as ThemeProfile
       companyCounts.set(profile.company, (companyCounts.get(profile.company) ?? 0) + 1)
       if (profile.departure_date >= cutoff) recentCount++
     }

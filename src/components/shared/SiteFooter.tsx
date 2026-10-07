@@ -23,6 +23,16 @@ export function SiteFooter() {
           How we decide who&apos;s included →
         </Link>
       </div>
+      <nav
+        aria-label="Research resources"
+        className="mx-auto flex max-w-6xl flex-wrap gap-x-5 gap-y-2 px-6 pb-6 text-xs text-text-secondary"
+      >
+        <Link href="/concerns" className="underline underline-offset-2">Explore concerns</Link>
+        <Link href="/widgets" className="underline underline-offset-2">Embed our data</Link>
+        <a href="/publications/feed.xml" className="underline underline-offset-2">
+          Prediction resolutions RSS
+        </a>
+      </nav>
     </footer>
   )
 }

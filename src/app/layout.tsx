@@ -21,6 +21,11 @@ const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaideparture
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  alternates: {
+    types: {
+      "application/rss+xml": `${siteUrl}/publications/feed.xml`,
+    },
+  },
   title: {
     default: "Ethical AI Departures — Documented AI Safety & Ethics Departures",
     template: "%s · Ethical AI Departures",

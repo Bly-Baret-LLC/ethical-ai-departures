@@ -18,10 +18,29 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!prediction) return { title: "Prediction Not Found" }
 
   const sectionLabel = isForecast(prediction) ? "Forecasts" : "Warnings"
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()
+  const url = `${siteUrl}/publications/${prediction.id}`
+  const title = `${prediction.title} · ${sectionLabel}`
+  const description = prediction.description ?? prediction.resolutionCriteria
 
   return {
-    title: `${prediction.title} · ${sectionLabel} · Ethical AI Departures`,
-    description: prediction.description ?? prediction.resolutionCriteria,
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      url,
+      siteName: "Ethical AI Departures",
+      images: [`${siteUrl}/api/og`],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [`${siteUrl}/api/og`],
+    },
   }
 }
 

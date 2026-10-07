@@ -18,6 +18,9 @@ const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaideparture
 export const metadata: Metadata = {
   alternates: {
     canonical: siteUrl,
+    types: {
+      "application/rss+xml": `${siteUrl}/publications/feed.xml`,
+    },
   },
   openGraph: {
     url: siteUrl,

@@ -1,9 +1,13 @@
-import { describe, it, expect, afterEach } from "vitest"
+import { describe, it, expect, afterEach, vi } from "vitest"
 import { render, screen, cleanup } from "@testing-library/react"
 import { SkipLinks } from "./SkipLinks"
+import { usePathname } from "next/navigation"
+
+vi.mock("next/navigation", () => ({ usePathname: vi.fn(() => "/") }))
 
 afterEach(() => {
   cleanup()
+  vi.mocked(usePathname).mockReturnValue("/")
 })
 
 describe("SkipLinks", () => {
@@ -26,5 +30,11 @@ describe("SkipLinks", () => {
     expect(
       screen.getByRole("navigation", { name: "Skip links" })
     ).toBeInTheDocument()
+  })
+
+  it("does not offer a missing profile-list target on the guide index", () => {
+    vi.mocked(usePathname).mockReturnValue("/concerns")
+    render(<SkipLinks />)
+    expect(screen.queryByText("Skip to profiles")).not.toBeInTheDocument()
   })
 })
