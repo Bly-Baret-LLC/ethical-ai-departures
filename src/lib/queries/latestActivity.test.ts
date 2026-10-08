@@ -69,6 +69,7 @@ describe("getLatestActivity", () => {
       company: "OpenAI",
       role: "Head of Alignment",
       departureDate: "2026-02-14",
+      departureDatePrecision: "day",
       createdAt: "2026-03-10T12:00:00Z",
     })
   })
@@ -77,6 +78,13 @@ describe("getLatestActivity", () => {
     profilesResponse = { data: [], error: null }
     const items = await getLatestActivity()
     expect(items).toHaveLength(0)
+  })
+
+  it("retains year precision rather than using the creation time as an event date", async () => {
+    profilesResponse = { data: [{ ...mockProfiles[0], departure_date: "2026-01-01", departure_date_precision: "year" }], error: null }
+    const [item] = await getLatestActivity()
+    expect(item.departureDate).toBe("2026-01-01")
+    expect(item.departureDatePrecision).toBe("year")
   })
 
   it("throws on query error", async () => {

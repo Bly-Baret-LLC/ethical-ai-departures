@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { getLatestActivity } from "@/lib/queries/latestActivity"
 import { formatRelativeDate } from "@/lib/utils/formatDate"
+import { departureDateIso, formatDepartureDate } from "@/lib/utils/departureDate"
 import { LatestActivityClient } from "./LatestActivityClient"
 
 export async function LatestActivitySlot() {
@@ -37,10 +38,12 @@ export async function LatestActivitySlot() {
                   {item.role} · {item.company}
                 </p>
                 <time
-                  dateTime={item.departureDate}
+                  dateTime={departureDateIso(item.departureDate, item.departureDatePrecision)}
                   className="mt-1 block text-xs text-text-secondary/60"
                 >
-                  {formatRelativeDate(item.departureDate)}
+                  {item.departureDatePrecision && item.departureDatePrecision !== "day"
+                    ? formatDepartureDate(item.departureDate, item.departureDatePrecision)
+                    : formatRelativeDate(item.departureDate)}
                 </time>
               </Link>
             </article>

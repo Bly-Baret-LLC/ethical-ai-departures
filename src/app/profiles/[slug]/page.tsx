@@ -140,7 +140,7 @@ export default async function ProfileDetailPage({
     `${profile.name} departed ${profile.company} in ${year}. Read the sourced, evidence-labeled account.`
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-16">
+    <main id="main-content" className="mx-auto max-w-3xl px-6 py-16">
       {/* Header */}
       <div className="flex items-start gap-4">
         <Avatar name={profile.name} photoUrl={profile.photoUrl} size={64} />

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import type { DatePrecision } from "@/lib/utils/departureDate"
 
 export interface ActivityItem {
   slug: string
@@ -6,6 +7,7 @@ export interface ActivityItem {
   company: string
   role: string
   departureDate: string
+  departureDatePrecision: DatePrecision
   createdAt: string
 }
 
@@ -17,7 +19,7 @@ export async function getLatestActivity(
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("slug, name, company, role, departure_date, created_at")
+    .select("slug, name, company, role, departure_date, departure_date_precision, created_at")
     .eq("status", "published")
     .order("departure_date", { ascending: false })
     .limit(limit)
@@ -30,6 +32,7 @@ export async function getLatestActivity(
     company: row.company,
     role: row.role,
     departureDate: row.departure_date,
+    departureDatePrecision: row.departure_date_precision ?? "day",
     createdAt: row.created_at,
   }))
 }

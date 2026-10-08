@@ -1,6 +1,7 @@
 import type { ProfileWithTags } from "@/lib/schemas/profile"
 import type { FilterState } from "@/hooks/useProfileFilters"
 import { EVIDENCE_LABELS, isHeadlineCounted } from "@/lib/evidence"
+import { departureDateIso } from "./departureDate"
 
 function escapeCsvField(value: string): string {
   if (value.includes(",") || value.includes('"') || value.includes("\n")) {
@@ -38,7 +39,7 @@ export function profilesToCsv(profiles: ProfileWithTags[]): string {
     escapeCsvField(p.name),
     escapeCsvField(p.company),
     escapeCsvField(p.role),
-    p.departureDate,
+    departureDateIso(p.departureDate, p.departureDatePrecision),
     p.departureDatePrecision,
     p.effectiveDepartureDate ?? "",
     escapeCsvField(p.departureDateNote ?? ""),
@@ -59,7 +60,7 @@ export function profilesToJson(profiles: ProfileWithTags[]): string {
     name: p.name,
     company: p.company,
     role: p.role,
-    departureDate: p.departureDate,
+    departureDate: departureDateIso(p.departureDate, p.departureDatePrecision),
     departureDatePrecision: p.departureDatePrecision,
     effectiveDepartureDate: p.effectiveDepartureDate,
     departureDateNote: p.departureDateNote,

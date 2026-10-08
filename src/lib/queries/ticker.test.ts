@@ -87,4 +87,18 @@ describe("getTickerStats (canonical evidence-model counts)", () => {
       code: "PGRST000",
     })
   })
+
+  it("keeps imprecise dates in the total but not an unsupported recent count", async () => {
+    vi.setSystemTime(new Date("2026-10-08T12:00:00Z"))
+    queryResponse = { data: [
+      { ...row("2026-10-01", "direct", true), departure_date_precision: "year" },
+      { ...row("2026-07-30", "direct", true), departure_date_precision: "month" },
+      { ...row("2026-08-01", "direct", true), departure_date_precision: "month" },
+      row("2026-10-09", "direct", true),
+      row("2026-09-01", "alleged", true),
+    ], error: null }
+    const stats = await getTickerStats()
+    expect(stats.totalCount).toBe(4)
+    expect(stats.ninetyDayCount).toBe(1)
+  })
 })

@@ -87,6 +87,12 @@ describe("ProfileTable", () => {
     expect(screen.getByText("—")).toBeInTheDocument()
   })
 
+  it("does not invent a month for a year-only departure", () => {
+    render(<ProfileTable profiles={[makeProfile({ departureDate: "2026-01-01", departureDatePrecision: "year" })]} />)
+    expect(screen.getByText("2026")).toBeInTheDocument()
+    expect(screen.queryByText("Jan 2026")).not.toBeInTheDocument()
+  })
+
   it("navigates to profile on row click", () => {
     render(<ProfileTable profiles={testProfiles} />)
 

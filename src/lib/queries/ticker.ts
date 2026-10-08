@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server"
 import { z } from "zod"
+import { isDepartureInWindow } from "@/lib/utils/departureDate"
 import {
   headlineCount,
   contextualCount,
@@ -46,12 +47,15 @@ export async function getTickerStats(): Promise<TickerStats> {
     const parsed = tickerRowSchema.parse(r)
     return {
       departureDate: parsed.departure_date,
+      departureDatePrecision: parsed.departure_date_precision,
       motiveEvidence: parsed.motive_evidence as MotiveEvidence,
       headlineCounted: parsed.headline_counted,
     }
   })
 
-  const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000)
+  const now = Date.now()
+  const through = new Date(now).toISOString().slice(0, 10)
+  const ninetyDaysAgo = new Date(now - 90 * 24 * 60 * 60 * 1000)
     .toISOString()
     .slice(0, 10)
 
@@ -59,7 +63,10 @@ export async function getTickerStats(): Promise<TickerStats> {
     documentedCount: rows.length,
     totalCount: headlineCount(rows),
     ninetyDayCount: headlineCount(
-      rows.filter((r) => r.departureDate >= ninetyDaysAgo)
+      rows.filter((r) => isDepartureInWindow(
+        r.departureDate, r.departureDatePrecision, ninetyDaysAgo,
+        through
+      ))
     ),
     contextualCount: contextualCount(rows),
     allegedCount: allegedCount(rows),

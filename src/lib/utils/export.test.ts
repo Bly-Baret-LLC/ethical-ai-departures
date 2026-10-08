@@ -111,6 +111,16 @@ describe("profilesToCsv", () => {
     const csv = profilesToCsv(mockProfiles)
     expect(csv).toContain("/profiles/elena-rodriguez")
   })
+
+  it("exports only the known date precision in CSV and JSON", () => {
+    const profiles = [{ ...mockProfiles[0], departureDate: "2026-01-01", departureDatePrecision: "year" as const }]
+    expect(profilesToCsv(profiles)).toContain(",2026,year,")
+    expect(profilesToCsv(profiles)).not.toContain("2026-01-01")
+    expect(JSON.parse(profilesToJson(profiles))[0].departureDate).toBe("2026")
+    profiles[0].departureDate = "2026-09-01"
+    const monthProfiles = [{ ...profiles[0], departureDatePrecision: "month" as const }]
+    expect(JSON.parse(profilesToJson(monthProfiles))[0].departureDate).toBe("2026-09")
+  })
 })
 
 describe("profilesToJson", () => {

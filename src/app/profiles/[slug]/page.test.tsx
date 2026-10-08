@@ -78,6 +78,8 @@ describe("ProfileDetailPage", () => {
     const jsx = await ProfileDetailPage({ params })
     render(jsx)
 
+    expect(screen.getByRole("main")).toHaveAttribute("id", "main-content")
+
     expect(
       screen.getByRole("heading", { name: "Elena Rodriguez" })
     ).toBeInTheDocument()

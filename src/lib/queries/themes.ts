@@ -1,9 +1,11 @@
 import { createClient } from "@/lib/supabase/server"
 import { isHeadlineCounted, type MotiveEvidence } from "@/lib/evidence"
+import { isDepartureInWindow, type DatePrecision } from "@/lib/utils/departureDate"
 
 interface ThemeProfile {
   company: string
   departure_date: string
+  departure_date_precision?: DatePrecision
   status: string
   motive_evidence: MotiveEvidence
   headline_counted: boolean
@@ -32,7 +34,7 @@ export async function getThemeData(): Promise<ThemeData[]> {
   // Get all profile-tag associations with profile data
   const { data: associations } = await supabase
     .from("profile_concern_tags")
-    .select("concern_tag_id, profiles(company, departure_date, status, motive_evidence, headline_counted)")
+    .select("concern_tag_id, profiles(company, departure_date, departure_date_precision, status, motive_evidence, headline_counted)")
 
   if (!associations?.length) return tags.map((t) => ({
     slug: t.slug,
@@ -43,9 +45,9 @@ export async function getThemeData(): Promise<ThemeData[]> {
     companies: [],
   }))
 
-  const ninetyDaysAgo = new Date()
-  ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90)
-  const cutoff = ninetyDaysAgo.toISOString().split("T")[0]
+  const now = Date.now()
+  const cutoff = new Date(now - 90 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10)
+  const through = new Date(now).toISOString().slice(0, 10)
 
   const themes: ThemeData[] = tags.map((tag) => {
     const tagAssocs = associations.filter((a) => a.concern_tag_id === tag.id)
@@ -63,7 +65,8 @@ export async function getThemeData(): Promise<ThemeData[]> {
     for (const a of publishedAssocs) {
       const profile = a.profiles as unknown as ThemeProfile
       companyCounts.set(profile.company, (companyCounts.get(profile.company) ?? 0) + 1)
-      if (profile.departure_date >= cutoff) recentCount++
+      if (isDepartureInWindow(profile.departure_date, profile.departure_date_precision,
+        cutoff, through)) recentCount++
     }
 
     const companies = Array.from(companyCounts.entries())

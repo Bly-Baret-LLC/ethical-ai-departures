@@ -12,6 +12,7 @@ import {
 } from "@tanstack/react-table"
 import { useState } from "react"
 import type { ProfileWithTags } from "@/lib/schemas/profile"
+import { formatDepartureDate } from "@/lib/utils/departureDate"
 
 const columnHelper = createColumnHelper<ProfileWithTags>()
 
@@ -50,10 +51,8 @@ export function ProfileTable({ profiles }: ProfileTableProps) {
         header: "Departure",
         cell: (info) => {
           const date = info.getValue()
-          return new Date(date + "T00:00:00").toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-          })
+          return formatDepartureDate(date,
+            info.row.original.departureDatePrecision === "year" ? "year" : "month")
         },
       }),
       columnHelper.accessor("concernTags", {

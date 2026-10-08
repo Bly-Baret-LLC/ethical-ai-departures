@@ -127,4 +127,15 @@ describe("LatestActivitySlot", () => {
     expect(timeElements).toHaveLength(3)
     expect(timeElements[0]).toHaveAttribute("datetime", "2026-02-14")
   })
+
+  it("does not render a sorting anchor as an exact timestamp", async () => {
+    const { getLatestActivity } = await import("@/lib/queries/latestActivity")
+    vi.mocked(getLatestActivity).mockResolvedValueOnce([{
+      slug: "year-only", name: "Year Only", company: "Example", role: "Researcher",
+      departureDate: "2026-01-01", departureDatePrecision: "year", createdAt: "2026-10-08",
+    }])
+    render((await LatestActivitySlot())!)
+    expect(screen.getByRole("time")).toHaveAttribute("datetime", "2026")
+    expect(screen.getByRole("time")).toHaveTextContent(/^2026$/)
+  })
 })
