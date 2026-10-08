@@ -64,8 +64,8 @@ export function EmailSignup({ placement = "homepage" }: EmailSignupProps) {
       )}
 
       <p className="mt-3 text-xs text-text-secondary">
-        Confirm your address by email. You can unsubscribe at any time, and we
-        never share your address with third parties.
+        Subscribe to email updates. No confirmation needed. You can unsubscribe
+        at any time.
       </p>
     </div>
   )

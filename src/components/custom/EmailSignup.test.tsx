@@ -31,17 +31,17 @@ describe("EmailSignup", () => {
     expect(screen.getByText(/source-verified profile/)).toBeInTheDocument()
   })
 
-  it("renders GDPR consent text", () => {
+  it("explains immediate signup and unsubscribe", () => {
     render(<EmailSignup />)
 
     expect(screen.getByText(/unsubscribe at any time/)).toBeInTheDocument()
-    expect(screen.getByText(/never share your address/)).toBeInTheDocument()
+    expect(screen.getByText(/No confirmation needed/)).toBeInTheDocument()
   })
 
   it("shows success message after submission", async () => {
     mockSubscribeEmail.mockResolvedValueOnce({
       success: true,
-      message: "Check your email to confirm your subscription.",
+      message: "You’re subscribed. Thanks for following Ethical AI Departures.",
     })
 
     render(<EmailSignup />)
@@ -53,7 +53,7 @@ describe("EmailSignup", () => {
       fireEvent.click(screen.getByRole("button", { name: "Subscribe" }))
     })
 
-    expect(screen.getByRole("status")).toHaveTextContent("Check your email")
+    expect(screen.getByRole("status")).toHaveTextContent("You’re subscribed")
   })
 
   it("shows error message on failure", async () => {

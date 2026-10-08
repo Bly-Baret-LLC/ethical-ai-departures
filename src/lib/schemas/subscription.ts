@@ -3,7 +3,7 @@ import { z } from "zod"
 export const emailSubscriptionRowSchema = z.object({
   id: z.string().uuid(),
   email: z.string().email(),
-  status: z.enum(["pending", "confirmed", "unsubscribed"]),
+  status: z.enum(["pending", "subscribed", "confirmed", "unsubscribed"]),
   confirmation_token: z.string(),
   confirmation_sent_at: z.string().nullable(),
   created_at: z.string(),

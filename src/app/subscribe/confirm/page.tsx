@@ -19,6 +19,7 @@ export default async function ConfirmSubscriptionPage({
   const { token: rawToken } = await searchParams
   const parsed = z.string().uuid().safeParse(rawToken)
   let confirmed = false
+  let newlyConfirmed = false
 
   if (parsed.success) {
     const supabase = createServiceClient()
@@ -28,7 +29,7 @@ export default async function ConfirmSubscriptionPage({
       .eq("confirmation_token", parsed.data)
       .maybeSingle()
 
-    if (!lookupError && subscription?.status === "confirmed") {
+    if (!lookupError && ["confirmed", "subscribed"].includes(subscription?.status)) {
       confirmed = true
     } else if (!lookupError && subscription?.status === "pending") {
       const now = new Date().toISOString()
@@ -38,19 +39,20 @@ export default async function ConfirmSubscriptionPage({
         .eq("id", subscription.id)
 
       confirmed = !updateError
+      newlyConfirmed = confirmed
     }
   }
 
   return (
     <main className="mx-auto max-w-xl px-6 py-20 text-center">
-      {confirmed && <AnalyticsEvent name="Newsletter Confirmed" />}
+      {newlyConfirmed && <AnalyticsEvent name="Newsletter Confirmed" />}
       <h1 className="font-serif text-3xl font-semibold text-text-primary">
         {confirmed ? "You’re subscribed" : "Confirmation link not recognized"}
       </h1>
       <p className="mt-4 leading-relaxed text-text-secondary">
         {confirmed
           ? "We’ll email you when a new, source-verified departure profile is published."
-          : "This link may be incomplete or no longer valid. You can request a new confirmation from the homepage."}
+          : "This link may be incomplete or no longer valid. You can subscribe on the homepage without a confirmation email."}
       </p>
       <Link
         href="/"
