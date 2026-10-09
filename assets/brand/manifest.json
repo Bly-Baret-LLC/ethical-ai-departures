@@ -1,0 +1,32 @@
+{
+  "brand": "Ethical AI Departures",
+  "status": "Approved artwork archived on 2026-10-09",
+  "purpose": "Canonical social brand assets. Kept outside public/ so archiving does not expose new website URLs.",
+  "logo": {
+    "design": "Plain EAD monogram, no underline, warm cream background",
+    "source": "logo/ead-logo.svg",
+    "exports": {
+      "linkedin_and_bluesky": "logo/ead-logo-400.png",
+      "instagram": "logo/ead-logo-1080.png"
+    }
+  },
+  "banners": {
+    "design": "Uppercase title, centered subtitle, red and dark double-line frame",
+    "title": "ETHICAL AI DEPARTURES",
+    "subtitle": "Documenting who left AI companies and why.",
+    "linkedin": {
+      "source": "banners/linkedin-banner.svg",
+      "png": "banners/linkedin-banner.png",
+      "preferred_upload": "banners/linkedin-banner.jpg",
+      "dimensions": [1512, 256],
+      "note": "JPEG successfully uploaded to LinkedIn after PNG processing failed. LinkedIn's avatar can overlap the subtitle at narrow widths; this archives the approved uploaded design, not a revised layout."
+    },
+    "bluesky": {
+      "source": "banners/bluesky-banner.svg",
+      "preferred_upload": "banners/bluesky-banner.png",
+      "dimensions": [1500, 500]
+    }
+  },
+  "editing": "SVG lettering is outlined into paths, preserving appearance without installed fonts. Earlier exploratory designs remain in docs/marketing and are not the canonical assets.",
+  "publication": "Logo and banner uploads to LinkedIn and Bluesky were approved separately. This archive does not authorize future uploads, posts, pushes, or deployments."
+}
