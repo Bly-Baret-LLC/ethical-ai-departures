@@ -40,7 +40,8 @@ for (const [slug, name] of people) {
       await expect(page.getByText("Claim status: contested")).toBeVisible()
       await expect(page.getByText(/exact departure dates are not confirmed/)).toBeVisible()
       await expect(page.getByText(/OpenAI denies retaliation/)).toBeVisible()
-      await expect(page.locator("#sources li")).toHaveCount(4)
+      // Later evidence reviews may add sources without changing classification.
+      expect(await page.locator("#sources li").count()).toBeGreaterThanOrEqual(4)
       await expect(page.locator(`#sources a[href='${letter}']`)).toHaveCount(1)
       await expect(page.locator(`#sources a[href='${individualStatements[slug]}']`)).toHaveCount(1)
       const writings = page.locator("section").filter({ has: page.getByRole("heading", { name: "Key Publications" }) })
@@ -56,11 +57,14 @@ for (const [slug, name] of people) {
   })
 }
 
-test("headline stays unchanged and all three appear only in disputed directory", async ({ page }) => {
+test("headline counts evidence-linked records and all three appear only in disputed directory", async ({ page }) => {
   await page.goto("/")
   const ticker = page.getByRole("region", { name: "Departure ticker" })
-  await expect(ticker.locator("[aria-live='polite']")).toHaveText("46")
-  await expect(ticker).toContainText("6 disputed cases are listed separately.")
+  const evidenceTab = page.getByRole("button", { name: /^Evidence-linked \(/ })
+  const evidenceCount = (await evidenceTab.innerText()).match(/\((\d+)\)/)?.[1]
+  expect(evidenceCount).toBeDefined()
+  await expect(ticker.locator("[aria-live='polite']")).toHaveText(evidenceCount!)
+  await expect(ticker).toContainText("6 disputed cases listed separately.")
   for (const [slug] of people) {
     await expect(page.locator(`a[href='/profiles/${slug}']`)).toHaveCount(0)
   }

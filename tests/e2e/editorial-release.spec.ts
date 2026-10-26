@@ -10,10 +10,10 @@ test.describe("Editorial release", () => {
     const ticker = page.getByRole("region", { name: "Departure ticker" })
     await expect(ticker.locator("[aria-live='polite']")).toHaveText(/^\d+$/)
     await expect(ticker).toContainText(
-      "Every entry is backed by the person's own statement or independent reporting."
+      "Backed by firsthand statements or independent reporting."
     )
     await expect(ticker).toContainText(
-      /\d+ disputed cases? (?:is|are) listed separately\./
+      /\d+ disputed cases? listed separately\./
     )
     await expect(
       page.getByRole("button", { name: /^Evidence-linked \(/ })

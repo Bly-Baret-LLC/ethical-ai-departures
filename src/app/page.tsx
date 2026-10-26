@@ -5,8 +5,6 @@ import { ProfileBrowser } from "@/components/custom/ProfileBrowser"
 import type { ProfileWithTags } from "@/lib/schemas/profile"
 import { TickerBlock } from "@/components/custom/TickerBlock"
 import { SubmitDepartureButton } from "@/components/custom/SubmitDepartureButton"
-import { PredictionSpotlight } from "@/components/custom/PredictionSpotlight"
-import { LatestDepartureCallout } from "@/components/custom/LatestDepartureCallout"
 import { EmailSignup } from "@/components/custom/EmailSignup"
 import { allegedCount, headlineCount } from "@/lib/evidence"
 
@@ -50,8 +48,6 @@ export default async function HomePage() {
         evidenceLinkedCount={headlineCount(profiles)}
         allegedCount={allegedCount(profiles)}
       />
-      <LatestDepartureCallout />
-      <PredictionSpotlight />
       <section
         id="profiles"
         aria-label="Departures"

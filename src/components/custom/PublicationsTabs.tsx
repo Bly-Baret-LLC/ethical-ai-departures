@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, type ReactNode } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import type { PublicationWithProfile } from "@/lib/schemas/publication"
 import type { PredictionWithProfile } from "@/lib/schemas/prediction"
@@ -38,12 +38,14 @@ interface PublicationsTabsProps {
   publications: PublicationWithProfile[]
   concernCounts: { tagName: string; tagSlug: string; count: number }[]
   predictions: PredictionWithProfile[]
+  spotlight?: ReactNode
 }
 
 export function PublicationsTabs({
   publications,
   concernCounts,
   predictions,
+  spotlight,
 }: PublicationsTabsProps) {
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -125,6 +127,8 @@ export function PublicationsTabs({
         ))}
       </nav>
 
+      {activeTab === "predictions" && spotlight}
+
       <p className="mt-4 text-sm text-text-secondary">
         {activeTabConfig.description}
       </p>
@@ -153,7 +157,7 @@ export function PublicationsTabs({
               <p className="text-sm font-medium text-text-primary">
                 {summaryLine}
               </p>
-              <div className="mt-3 space-y-4">
+              <div id="forecast-records" className="mt-3 scroll-mt-6 space-y-4">
                 {sortedPredictions.map((p) => (
                   <PredictionCard key={p.id} prediction={p} />
                 ))}

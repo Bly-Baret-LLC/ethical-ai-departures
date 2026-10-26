@@ -8,6 +8,7 @@ import { getPredictions } from "@/lib/queries/predictions"
 import type { PublicationWithProfile } from "@/lib/schemas/publication"
 import type { PredictionWithProfile } from "@/lib/schemas/prediction"
 import { PublicationsTabs } from "@/components/custom/PublicationsTabs"
+import { PredictionSpotlight } from "@/components/custom/PredictionSpotlight"
 
 export const revalidate = 300
 
@@ -67,6 +68,7 @@ export default async function ThemesAndWritingsPage() {
           publications={publications}
           concernCounts={pubCountsByConcern}
           predictions={predictions}
+          spotlight={<PredictionSpotlight predictions={predictions} />}
         />
       </Suspense>
     </main>

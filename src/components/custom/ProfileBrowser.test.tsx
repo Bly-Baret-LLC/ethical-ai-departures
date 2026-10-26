@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from "vitest"
-import { render, screen, cleanup } from "@testing-library/react"
+import { render, screen, cleanup, fireEvent } from "@testing-library/react"
 import { ProfileBrowser } from "./ProfileBrowser"
 import type { ProfileWithTags } from "@/lib/schemas/profile"
 
@@ -66,6 +66,31 @@ const testProfiles: ProfileWithTags[] = [
 ]
 
 describe("ProfileBrowser", () => {
+  it("toggles the mobile filter panel from the category row", () => {
+    render(<ProfileBrowser profiles={testProfiles} />)
+    const toggle = screen.getByRole("button", { name: "Filters" })
+    const evidence = screen.getByRole("button", { name: "Evidence-linked (3)" })
+    expect(toggle.parentElement).toContainElement(evidence)
+    expect(toggle).toHaveAttribute("aria-expanded", "false")
+    expect(document.getElementById("filter-panel")).not.toBeInTheDocument()
+    fireEvent.click(toggle)
+    expect(toggle).toHaveAttribute("aria-expanded", "true")
+    expect(document.getElementById("filter-panel")).toBeInTheDocument()
+    fireEvent.click(toggle)
+    expect(document.getElementById("filter-panel")).not.toBeInTheDocument()
+  })
+
+  it("keeps browsing controls without repeating the hero's sourcing explanation", () => {
+    render(<ProfileBrowser profiles={testProfiles} />)
+
+    expect(screen.getByRole("heading", { name: "Browse the record" })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /How we classify records/ })).toHaveAttribute(
+      "href", "/editorial-standards#evidence-categories"
+    )
+    expect(screen.getByRole("button", { name: "Evidence-linked (3)" })).toBeInTheDocument()
+    expect(screen.queryByText(/The person explicitly connected/)).not.toBeInTheDocument()
+  })
+
   it("renders all profiles", () => {
     render(<ProfileBrowser profiles={testProfiles} />)
 

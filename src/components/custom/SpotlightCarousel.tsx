@@ -56,7 +56,7 @@ export function SpotlightCarousel({
           Forecasts &amp; Warnings
         </p>
         <Link
-          href="/publications?tab=predictions"
+          href="#forecast-records"
           prefetch={false}
           className="text-xs text-text-secondary transition-colors hover:text-accent-amber sm:shrink-0"
         >
@@ -96,7 +96,7 @@ export function SpotlightCarousel({
                   </span>
                 )}
                 <Link
-                  href={`/publications?tab=predictions#prediction-${current.id}`}
+                  href={`#prediction-${current.id}`}
                   prefetch={false}
                   className="group mt-2 block sm:mt-0"
                 >

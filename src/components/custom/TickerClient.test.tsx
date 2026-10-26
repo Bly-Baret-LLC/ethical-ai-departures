@@ -64,17 +64,20 @@ describe("TickerClient", () => {
     expect(screen.getByText("6")).toHaveAttribute("data-animate", "true")
     expect(
       screen.getByText(
-        /Researchers, engineers, and executives who left OpenAI/
+        "People have left AI companies over safety or ethics concerns."
       )
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/Every entry is backed by the person's own statement or independent reporting/)
+      screen.getByText(/Backed by firsthand statements or independent reporting/)
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/1 disputed case is listed separately/)
+      screen.getByText(/1 disputed case listed separately/)
     ).toBeInTheDocument()
     expect(screen.queryByText(/September 2026 update/)).not.toBeInTheDocument()
     expect(screen.queryByRole("link", { name: /What changed/ })).not.toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "What they warned about →" })).toHaveAttribute(
+      "href", "/publications?tab=predictions"
+    )
   })
 
   it("updates stored count after render", async () => {

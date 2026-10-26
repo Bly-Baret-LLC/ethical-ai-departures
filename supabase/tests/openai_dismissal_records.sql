@@ -20,7 +20,7 @@ BEGIN
       OR person.seo_description NOT LIKE '%disputes%' THEN
       RAISE EXCEPTION 'Classification, date, or attribution mismatch for %', person.slug;
     END IF;
-    IF (SELECT count(*) FROM public.profile_sources WHERE profile_id = person.id) <> 4
+    IF (SELECT count(*) FROM public.profile_sources WHERE profile_id = person.id) < 4
       OR (SELECT count(*) FROM public.profile_sources WHERE profile_id = person.id
         AND source_type = 'first_party' AND platform = 'X') <> 1
       OR (SELECT count(*) FROM public.profile_sources WHERE profile_id = person.id

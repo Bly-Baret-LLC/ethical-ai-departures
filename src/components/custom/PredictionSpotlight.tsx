@@ -2,11 +2,14 @@ import { createPublicClient } from "@/lib/supabase/public"
 import { getPredictions } from "@/lib/queries/predictions"
 import { SpotlightCarousel, type SpotlightSlide } from "./SpotlightCarousel"
 import { forecastSummary, isForecast, isWarningOrClaim } from "@/lib/forecasts"
+import type { PredictionWithProfile } from "@/lib/schemas/prediction"
 
-export async function PredictionSpotlight() {
+export async function PredictionSpotlight({
+  predictions: suppliedPredictions,
+}: { predictions?: PredictionWithProfile[] } = {}) {
   let predictions
   try {
-    predictions = await getPredictions()
+    predictions = suppliedPredictions ?? await getPredictions()
   } catch {
     return null
   }
@@ -68,7 +71,7 @@ export async function PredictionSpotlight() {
   return (
     <section
       aria-label="Prediction spotlight"
-      className="mx-auto max-w-6xl px-6 pt-8"
+      className="my-6"
     >
       <SpotlightCarousel
         slides={slides}

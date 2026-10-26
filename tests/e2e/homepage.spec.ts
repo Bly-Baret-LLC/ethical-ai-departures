@@ -11,7 +11,7 @@ test.describe("Homepage", () => {
     // Ticker headline (h1) is present
     const heading = page.getByRole("heading", { level: 1 })
     await expect(heading).toContainText(
-      "Researchers, engineers, and executives who left OpenAI"
+      "People have left AI companies over safety or ethics concerns."
     )
   })
 

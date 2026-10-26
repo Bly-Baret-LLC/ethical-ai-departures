@@ -1,7 +1,8 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
+import { SlidersHorizontal } from "lucide-react"
 import type { ProfileWithTags } from "@/lib/schemas/profile"
 import {
   useProfileFilters,
@@ -19,6 +20,7 @@ interface ProfileBrowserProps {
 }
 
 export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const {
     filters,
     toggleFilter,
@@ -61,14 +63,12 @@ export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
     value: EvidenceView
     label: string
     countLabel: string
-    description: string
+    description?: string
   }> = [
     {
       value: "evidence",
       label: "Evidence-linked",
       countLabel: "evidence-linked",
-      description:
-        "The person explicitly connected the departure to a concern, or credible independent reporting established the connection.",
     },
     {
       value: "alleged",
@@ -93,9 +93,11 @@ export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
             >
               Browse the record
             </h2>
-            <p className="mt-1 max-w-3xl text-sm leading-relaxed text-text-secondary">
-              {selectedEvidenceView.description}
-            </p>
+            {selectedEvidenceView.description && (
+              <p className="mt-1 max-w-3xl text-sm leading-relaxed text-text-secondary">
+                {selectedEvidenceView.description}
+              </p>
+            )}
           </div>
           <Link
             href="/editorial-standards#evidence-categories"
@@ -105,8 +107,10 @@ export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
           </Link>
         </div>
 
+        <div className="mt-4 flex justify-between gap-2 sm:gap-4" style={{ alignItems: "last baseline" }}>
         <div
-          className="mt-4 flex flex-wrap gap-2"
+          className="flex min-w-0 gap-2"
+          style={{ alignItems: "last baseline" }}
           aria-label="Choose an evidence category"
         >
           {evidenceViews.map((view) => {
@@ -117,7 +121,7 @@ export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
                 type="button"
                 onClick={() => setEvidence(view.value)}
                 aria-pressed={selected}
-                className={`rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+                className={`min-h-9 min-w-0 flex-initial rounded-full border px-2 py-1 text-xs font-medium leading-tight transition-colors sm:px-3 sm:text-sm ${
                   selected
                     ? "border-text-primary bg-text-primary text-surface-primary"
                     : "border-border-light bg-surface-card text-text-secondary hover:border-accent-amber/50 hover:text-text-primary"
@@ -127,6 +131,22 @@ export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
               </button>
             )
           })}
+        </div>
+        <button
+          type="button"
+          onClick={() => setMobileFiltersOpen((open) => !open)}
+          className="ml-auto min-h-11 shrink-0 rounded-sm px-1 py-2 text-xs text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-text-primary sm:text-sm lg:hidden"
+          aria-expanded={mobileFiltersOpen}
+          aria-controls="filter-panel"
+        >
+          <SlidersHorizontal className="mr-1.5 inline-block h-3.5 w-3.5 align-[-2px]" aria-hidden="true" />
+          Filters
+          {hasActiveFilters && (
+            <span className="ml-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-accent-amber text-xs text-surface-primary">
+              {filters.company.length + filters.year.length + filters.concern.length}
+            </span>
+          )}
+        </button>
         </div>
       </section>
 
@@ -140,6 +160,7 @@ export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
         onClearAll={clearAll}
         hasActiveFilters={hasActiveFilters}
         profiles={filtered}
+        mobileOpen={mobileFiltersOpen}
       />
 
       <div className="min-w-0 flex-1">
