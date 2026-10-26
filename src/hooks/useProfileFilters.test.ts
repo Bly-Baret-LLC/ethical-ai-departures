@@ -46,7 +46,7 @@ describe("parseFiltersFromParams", () => {
       company: [],
       year: [],
       concern: [],
-      sort: "date",
+      sort: "added",
       view: "card",
       evidence: "evidence",
       q: "",
@@ -67,11 +67,15 @@ describe("parseFiltersFromParams", () => {
     expect(filters.sort).toBe("name")
   })
 
-  it("defaults invalid sort to date", () => {
+  it("defaults invalid sort to newest additions", () => {
     const params = new URLSearchParams("sort=invalid")
     const filters = parseFiltersFromParams(params)
 
-    expect(filters.sort).toBe("date")
+    expect(filters.sort).toBe("added")
+  })
+
+  it("preserves explicit departure-date links", () => {
+    expect(parseFiltersFromParams(new URLSearchParams("sort=date")).sort).toBe("date")
   })
 
   it("parses view=table param", () => {
@@ -314,7 +318,7 @@ describe("filterProfiles", () => {
     expect(result).toHaveLength(2)
   })
 
-  it("sorts by date descending by default", () => {
+  it("sorts by departure date when explicitly requested", () => {
     const result = filterProfiles(profiles, {
       company: [],
       year: [],
@@ -328,6 +332,43 @@ describe("filterProfiles", () => {
     expect(result[0].slug).toBe("b") // 2026
     expect(result[1].slug).toBe("a") // 2025-06
     expect(result[2].slug).toBe("c") // 2025-03
+  })
+
+  it("puts newly added entries first without promoting source edits", () => {
+    const entries = [
+      makeProfile({ slug: "older-entry", departureDate: "2026-10-20",
+        createdAt: "2026-10-25T17:00:00Z", updatedAt: "2026-10-27T17:00:00Z" }),
+      makeProfile({ slug: "new-entry", departureDate: "2026-01-01", departureDatePrecision: "year",
+        createdAt: "2026-10-26T17:00:00Z", updatedAt: "2026-10-26T17:00:00Z" }),
+    ]
+    const result = filterProfiles(entries, parseFiltersFromParams(new URLSearchParams()))
+    expect(result.map(p => p.slug)).toEqual(["new-entry", "older-entry"])
+    expect(entries[0].slug).toBe("older-entry") // Do not mutate the input.
+  })
+
+  it("keeps year filtering based on departure year, not addition year", () => {
+    const entries = [
+      makeProfile({ slug: "recent-addition", departureDate: "2024-01-01", departureDatePrecision: "year",
+        createdAt: "2026-10-26T17:00:00Z" }),
+      makeProfile({ slug: "recent-departure", departureDate: "2026-10-20",
+        createdAt: "2026-10-25T17:00:00Z" }),
+    ]
+    expect(filterProfiles(entries, parseFiltersFromParams(new URLSearchParams("year=2024")))
+      .map(p => p.slug)).toEqual(["recent-addition"])
+    expect(filterProfiles(entries, parseFiltersFromParams(new URLSearchParams("year=2026")))
+      .map(p => p.slug)).toEqual(["recent-departure"])
+  })
+
+  it("orders simultaneous imports deterministically", () => {
+    const entries = [
+      makeProfile({ slug: "z", name: "Zoe" }),
+      makeProfile({ slug: "a", name: "Ada" }),
+      makeProfile({ slug: "later-departure", departureDate: "2026-01-01" }),
+    ]
+    const filters = parseFiltersFromParams(new URLSearchParams())
+    expect(filterProfiles(entries, filters).map(p => p.slug))
+      .toEqual(["later-departure", "a", "z"])
+    expect(filterProfiles([...entries].reverse(), filters)).toEqual(filterProfiles(entries, filters))
   })
 
   it("sorts by name ascending", () => {

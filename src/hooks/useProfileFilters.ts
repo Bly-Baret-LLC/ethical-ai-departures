@@ -12,7 +12,7 @@ export interface FilterState {
   company: string[]
   year: string[]
   concern: string[]
-  sort: "date" | "name"
+  sort: "added" | "date" | "name"
   view: ViewMode
   evidence: EvidenceView
   q: string
@@ -27,7 +27,8 @@ export function parseFiltersFromParams(params: URLSearchParams): FilterState {
     company: params.getAll("company"),
     year: params.getAll("year"),
     concern: params.getAll("concern"),
-    sort: params.get("sort") === "name" ? "name" : "date",
+    sort: params.get("sort") === "name" ? "name"
+      : params.get("sort") === "date" ? "date" : "added",
     view: params.get("view") === "table" ? "table" : "card",
     evidence: parseEvidenceView(params.get("evidence")),
     q: params.get("q") ?? "",
@@ -40,7 +41,7 @@ function buildSearchParams(filters: FilterState): URLSearchParams {
   for (const c of filters.company) params.append("company", c)
   for (const y of filters.year) params.append("year", y)
   for (const t of filters.concern) params.append("concern", t)
-  if (filters.sort !== "date") params.set("sort", filters.sort)
+  if (filters.sort !== "added") params.set("sort", filters.sort)
   if (filters.view !== "card") params.set("view", filters.view)
   if (filters.evidence !== "evidence") params.set("evidence", filters.evidence)
   return params
@@ -138,7 +139,15 @@ export function filterProfiles(
   // Sort
   result = [...result].sort((a, b) => {
     if (filters.sort === "name") return a.name.localeCompare(b.name)
+    // Record creation is only a discovery order, never an inferred departure
+    // date. Source edits must not promote older entries (do not use updatedAt).
+    if (filters.sort === "added") {
+      const addedOrder = Date.parse(b.createdAt) - Date.parse(a.createdAt)
+      if (Number.isFinite(addedOrder) && addedOrder !== 0) return addedOrder
+    }
+    // Keep simultaneous imports deterministic, independent of database order.
     return b.departureDate.localeCompare(a.departureDate)
+      || a.name.localeCompare(b.name) || a.slug.localeCompare(b.slug)
   })
 
   return result
@@ -183,7 +192,7 @@ export function useProfileFilters() {
   )
 
   const setSort = useCallback(
-    (sort: "date" | "name") => {
+    (sort: FilterState["sort"]) => {
       setFilters({ ...filters, sort })
     },
     [filters, setFilters]
@@ -222,7 +231,7 @@ export function useProfileFilters() {
       company: [],
       year: [],
       concern: [],
-      sort: "date",
+      sort: "added",
       view: filters.view,
       evidence: filters.evidence,
       q: "",

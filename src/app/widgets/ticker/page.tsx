@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server"
+import { getTickerStats } from "@/lib/queries/ticker"
 
 export const revalidate = 60
 
@@ -12,13 +12,7 @@ export default async function TickerWidget({
 
   let total = 0
   try {
-    const supabase = await createClient()
-    const { count } = await supabase
-      .from("profiles")
-      .select("*", { count: "exact", head: true })
-      .eq("status", "published")
-
-    total = count ?? 0
+    total = (await getTickerStats()).totalCount
   } catch {
     // Graceful fallback
   }

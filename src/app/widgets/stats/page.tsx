@@ -1,4 +1,5 @@
-import { createClient } from "@/lib/supabase/server"
+import { getCompanies } from "@/lib/queries/companies"
+import { getThemeData } from "@/lib/queries/themes"
 
 export const revalidate = 3600
 
@@ -20,42 +21,17 @@ export default async function StatsWidget({
   let items: Array<{ label: string; count: number }> = []
 
   try {
-    const supabase = await createClient()
-
     if (statType === "company") {
-      const { data } = await supabase
-        .from("profiles")
-        .select("company")
-        .eq("status", "published")
-
-      if (data) {
-        const counts = new Map<string, number>()
-        for (const row of data) {
-          counts.set(row.company, (counts.get(row.company) ?? 0) + 1)
-        }
-        items = Array.from(counts.entries())
-          .map(([label, count]) => ({ label, count }))
-          .sort((a, b) => b.count - a.count)
-          .slice(0, 10)
-      }
+      items = (await getCompanies())
+        .map(({ company, evidenceLinkedCount }) => ({ label: company, count: evidenceLinkedCount }))
+        .filter(({ count }) => count > 0)
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10)
     } else if (statType === "concern") {
-      const { data } = await supabase
-        .from("profile_concern_tags")
-        .select("concern_tags(name)")
-
-      if (data) {
-        const counts = new Map<string, number>()
-        for (const row of data) {
-          const tag = row.concern_tags as unknown as { name: string } | null
-          if (tag) {
-            counts.set(tag.name, (counts.get(tag.name) ?? 0) + 1)
-          }
-        }
-        items = Array.from(counts.entries())
-          .map(([label, count]) => ({ label, count }))
-          .sort((a, b) => b.count - a.count)
-          .slice(0, 10)
-      }
+      items = (await getThemeData())
+        .map(({ name, count }) => ({ label: name, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 10)
     }
   } catch {
     // Graceful fallback
