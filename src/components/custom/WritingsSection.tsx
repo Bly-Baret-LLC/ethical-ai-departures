@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import type { PublicationWithProfile } from "@/lib/schemas/publication"
 import { ExpandableText } from "./ExpandableText"
+import { curatedPublications } from "@/lib/publication-collection"
 
 interface WritingsSectionProps {
   publications: PublicationWithProfile[]
@@ -12,18 +13,23 @@ interface WritingsSectionProps {
 
 export function WritingsSection({ publications, concernCounts }: WritingsSectionProps) {
   const [activeConcern, setActiveConcern] = useState<string | null>(null)
+  const works = curatedPublications(publications)
+  const counts = concernCounts.map((concern) => ({
+    ...concern,
+    count: works.filter((work) => work.concernTagSlugs.includes(concern.tagSlug)).length,
+  })).filter((concern) => concern.count > 0).sort((a, b) => b.count - a.count)
 
   const filtered = activeConcern
-    ? publications.filter((pub) => pub.concernTagSlugs.includes(activeConcern))
-    : publications
+    ? works.filter((pub) => pub.concernTagSlugs.includes(activeConcern))
+    : works
 
   return (
     <section className="mt-10">
       <h2 className="font-serif text-2xl font-semibold text-text-primary">
-        Filter by Concern
+        Browse by author’s concern
       </h2>
 
-      {concernCounts.length > 0 && (
+      {counts.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
           {activeConcern && (
             <button
@@ -31,14 +37,15 @@ export function WritingsSection({ publications, concernCounts }: WritingsSection
               onClick={() => setActiveConcern(null)}
               className="rounded-full bg-surface-secondary px-3 py-1 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-secondary/80"
             >
-              All ({publications.length})
+              All ({works.length})
             </button>
           )}
-          {concernCounts.map((c) => (
+          {counts.map((c) => (
             <button
               key={c.tagSlug}
               type="button"
               onClick={() => setActiveConcern(activeConcern === c.tagSlug ? null : c.tagSlug)}
+              aria-pressed={activeConcern === c.tagSlug}
               className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
                 activeConcern === c.tagSlug
                   ? "bg-accent-amber text-white"
@@ -80,12 +87,11 @@ export function WritingsSection({ publications, concernCounts }: WritingsSection
               </span>
             )}
             <div className="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-text-secondary">
-              <Link
-                href={`/profiles/${pub.profileSlug}`}
-                className="text-accent-amber hover:underline"
-              >
-                {pub.profileName}
-              </Link>
+              {pub.authors.map((author) => (
+                <Link key={author.slug} href={`/profiles/${author.slug}`} className="text-accent-amber hover:underline">
+                  {author.name}
+                </Link>
+              ))}
               {pub.publisher && (
                 <>
                   <span aria-hidden="true">&middot;</span>
@@ -98,7 +104,7 @@ export function WritingsSection({ publications, concernCounts }: WritingsSection
                   <time>
                     {new Date(pub.publishedDate + "T00:00:00").toLocaleDateString(
                       undefined,
-                      { year: "numeric", month: "short" }
+                      { year: "numeric", ...(pub.publishedDatePrecision !== "year" ? { month: "short" as const } : {}) }
                     )}
                   </time>
                 </>

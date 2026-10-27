@@ -67,6 +67,28 @@ const mockPrediction = {
 }
 
 describe("PredictionDetailPage", () => {
+  it("does not turn a probability estimate into a likely-true/false vote", async () => {
+    mockGetPredictionById.mockResolvedValue({ ...mockPrediction, recordKind: "probabilistic_forecast" })
+    render(await PredictionDetailPage({ params: Promise.resolve({ id: "p1" }) }))
+    expect(screen.queryByTestId("vote-bar")).not.toBeInTheDocument()
+    expect(mockGetVoteCounts).not.toHaveBeenCalled()
+  })
+  it("preserves review and paraphrase labels on detail pages", async () => {
+    mockGetPredictionById.mockResolvedValue({ ...mockPrediction, underReview: true, isVerbatimQuote: false, sourceUrl: "https://example.org/original", status: "disproven", resolutionOutcome: "false" })
+    const jsx = await PredictionDetailPage({ params: Promise.resolve({ id: "p1" }) })
+    const { container } = render(jsx)
+    expect(screen.getByText("Under review")).toBeInTheDocument()
+    expect(screen.getByText("Previous resolution — under review")).toBeInTheDocument()
+    expect(screen.getByText(/Paraphrase/)).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Source" })).toHaveAttribute("href", "https://example.org/original")
+    expect(container.querySelector("blockquote")).toBeNull()
+  })
+  it("does not solicit votes on forecasts under review", async () => {
+    mockGetPredictionById.mockResolvedValue({ ...mockPrediction, underReview: true })
+    render(await PredictionDetailPage({ params: Promise.resolve({ id: "p1" }) }))
+    expect(screen.queryByTestId("vote-bar")).not.toBeInTheDocument()
+    expect(mockGetVoteCounts).not.toHaveBeenCalled()
+  })
   it("renders prediction title", async () => {
     mockGetPredictionById.mockResolvedValue(mockPrediction)
     mockGetVoteCounts.mockResolvedValue({ agree: 5, disagree: 3, total: 8 })

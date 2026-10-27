@@ -12,14 +12,13 @@ const TABS = [
   {
     key: "writings",
     label: "Writings",
-    description:
-      "Peer-reviewed papers, policy reports, and essays authored by departed researchers.",
+    description: null,
   },
   {
     key: "predictions",
     label: "Forecasts & Warnings",
     description:
-      "Forecasts are future-facing statements with observable outcomes. Warnings and claims capture important insider assessments that are not suitable for an accuracy score. Resolution criteria added after an original statement are dated and disclosed.",
+      "What they warned about, and what has happened since. Dated updates follow the evidence; forecasts and broader warnings are labeled separately.",
   },
 ] as const
 
@@ -129,9 +128,9 @@ export function PublicationsTabs({
 
       {activeTab === "predictions" && spotlight}
 
-      <p className="mt-4 text-sm text-text-secondary">
-        {activeTabConfig.description}
-      </p>
+      {activeTabConfig.description && (
+        <p className="mt-4 text-sm text-text-secondary">{activeTabConfig.description}</p>
+      )}
 
       {activeTab === "writings" && (
         <WritingsSection

@@ -72,6 +72,9 @@ const predictionDetailSchema = z
       ])
       .catch("prediction"),
     under_review: z.boolean().catch(false),
+    is_verbatim_quote: z.boolean().nullish().catch(null),
+    source_url: z.string().nullish().catch(null),
+    criteria_adopted_at: z.string().nullish().catch(null),
     resolution_date: z.string().nullable(),
     resolution_outcome: z.enum(["true", "false", "partial"]).nullable(),
     resolution_rationale: z.string().nullable(),
@@ -97,6 +100,9 @@ const predictionDetailSchema = z
     resolutionEvidenceUrl: row.resolution_evidence_url,
     recordKind: row.record_kind,
     underReview: row.under_review,
+    isVerbatimQuote: row.is_verbatim_quote ?? null,
+    sourceUrl: row.source_url ?? null,
+    criteriaAdoptedAt: row.criteria_adopted_at ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   }))

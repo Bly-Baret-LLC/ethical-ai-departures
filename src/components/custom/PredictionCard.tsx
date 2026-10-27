@@ -4,7 +4,8 @@ import { useState } from "react"
 import Link from "next/link"
 import type { PredictionWithProfile } from "@/lib/schemas/prediction"
 import { PredictionStatusBadge } from "./PredictionStatusBadge"
-import { ExpandableText } from "./ExpandableText"
+import { ForecastSource } from "./ForecastSource"
+import { ForecastUpdateNote } from "./ForecastUpdateNote"
 import {
   RECORD_KIND_LABELS,
   isForecast,
@@ -53,7 +54,7 @@ export function PredictionCard({ prediction }: PredictionCardProps) {
               {new Date(prediction.predictedDate + "T00:00:00").toLocaleDateString(undefined, {
                 year: "numeric",
               })}
-              {prediction.resolutionDate &&
+              {!prediction.underReview && prediction.resolutionDate &&
                 (prediction.status === "disproven" ||
                   prediction.status === "contradicted" ||
                   prediction.status === "confirmed") && (
@@ -69,32 +70,8 @@ export function PredictionCard({ prediction }: PredictionCardProps) {
         )}
       </div>
 
-      {prediction.sourceQuote && (
-        <blockquote className="mt-3 border-l-2 border-accent-amber/30 pl-4">
-          <ExpandableText
-            text={prediction.sourceQuote}
-            clampLines={3}
-            className="text-sm italic text-text-secondary"
-          />
-          <p className="mt-1 text-xs text-text-secondary">
-            {prediction.isVerbatimQuote === false
-              ? "Paraphrase — not a verbatim quotation."
-              : prediction.isVerbatimQuote === true
-                ? "Verbatim excerpt."
-                : null}
-            {prediction.sourceUrl && (
-              <a
-                href={prediction.sourceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ml-1 text-accent-info underline hover:text-accent-info/80"
-              >
-                Source
-              </a>
-            )}
-          </p>
-        </blockquote>
-      )}
+      <ForecastSource text={prediction.sourceQuote} verbatim={prediction.isVerbatimQuote} url={prediction.sourceUrl} compact />
+      <ForecastUpdateNote profileSlug={prediction.profileSlug} title={prediction.title} compact />
 
       {prediction.resolutionCriteria && isForecast(prediction) && (
         <div className="mt-3">
@@ -130,7 +107,7 @@ export function PredictionCard({ prediction }: PredictionCardProps) {
         prediction.status !== "open" && (
           <div className="mt-3 rounded-md bg-surface-secondary/50 px-4 py-3">
             <p className="text-xs font-medium text-text-secondary uppercase tracking-wide">
-              Resolution
+              {prediction.underReview ? "Previous resolution — under review" : "Resolution"}
               {prediction.resolutionDate && (
                 <span className="ml-2 font-normal normal-case">
                   — {new Date(prediction.resolutionDate + "T00:00:00").toLocaleDateString(undefined, { year: "numeric", month: "short" })}

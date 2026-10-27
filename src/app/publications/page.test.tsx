@@ -57,8 +57,8 @@ describe("ThemesAndWritingsPage", () => {
   it("renders the collection and classification overview", async () => {
     const jsx = await ThemesAndWritingsPage()
     render(jsx)
-    expect(screen.getByText(/Public statements and writings by people in the record/)).toBeInTheDocument()
-    expect(screen.getByText(/Forecasts & Warnings separately records/)).toBeInTheDocument()
+    expect(screen.getByText(/Papers, essays, and books on AI’s risks, impacts, and governance/)).toBeInTheDocument()
+    expect(screen.queryByText(/departure statements/)).not.toBeInTheDocument()
   })
 
   it("forwards publications to the tabs component", async () => {

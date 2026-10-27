@@ -4,7 +4,10 @@ import { notFound } from "next/navigation"
 import { getPredictionById, getVoteCounts } from "@/lib/queries/predictions"
 import { getPublicationsByPredictionId } from "@/lib/queries/publications"
 import { InsiderVoteBar } from "@/components/custom/InsiderVoteBar"
-import { RECORD_KIND_LABELS, isForecast } from "@/lib/forecasts"
+import { RECORD_KIND_LABELS, isForecast, isBinaryForecast } from "@/lib/forecasts"
+import { ForecastSource } from "@/components/custom/ForecastSource"
+import { ForecastUpdateNote } from "@/components/custom/ForecastUpdateNote"
+import { groupPublications } from "@/lib/publication-collection"
 
 export const revalidate = 300
 
@@ -71,9 +74,10 @@ export default async function PredictionDetailPage({ params }: PageProps) {
   if (!prediction) notFound()
 
   const forecast = isForecast(prediction)
+  const canVote = isBinaryForecast(prediction) && !prediction.underReview && prediction.status === "open"
 
   const [votes, publications] = await Promise.all([
-    forecast
+    canVote
       ? getVoteCounts(id)
       : Promise.resolve({ agree: 0, disagree: 0, total: 0 }),
     getPublicationsByPredictionId(id),
@@ -106,6 +110,9 @@ export default async function PredictionDetailPage({ params }: PageProps) {
             {RECORD_KIND_LABELS[prediction.recordKind]}
           </span>
         )}
+        {prediction.underReview && (
+          <span className="ml-2 inline-block rounded-full bg-surface-secondary px-3 py-1 text-xs font-medium text-text-secondary">Under review</span>
+        )}
 
         <h1 className="mt-3 font-serif text-3xl font-semibold text-text-primary">
           {prediction.title}
@@ -129,9 +136,8 @@ export default async function PredictionDetailPage({ params }: PageProps) {
       )}
 
       {/* Source Quote */}
-      <blockquote className="mt-6 border-l-4 border-accent-amber/40 pl-4 italic text-text-secondary">
-        &ldquo;{prediction.sourceQuote}&rdquo;
-      </blockquote>
+      <ForecastSource text={prediction.sourceQuote} verbatim={prediction.isVerbatimQuote} url={prediction.sourceUrl} />
+      <ForecastUpdateNote profileSlug={prediction.profileSlug} title={prediction.title} />
 
       {/* Resolution Criteria */}
       {forecast && prediction.resolutionCriteria && (
@@ -142,13 +148,18 @@ export default async function PredictionDetailPage({ params }: PageProps) {
           <p className="mt-2 text-text-secondary">
             {prediction.resolutionCriteria}
           </p>
+          {prediction.criteriaAdoptedAt && (
+            <p className="mt-2 text-xs text-text-secondary">
+              Editorial criteria adopted <time dateTime={prediction.criteriaAdoptedAt}>{prediction.criteriaAdoptedAt}</time>.
+            </p>
+          )}
         </div>
       )}
 
       {/* Resolution outcome */}
       {isResolved && prediction.resolutionOutcome && (
         <div className="mt-8 rounded-lg border border-border-light bg-surface-card p-6">
-          <h2 className="text-lg font-semibold text-text-primary">Resolution</h2>
+          <h2 className="text-lg font-semibold text-text-primary">{prediction.underReview ? "Previous resolution — under review" : "Resolution"}</h2>
           <p className="mt-2 font-medium text-text-primary">
             {outcomeLabel[prediction.resolutionOutcome]}
           </p>
@@ -176,7 +187,7 @@ export default async function PredictionDetailPage({ params }: PageProps) {
       )}
 
       {/* Voting */}
-      {forecast && prediction.status === "open" && (
+      {canVote && (
         <div className="mt-8">
           <h2 className="text-lg font-semibold text-text-primary">
             Insider Assessment
@@ -201,7 +212,7 @@ export default async function PredictionDetailPage({ params }: PageProps) {
             Related Publications
           </h2>
           <ul className="mt-4 space-y-3">
-            {publications.map((pub) => (
+            {groupPublications(publications).map((pub) => (
               <li
                 key={pub.id}
                 className="rounded-lg border border-border-light bg-surface-card px-4 py-3"
@@ -226,12 +237,9 @@ export default async function PredictionDetailPage({ params }: PageProps) {
                       </span>
                     )}
                     <div className="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-text-secondary">
-                      <Link
-                        href={`/profiles/${pub.profileSlug}`}
-                        className="text-accent-amber hover:underline"
-                      >
-                        {pub.profileName}
-                      </Link>
+                      {pub.authors.map((author) => (
+                        <Link key={author.slug} href={`/profiles/${author.slug}`} className="text-accent-amber hover:underline">{author.name}</Link>
+                      ))}
                       {pub.publisher && (
                         <>
                           <span aria-hidden="true">&middot;</span>

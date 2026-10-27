@@ -22,6 +22,20 @@ const severityColor: Record<string, string> = {
 
 const sitewideCorrections = [
   {
+    id: "2026-10-26-hinton-forecast-criteria",
+    date: "2026-10-26",
+    severity: "major",
+    description:
+      "Corrected the criteria attached to Geoffrey Hinton’s extinction-risk forecast. The earlier criteria treated existential risk or near misses as qualifying evidence. The forecast concerns extinction itself. His probability estimate and time horizon are unchanged, and the record remains open and excluded from binary accuracy scores.",
+  },
+  {
+    id: "2026-10-26-suchir-publication-summary",
+    date: "2026-10-26",
+    severity: "minor",
+    description:
+      "Corrected the summary of Suchir Balaji’s fair-use essay. The earlier summary included examples involving stock photography and copywriting that the essay did not establish. The revised summary reflects his case-specific analysis of ChatGPT and market substitution.",
+  },
+  {
     id: "2026-09-10-context-profile-audit",
     date: "2026-09-10",
     severity: "major",

@@ -49,17 +49,8 @@ export default async function ThemesAndWritingsPage() {
 
       <div className="mt-6 space-y-4 text-text-secondary leading-relaxed">
         <p>
-          Public statements and writings by people in the record provide context
-          for the concerns they raised about AI safety, ethics, governance, and
-          accountability. The collection includes peer-reviewed papers, policy
-          reports, essays, and departure statements, each linked to the person
-          and concern it helps document.
-        </p>
-        <p>
-          Forecasts &amp; Warnings separately records future-facing statements
-          with observable outcomes, dated warnings, and contemporaneous claims.
-          Each item preserves the original source and identifies how it is
-          classified.
+          Papers, essays, and books on AI’s risks, impacts, and governance,
+          by people in the record.
         </p>
       </div>
 

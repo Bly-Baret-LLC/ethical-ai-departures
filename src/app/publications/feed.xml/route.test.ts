@@ -11,12 +11,18 @@ vi.mock("@/lib/supabase/server", () => ({
                 {
                   id: "p1",
                   title: "AI regulation prediction",
+                  record_kind: "prediction",
+                  under_review: false,
                   resolution_outcome: "true",
                   resolution_rationale: "EU AI Act passed",
                   resolution_date: "2026-01-15",
                   updated_at: "2026-01-15T00:00:00Z",
                   profiles: { name: "Alice Chen" },
                 },
+                { id: "review", title: "Under-review resolution", record_kind: "prediction", under_review: true, resolution_date: "2026-01-15" },
+                { id: "warning", title: "Warning with legacy outcome", record_kind: "warning", under_review: false, resolution_date: "2026-01-15" },
+                { id: "probability", title: "Probability with legacy outcome", record_kind: "probabilistic_forecast", under_review: false, resolution_date: "2026-01-15" },
+                { id: "undated", title: "Undated resolution", record_kind: "prediction", under_review: false, resolution_date: null },
               ],
             }),
           }),
@@ -29,6 +35,13 @@ vi.mock("@/lib/supabase/server", () => ({
 import { GET } from "./route"
 
 describe("Predictions RSS Feed", () => {
+  it("does not syndicate warnings, probability estimates, disputed or undated resolutions as verdicts", async () => {
+    const xml = await (await GET()).text()
+    expect(xml).not.toContain("Under-review resolution")
+    expect(xml).not.toContain("Warning with legacy outcome")
+    expect(xml).not.toContain("Probability with legacy outcome")
+    expect(xml).not.toContain("Undated resolution")
+  })
   it("returns RSS XML with content type", async () => {
     const response = await GET()
     expect(response.headers.get("Content-Type")).toBe("application/rss+xml; charset=utf-8")

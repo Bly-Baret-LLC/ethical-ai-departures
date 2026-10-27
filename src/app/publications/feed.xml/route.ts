@@ -19,7 +19,7 @@ export async function GET() {
     const supabase = await createClient()
     const { data } = await supabase
       .from("predictions")
-      .select("id, title, resolution_outcome, resolution_rationale, resolution_date, updated_at, profiles(name)")
+      .select("id, title, record_kind, under_review, resolution_outcome, resolution_rationale, resolution_date, updated_at, profiles(name)")
       .in("status", ["confirmed", "disproven", "partially_resolved"])
       .order("updated_at", { ascending: false })
       .limit(50)
@@ -32,6 +32,9 @@ export async function GET() {
       }
 
       items = data
+        // Match the tracker: warnings, probabilities and disputed adjudications
+        // must not be syndicated as confirmed/disproven predictions.
+        .filter((p) => p.record_kind === "prediction" && p.under_review === false && p.resolution_date)
         .map((p) => {
           const outcome = p.resolution_outcome ? outcomeLabel[p.resolution_outcome] ?? "Resolved" : "Resolved"
           const profile = p.profiles as unknown as { name: string } | null

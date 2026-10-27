@@ -32,7 +32,8 @@ describe("CorrectionsPage", () => {
       screen.getByText(/completed a sitewide audit of Context only profiles/)
     ).toBeInTheDocument()
     expect(screen.getByText(/from 69 published person records to 39 evidence-linked departures/)).toBeInTheDocument()
-    expect(screen.getByText("Major")).toBeInTheDocument()
+    expect(screen.getAllByText("Major")).toHaveLength(2)
+    expect(screen.getByText(/Corrected the criteria attached to Geoffrey Hinton/)).toBeInTheDocument()
   })
 
   it("renders corrections when they exist", async () => {
@@ -50,6 +51,7 @@ describe("CorrectionsPage", () => {
     const jsx = await CorrectionsPage()
     render(jsx)
     expect(screen.getByText("Fixed incorrect departure date")).toBeInTheDocument()
-    expect(screen.getByText("Minor")).toBeInTheDocument()
+    expect(screen.getAllByText("Minor")).toHaveLength(2)
+    expect(screen.getByText(/Corrected the summary of Suchir Balaji/)).toBeInTheDocument()
   })
 })

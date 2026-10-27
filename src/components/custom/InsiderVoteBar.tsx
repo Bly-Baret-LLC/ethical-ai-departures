@@ -42,7 +42,7 @@ export function InsiderVoteBar({
   const [pending, setPending] = useState(false)
   const [result, setResult] = useState<VoteActionResult | null>(null)
   const fingerprintRef = useRef(
-    typeof navigator !== "undefined"
+    typeof window !== "undefined" && typeof screen !== "undefined"
       ? generateFingerprint(
           navigator.userAgent,
           navigator.language,
