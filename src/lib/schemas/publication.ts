@@ -18,6 +18,7 @@ export const publicationRowSchema = z.object({
       "legal_analysis",
       "forecast_essay",
       "testimony",
+      "book",
     ])
     .nullable(),
   publisher: z.string().nullable(),
@@ -25,6 +26,7 @@ export const publicationRowSchema = z.object({
   published_date_precision: z.enum(["day", "month", "year"]).catch("day"),
   last_updated_at: z.string().nullish().catch(null),
   abstract: z.string().nullable(),
+  listed_in_publications: z.boolean().optional(),
   created_at: z.string(),
   updated_at: z.string(),
 })
@@ -42,6 +44,7 @@ export const publicationSchema = publicationRowSchema.transform((row) => ({
   publishedDatePrecision: row.published_date_precision,
   lastUpdatedAt: row.last_updated_at ?? null,
   abstract: row.abstract,
+  listedInPublications: row.listed_in_publications,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
 }))
@@ -72,6 +75,7 @@ export const publicationWithProfileSchema = publicationWithProfileRowSchema.tran
   publishedDatePrecision: row.published_date_precision,
   lastUpdatedAt: row.last_updated_at ?? null,
   abstract: row.abstract,
+  listedInPublications: row.listed_in_publications,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
 }))

@@ -198,6 +198,7 @@ export const profileDetailRowSchema = profileRowSchema.extend({
         "legal_analysis",
         "forecast_essay",
         "testimony",
+        "book",
       ])
       .nullable(),
     publisher: z.string().nullable(),
