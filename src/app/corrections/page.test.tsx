@@ -51,7 +51,13 @@ describe("CorrectionsPage", () => {
     const jsx = await CorrectionsPage()
     render(jsx)
     expect(screen.getByText("Fixed incorrect departure date")).toBeInTheDocument()
-    expect(screen.getAllByText("Minor")).toHaveLength(2)
+    expect(screen.getAllByText("Minor")).toHaveLength(3)
     expect(screen.getByText(/Corrected the summary of Suchir Balaji/)).toBeInTheDocument()
+  })
+
+  it("discloses Adler's date precision correction without changing his departure year", async () => {
+    render(await CorrectionsPage())
+    expect(screen.getByText(/Changed Steven Adler’s departure date from an unsupported exact day to year precision/)).toBeInTheDocument()
+    expect(screen.getByText(/His departure year and evidence classification are unchanged/)).toBeInTheDocument()
   })
 })

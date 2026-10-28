@@ -22,6 +22,13 @@ const severityColor: Record<string, string> = {
 
 const sitewideCorrections = [
   {
+    id: "2026-10-28-adler-departure-precision",
+    date: "2026-10-28",
+    severity: "minor",
+    description:
+      "Changed Steven Adler’s departure date from an unsupported exact day to year precision. In parliamentary testimony, Adler described leaving OpenAI in late 2024. His departure year and evidence classification are unchanged.",
+  },
+  {
     id: "2026-10-26-hinton-forecast-criteria",
     date: "2026-10-26",
     severity: "major",
