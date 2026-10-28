@@ -5,7 +5,6 @@ import { STORAGE_KEYS } from "@/lib/constants"
 import { setStorageItem } from "@/lib/utils/storage"
 import { useTickerSubscription } from "@/hooks/useTickerSubscription"
 import Image from "next/image"
-import Link from "next/link"
 import { AnimatedCount } from "./AnimatedCount"
 
 interface TickerClientProps {
@@ -48,12 +47,12 @@ export function TickerClient({
               />
             </div>
 
-            <div className="flex flex-col gap-4 pr-24 sm:flex-row sm:items-start sm:gap-6 sm:pr-32 md:pr-0">
-              <div className="shrink-0 sm:-translate-y-[34px] md:-translate-y-[41px] lg:-translate-y-[48px]">
+            <div className="flex flex-col gap-4 pr-24 sm:flex-row sm:items-center sm:gap-6 sm:pr-32 md:pr-0">
+              <div className="shrink-0">
                 <AnimatedCount
                   value={displayCount}
                   animate
-                  className="font-display text-[72px] font-black uppercase leading-tight tracking-wider tabular-nums sm:text-[88px] md:text-[104px] lg:text-[120px] ticker-gradient"
+                  className="font-display text-[72px] font-black uppercase leading-tight py-2 tracking-wider tabular-nums sm:text-[88px] md:text-[104px] lg:text-[120px] ticker-gradient"
                 />
               </div>
               <div className="max-w-[440px]">
@@ -68,13 +67,6 @@ export function TickerClient({
                     </span>
                   )}
                 </p>
-                <Link
-                  href="/publications?tab=predictions"
-                  prefetch={false}
-                  className="mt-4 inline-block text-sm text-accent-info hover:underline"
-                >
-                  What they warned about →
-                </Link>
               </div>
             </div>
           </div>
@@ -93,7 +85,6 @@ export function TickerClient({
           </div>
         </div>
       </section>
-      <div className="bg-surface-primary pb-6" />
     </div>
   )
 }

@@ -14,6 +14,7 @@ import { SourceTooltip } from "@/components/custom/SourceTooltip"
 import { ShareButtons } from "@/components/custom/ShareButtons"
 import { PredictionStatusBadge } from "@/components/custom/PredictionStatusBadge"
 import { EmailSignup } from "@/components/custom/EmailSignup"
+import { SupportAppeal } from "@/components/custom/SupportAppeal"
 import {
   RECORD_KIND_LABELS,
   forecastSummaryLine,
@@ -277,6 +278,8 @@ export default async function ProfileDetailPage({
           </ul>
         </section>
       )}
+
+      <SupportAppeal placement="profile" />
 
       {/* Key Publications */}
       {profile.publications.length > 0 && (

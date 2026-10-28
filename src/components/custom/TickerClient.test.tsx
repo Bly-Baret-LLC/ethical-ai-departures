@@ -75,9 +75,6 @@ describe("TickerClient", () => {
     ).toBeInTheDocument()
     expect(screen.queryByText(/September 2026 update/)).not.toBeInTheDocument()
     expect(screen.queryByRole("link", { name: /What changed/ })).not.toBeInTheDocument()
-    expect(screen.getByRole("link", { name: "What they warned about →" })).toHaveAttribute(
-      "href", "/publications?tab=predictions"
-    )
   })
 
   it("updates stored count after render", async () => {

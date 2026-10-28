@@ -6,6 +6,7 @@ import type { ProfileWithTags } from "@/lib/schemas/profile"
 import { TickerBlock } from "@/components/custom/TickerBlock"
 import { SubmitDepartureButton } from "@/components/custom/SubmitDepartureButton"
 import { EmailSignup } from "@/components/custom/EmailSignup"
+import { SupportAppeal } from "@/components/custom/SupportAppeal"
 import { allegedCount, headlineCount } from "@/lib/evidence"
 
 // Revalidate at the shorter ticker interval (profiles use 300s but ticker uses 60s)
@@ -48,6 +49,7 @@ export default async function HomePage() {
         evidenceLinkedCount={headlineCount(profiles)}
         allegedCount={allegedCount(profiles)}
       />
+      <SupportAppeal placement="homepage" />
       <section
         id="profiles"
         aria-label="Departures"
