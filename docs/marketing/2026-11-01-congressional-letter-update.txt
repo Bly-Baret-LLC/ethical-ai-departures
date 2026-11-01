@@ -1,0 +1,107 @@
+November 1, 2026 — congressional letter evidence update
+
+STATUS: Published November 1, 2026 after explicit approval to fix the company-page
+issue, double-check, and publish if ready. Data-only migration 20261101000001;
+the running application deployment and unrelated newsletter work were untouched.
+
+SCOPE
+Jasmine Wang, Mikita Balesni, and Tomek Korbak: append a brief account of the
+October 29 congressional letter, link the original document in Sources, and
+update evidence-review metadata to November 1. Preserve every other editorial
+field, existing source, publication, concern tag, and forecast.
+
+Primary source (six pages read):
+https://casar.house.gov/sites/evo-subsites/casar.house.gov/files/evo-media-document/openai-employee-firing_cyber-security-follow-up_0.pdf
+
+Added copy on each profile:
+In an October 29, 2026 letter, 20 House Democrats led by Rep. Greg Casar asked
+OpenAI to explain the three dismissals and commit to protecting whistleblowers.
+They requested a response by November 13.
+
+EDITORIAL REVIEW
+The letter asks questions; it does not establish retaliation. All three remain
+alleged/contested, excluded from the headline count. Existing OpenAI denials and
+departure-date uncertainty remain intact. This is a source, not a publication
+authored by these researchers. No new company response is asserted.
+
+LOCAL DATA QA
+Before and after: 56 published profiles; 50 headline-counted; 6 alleged;
+28 published OpenAI profiles. Source delta: exactly +3, one per profile.
+Guarded migration applied; batch SQL assertions passed; repeat application
+rejected without mutation; guarded rollback restored the prior editorial state;
+reapplication passed. Snapshot comparison verified unchanged unrelated records,
+existing sources, publications, tags, predictions, and ticker statistics.
+Automatic updated_at and newly inserted source created_at are excluded only
+where comparing rollback/reapplication timestamps, not editorial data.
+
+Files:
+supabase/migrations/20261101000001_update_openai_congressional_letter.sql
+supabase/rollbacks/20261101000001_update_openai_congressional_letter.down.sql
+supabase/tests/openai_congressional_letter.sql
+Private local QA harness and baseline remain in .local-research, not a release.
+
+APPLICATION QA
+TypeScript: passed.
+Vitest: 102 files, 619 tests passed.
+Production build: passed. Existing middleware deprecation and dynamic-rendering
+messages remain; company routes are marked dynamic in the build output.
+Full repository lint: fails on 21 no-require-imports errors in unrelated existing
+marketing CommonJS scripts. Those files were not changed. Local QA harness lint
+passes after removing unused bindings.
+
+All three profile pages inspected: source link, new text, date uncertainty,
+review date, company/concern links, and contested classification preserved.
+Desktop and 390px mobile inspection: readable and no horizontal overflow on
+checked profiles. Homepage settles at 50; disputed directory has 6 records and
+each updated person appears once. Temporary viewport override reset.
+
+SURFACE DISPOSITION
+Profiles/sources/review date: updated.
+Hero, directory totals, company membership, concerns: no eligibility changes.
+Writings, forecasts, RSS: unchanged; no authored work or forecast added.
+Exports: unchanged; current exports omit narrative context and source rows.
+SEO: existing slugs, titles, canonical configuration, and descriptions retained;
+sitemap lastModified derives from profile updated_at.
+Corrections/organizational events: no reclassification or new event in this batch.
+No subscriber data, email sends, production database changes, or deployment.
+
+LOCAL PREVIEW
+http://localhost:3700/profiles/jasmine-wang?preview=congressional-letter
+http://localhost:3700/profiles/mikita-balesni?preview=congressional-letter
+http://localhost:3700/profiles/tomek-korbak?preview=congressional-letter
+
+COMPANY-PAGE ISSUE RESOLVED
+The development compiler stalled with its existing generated cache. The same
+route returned HTTP 200 in 217ms on the local production build and in 999ms on
+the live site. Restarting alone had not helped; stopping the preview server,
+moving .next/dev to a recoverable temporary backup, and starting with a fresh
+cache resolved the stall (HTTP 200 in 604ms). No application code change needed.
+Desktop and actual 390px mobile layout checked after recovery; no overflow.
+
+PUBLICATION VERIFICATION
+Reopened the original six-page letter and live About/Editorial Standards.
+Restricted production editorial backup and migration-history snapshot saved.
+Production dry run passed and rolled back; the approved migration and its actual
+history entry were then committed atomically. No bulk migration push performed.
+Post-write assertions passed: exactly three new sources, same profile count,
+50 headline records, 6 alleged, 28 published OpenAI profiles (23 counted/5 alleged).
+All other editorial fields, rows, relationships, writings and predictions preserved.
+HTTP/rendered-content checks passed on ten ordinary local and live URLs: the
+three profiles, homepage, allegations query, OpenAI page, sitemap, both relevant
+concern pages, and publications. Canonicals, sources, dates and labels checked.
+Live client-side allegations tab contains all three once; hero settles at 50.
+102 test files / 619 tests and TypeScript passed again. Relevant profile/company
+code lint passed; unrelated repository-wide marketing-script errors remain.
+Build from the preview turn was unchanged and served successfully in production
+mode locally. No application redeploy is needed for this existing-schema update.
+
+Private backup and verification evidence:
+.local-research/ethical-ai-departures/release-20261101-congress/
+Migration, guarded rollback, SQL assertions, and this note are the only release
+files. Commit locally; do not trigger a Git-based application deployment that
+could replace the separately deployed newsletter implementation.
+
+RELEASE CAUTION
+The worktree contains unrelated newsletter/subscription changes. Do not stage
+the whole worktree or blindly run all pending migrations. Recheck production
+baselines and apply only the reviewed evidence migration after approval.
