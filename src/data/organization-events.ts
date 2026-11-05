@@ -46,6 +46,27 @@ export const organizationEvents: OrganizationEvent[] = [
     ],
   },
   {
+    slug: "microsoft-ethics-and-society-team-eliminated",
+    company: "Microsoft",
+    companySlug: "microsoft",
+    title: "Ethics and Society team eliminated",
+    eventDate: "2023-03",
+    summary:
+      "Microsoft eliminated its Ethics and Society team, which helped product teams put responsible AI principles into practice. Platformer reported that the remaining team members were told of the decision on March 6, 2023.",
+    outcome:
+      "Microsoft retained its Office of Responsible AI and said it had expanded responsibility for AI across its product teams and that office.",
+    peopleNote:
+      "Most members had already transferred within Microsoft during an earlier reorganization. The elimination was a team-level decision.",
+    sources: [
+      {
+        title: "Microsoft just laid off one of its responsible AI teams",
+        publisher: "Platformer",
+        url: "https://www.platformer.news/microsoft-just-laid-off-one-of-its/",
+        publishedDate: "2023-03-13",
+      },
+    ],
+  },
+  {
     slug: "twitter-meta-team-eliminated",
     company: "Twitter",
     companySlug: "twitter",

@@ -1,10 +1,13 @@
 import type { OrganizationEvent } from "@/data/organization-events"
 
 function formatEventDate(date: string): string {
-  return new Date(`${date}T00:00:00`).toLocaleDateString("en-US", {
+  const monthOnly = date.length === 7
+  const isoDay = monthOnly ? `${date}-01` : date
+  return new Date(`${isoDay}T00:00:00Z`).toLocaleDateString("en-US", {
+    timeZone: "UTC",
     year: "numeric",
     month: "long",
-    day: "numeric",
+    ...(monthOnly ? {} : { day: "numeric" as const }),
   })
 }
 

@@ -58,7 +58,9 @@ export async function generateMetadata({
   const eventCount = getOrganizationEventsByCompanySlug(slug).length
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://ethicalaidepartures.fyi").trim()
   const canonicalUrl = `${siteUrl}/companies/${slug}`
-  const title = `${company.company} — ${evidenceLinkedCount} Evidence-Linked AI Departure${evidenceLinkedCount === 1 ? "" : "s"}`
+  const title = company.profiles.length === 0 && eventCount > 0
+    ? `${company.company} — Organizational Events`
+    : `${company.company} — ${evidenceLinkedCount} Evidence-Linked AI Departure${evidenceLinkedCount === 1 ? "" : "s"}`
   const description = `Sourced records involving ${company.company}: ${evidenceLinkedCount} evidence-linked departure${evidenceLinkedCount === 1 ? "" : "s"}${eventCount > 0 ? ` and ${eventCount} documented organizational event${eventCount === 1 ? "" : "s"}` : ""}.`
 
   return {

@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { profileWithTagsSchema } from "@/lib/schemas/profile"
 import { isHeadlineCounted } from "@/lib/evidence"
-import { countOrganizationEventsByCompanySlug } from "@/data/organization-events"
+import { organizationEvents, countOrganizationEventsByCompanySlug } from "@/data/organization-events"
 
 export interface CompanySummary {
   company: string
@@ -61,6 +61,13 @@ export async function getCompanies(): Promise<CompanySummary[]> {
     counts.set(row.company, current)
   }
 
+  const profileCompanySlugs = new Set(Array.from(counts.keys(), companySlug))
+  for (const event of organizationEvents) {
+    if (profileCompanySlugs.has(event.companySlug)) continue
+    counts.set(event.company, { count: 0, evidenceLinkedCount: 0, contextualCount: 0, allegedCount: 0 })
+    profileCompanySlugs.add(event.companySlug)
+  }
+
   return Array.from(counts.entries())
     .map(([company, categoryCounts]) => ({
       company,
@@ -74,7 +81,7 @@ export async function getCompanies(): Promise<CompanySummary[]> {
     )
 }
 
-/** Fetch a company's profiles by slug. Returns null if no profiles found. */
+/** Resolve companies represented by published profiles or organizational events. */
 export async function getCompanyBySlug(slug: string): Promise<CompanyDetail | null> {
   const supabase = await createClient()
   const { data, error } = await supabase
@@ -94,7 +101,8 @@ export async function getCompanyBySlug(slug: string): Promise<CompanyDetail | nu
   const allProfiles = data.map((row) => profileWithTagsSchema.parse(row))
   const profiles = allProfiles.filter((p) => companySlug(p.company) === slug)
 
-  if (profiles.length === 0) return null
+  const company = profiles[0]?.company ?? organizationEvents.find((event) => event.companySlug === slug)?.company
+  if (!company) return null
 
   // Build concern breakdown
   const concernMap = new Map<string, { name: string; slug: string; count: number }>()
@@ -111,7 +119,7 @@ export async function getCompanyBySlug(slug: string): Promise<CompanyDetail | nu
   }
 
   return {
-    company: profiles[0].company,
+    company,
     slug,
     profiles,
     concernBreakdown: Array.from(concernMap.values()).sort((a, b) => b.count - a.count),

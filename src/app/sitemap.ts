@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next"
 import { createClient } from "@/lib/supabase/server"
 import { concernGuides } from "@/data/concern-guides"
+import { organizationEvents } from "@/data/organization-events"
 
 /** Harden <loc> values: strip whitespace/line breaks that some crawlers reject (SITE-05). */
 export function normalizeLoc(url: string): string {
@@ -65,18 +66,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     }))
 
-    const companyUpdates = new Map<string, Date>()
+    const companyUpdates = new Map<string, Date | undefined>(
+      organizationEvents.map(({ companySlug }) => [companySlug, undefined])
+    )
     for (const profile of profiles ?? []) {
       const updatedAt = new Date(profile.updated_at)
-      const current = companyUpdates.get(profile.company)
+      const slug = profile.company.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")
+      const current = companyUpdates.get(slug)
       if (!current || updatedAt > current) {
-        companyUpdates.set(profile.company, updatedAt)
+        companyUpdates.set(slug, updatedAt)
       }
     }
 
     const companyPages: MetadataRoute.Sitemap = Array.from(companyUpdates).map(
-      ([name, lastModified]) => ({
-        url: normalizeLoc(`${siteUrl}/companies/${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`),
+      ([slug, lastModified]) => ({
+        url: normalizeLoc(`${siteUrl}/companies/${slug}`),
         lastModified,
         changeFrequency: "weekly" as const,
         priority: 0.6,
