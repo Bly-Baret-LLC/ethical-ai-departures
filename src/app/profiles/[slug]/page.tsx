@@ -77,7 +77,7 @@ export async function generateMetadata({
     type: "profile",
     name: profile.name,
     company: profile.company,
-    quote: profile.statedReason?.slice(0, 120) ?? "",
+    summary: profile.statedReason?.slice(0, 240) ?? "",
   })
 
   const evidenceClause =

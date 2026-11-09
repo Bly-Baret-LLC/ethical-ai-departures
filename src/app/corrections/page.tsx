@@ -22,6 +22,13 @@ const severityColor: Record<string, string> = {
 
 const sitewideCorrections = [
   {
+    id: "2026-11-08-kim-date-and-company-response",
+    date: "2026-11-08",
+    severity: "minor",
+    description:
+      "Corrected Devin Kim’s stored departure date from September 30 to September 15, 2025, as stated in his complaint. Removed the unsupported statement that xAI disputed his account and added its representative’s October 2026 testimony that she was unfamiliar with his case. His record remains an unresolved allegation, excluded from the headline count.",
+  },
+  {
     id: "2026-10-28-adler-departure-precision",
     date: "2026-10-28",
     severity: "minor",

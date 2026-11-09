@@ -51,7 +51,7 @@ describe("CorrectionsPage", () => {
     const jsx = await CorrectionsPage()
     render(jsx)
     expect(screen.getByText("Fixed incorrect departure date")).toBeInTheDocument()
-    expect(screen.getAllByText("Minor")).toHaveLength(3)
+    expect(screen.getAllByText("Minor")).toHaveLength(4)
     expect(screen.getByText(/Corrected the summary of Suchir Balaji/)).toBeInTheDocument()
   })
 
@@ -59,5 +59,11 @@ describe("CorrectionsPage", () => {
     render(await CorrectionsPage())
     expect(screen.getByText(/Changed Steven Adler’s departure date from an unsupported exact day to year precision/)).toBeInTheDocument()
     expect(screen.getByText(/His departure year and evidence classification are unchanged/)).toBeInTheDocument()
+  })
+
+  it("records Kim's date and company-response correction without changing his category", async () => {
+    render(await CorrectionsPage())
+    expect(screen.getByText(/Corrected Devin Kim’s stored departure date from September 30 to September 15/)).toBeInTheDocument()
+    expect(screen.getByText(/His record remains an unresolved allegation, excluded from the headline count/)).toBeInTheDocument()
   })
 })

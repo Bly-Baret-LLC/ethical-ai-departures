@@ -4,6 +4,7 @@ import Link from "next/link"
 import { getCompanyBySlug } from "@/lib/queries/companies"
 import { Avatar } from "@/components/custom/Avatar"
 import { getCompanyOverview } from "@/data/company-overviews"
+import { getCompanyContext } from "@/data/company-context"
 import { EVIDENCE_LABELS, isHeadlineCounted } from "@/lib/evidence"
 import type { ProfileWithTags } from "@/lib/schemas/profile"
 import { getOrganizationEventsByCompanySlug } from "@/data/organization-events"
@@ -92,6 +93,7 @@ export default async function CompanyDetailPage({
     (profile) => profile.motiveEvidence === "alleged"
   )
   const organizationEvents = getOrganizationEventsByCompanySlug(slug)
+  const companyContext = getCompanyContext(slug)
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
@@ -119,6 +121,33 @@ export default async function CompanyDetailPage({
         <p className="mt-6 text-base leading-relaxed text-text-secondary">
           {getCompanyOverview(slug)}
         </p>
+      )}
+
+      {companyContext && (
+        <section aria-labelledby="company-context-heading" className="mt-10">
+          <p className="text-xs font-medium uppercase tracking-wider text-text-secondary">
+            Company context
+          </p>
+          <h2 id="company-context-heading" className="mt-2 font-serif text-xl font-semibold text-text-primary">
+            {companyContext.title}
+          </h2>
+          {companyContext.paragraphs.map(({ text, source }) => (
+            <div key={source.url} className="mt-4">
+              <p className="text-base leading-relaxed text-text-secondary">{text}</p>
+              <a
+                href={source.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-block text-sm text-accent-info hover:underline"
+              >
+                {source.label} →
+              </a>
+            </div>
+          ))}
+          {companyContext.note && (
+            <p className="mt-4 text-sm text-text-secondary">{companyContext.note}</p>
+          )}
+        </section>
       )}
 
       {/* Concern Distribution */}

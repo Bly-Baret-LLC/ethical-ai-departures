@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest"
-import { render, screen, cleanup } from "@testing-library/react"
+import { render, screen, cleanup, within } from "@testing-library/react"
 
 const mockCompanyDetail = {
   company: "OpenAI",
@@ -104,6 +104,31 @@ describe("CompanyDetailPage", () => {
     const jsx = await CompanyDetailPage({ params })
     render(jsx)
     expect(screen.getByRole("link", { name: /All companies/ })).toHaveAttribute("href", "/companies")
+  })
+
+  it("renders sourced xAI context without turning it into a person or event count", async () => {
+    mockGetCompanyBySlug.mockResolvedValueOnce({
+      company: "xAI",
+      slug: "xai",
+      concernBreakdown: [],
+      profiles: [{ ...mockCompanyDetail.profiles[0], slug: "devin-kim", name: "Devin Kim", company: "xAI", motiveEvidence: "alleged", headlineCounted: false, claimStatus: "contested" }],
+    })
+    render(await CompanyDetailPage({ params: Promise.resolve({ slug: "xai" }) }))
+    const context = screen.getByRole("region", { name: "Safety-team departures" })
+    expect(within(context).getByText("Company context")).toBeInTheDocument()
+    expect(within(context).getAllByRole("link")).toHaveLength(2)
+    expect(within(context).getByRole("link", { name: /CNN/ })).toHaveAttribute("href", "https://www.wral.com/archive/22297674")
+    expect(within(context).getByRole("link", { name: /Business Insider/ })).toHaveAttribute("href", "https://www.aol.com/articles/war-rooms-group-chats-video-100801506.html")
+    expect(screen.getByText(/0 evidence-linked departures/)).toBeInTheDocument()
+    expect(screen.getByText(/1 unresolved/)).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /Devin Kim/ })).toHaveAttribute("href", "/profiles/devin-kim")
+    expect(screen.queryByRole("heading", { name: "Organizational Events" })).not.toBeInTheDocument()
+    expect(screen.queryByRole("heading", { name: "Evidence-Linked Departures" })).not.toBeInTheDocument()
+  })
+
+  it("does not render unreviewed company context elsewhere", async () => {
+    render(await CompanyDetailPage({ params }))
+    expect(screen.queryByRole("region", { name: "Safety-team departures" })).not.toBeInTheDocument()
   })
 })
 

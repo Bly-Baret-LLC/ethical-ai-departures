@@ -3,6 +3,17 @@
 A dated record of material profile, count, and methodology changes, per the
 editorial remediation brief (2026-07-22).
 
+## 2026-11-08 — Devin Kim date and company response
+
+Corrected the stored departure date from September 30 to September 15, 2025,
+following paragraph 66 of Kim’s complaint. Added the original complaint and
+October 16 Council testimony sources. Removed the unsupported company-overview
+statement that xAI disputed his account; the company representative said she was
+unfamiliar with his case. The alleged classification and headline exclusion remain
+unchanged. Publication was approved on November 8, 2026, subject to final checks.
+Also corrected profile share cards to display editorial summaries without added
+quotation marks, rather than implying they were verbatim statements.
+
 ## 2026-09-10 — Context-only profile audit
 
 Audited all 30 published Context only profiles against a stricter person-level

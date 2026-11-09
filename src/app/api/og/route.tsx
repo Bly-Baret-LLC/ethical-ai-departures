@@ -8,7 +8,12 @@ export async function GET(request: NextRequest) {
   const type = searchParams.get("type") ?? "home"
   const name = searchParams.get("name") ?? ""
   const company = searchParams.get("company") ?? ""
-  const quote = searchParams.get("quote") ?? ""
+  // Older profile URLs called editorial summaries "quote". Keep them working,
+  // but never add quotation marks that imply these are a person's exact words.
+  const summary = searchParams.get("summary") ?? searchParams.get("quote") ?? ""
+  const excerpt = summary.length > 180
+    ? `${summary.slice(0, 180).replace(/\s+\S*$/, "").trimEnd()}…`
+    : summary
 
   if (type === "profile") {
     return new ImageResponse(
@@ -78,7 +83,7 @@ export async function GET(request: NextRequest) {
             </div>
           </div>
 
-          {quote && (
+          {excerpt && (
             <div
               style={{
                 display: "flex",
@@ -86,15 +91,13 @@ export async function GET(request: NextRequest) {
                 borderLeft: "4px solid #b45309",
                 paddingLeft: "20px",
                 fontSize: "28px",
-                fontStyle: "italic",
                 color: "#78716c",
                 lineHeight: 1.4,
                 maxWidth: "900px",
                 fontFamily: "Georgia, serif",
               }}
             >
-              &ldquo;{quote.slice(0, 120)}
-              {quote.length > 120 ? "..." : ""}&rdquo;
+              {excerpt}
             </div>
           )}
 
