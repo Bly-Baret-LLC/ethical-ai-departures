@@ -99,12 +99,6 @@ export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
               </p>
             )}
           </div>
-          <Link
-            href="/editorial-standards#evidence-categories"
-            className="shrink-0 text-sm text-accent-info hover:underline"
-          >
-            How we classify records →
-          </Link>
         </div>
 
         <div className="mt-4 flex justify-between gap-2 sm:gap-4" style={{ alignItems: "last baseline" }}>
@@ -167,13 +161,19 @@ export function ProfileBrowser({ profiles }: ProfileBrowserProps) {
         <div className="mb-4">
           <SearchInput value={filters.q} onChange={setSearch} />
         </div>
-        {/* Controls: count */}
-        <div className="mb-4">
-          <p className="text-sm text-text-secondary">
+        {/* Count and secondary methodology link */}
+        <div className="mb-4 flex items-baseline justify-between gap-4">
+          <p className="min-w-0 text-sm text-text-secondary">
             {hasActiveFilters || hasSearch
               ? `Showing ${filtered.length} of ${evidenceViewProfiles.length} records in this category`
               : `${evidenceViewProfiles.length} ${selectedEvidenceView.countLabel} record${evidenceViewProfiles.length !== 1 ? "s" : ""}`}
           </p>
+          <Link
+            href="/editorial-standards#evidence-categories"
+            className="max-w-[50%] shrink-0 text-right text-xs text-text-secondary hover:text-text-primary hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 sm:text-sm"
+          >
+            About the evidence →
+          </Link>
         </div>
 
         {/* Active filter chips */}

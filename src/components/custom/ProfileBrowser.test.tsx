@@ -84,7 +84,7 @@ describe("ProfileBrowser", () => {
     render(<ProfileBrowser profiles={testProfiles} />)
 
     expect(screen.getByRole("heading", { name: "Browse the record" })).toBeInTheDocument()
-    expect(screen.getByRole("link", { name: /How we classify records/ })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: /About the evidence/ })).toHaveAttribute(
       "href", "/editorial-standards#evidence-categories"
     )
     expect(screen.getByRole("button", { name: "Evidence-linked (3)" })).toBeInTheDocument()
@@ -103,6 +103,14 @@ describe("ProfileBrowser", () => {
     render(<ProfileBrowser profiles={testProfiles} />)
 
     expect(screen.getByText("3 evidence-linked records")).toBeInTheDocument()
+  })
+
+  it("places the muted methodology link in the record-count row", () => {
+    render(<ProfileBrowser profiles={testProfiles} />)
+    const link = screen.getByRole("link", { name: /About the evidence/ })
+    expect(link.parentElement).toBe(screen.getByText("3 evidence-linked records").parentElement)
+    expect(link).toHaveClass("text-right", "text-text-secondary")
+    expect(link).not.toHaveClass("text-accent-info")
   })
 
   it("defaults to evidence-linked records and does not expose archived context", () => {

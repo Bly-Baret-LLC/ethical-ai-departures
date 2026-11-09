@@ -79,6 +79,77 @@ export default function PressPage() {
         </ul>
       </section>
 
+      <details className="group mt-10 border-y border-border-light">
+        <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 py-3 text-base font-medium text-text-primary focus-visible:outline-2 focus-visible:outline-offset-4 [&::-webkit-details-marker]:hidden">
+          Where our work is cited
+          <span aria-hidden="true" className="shrink-0 group-open:hidden">+</span>
+          <span aria-hidden="true" className="hidden shrink-0 group-open:inline">−</span>
+        </summary>
+        <ul className="space-y-5 pb-5 pt-2">
+          <li className="text-sm">
+            <p className="font-medium text-text-primary">State complaints against OpenAI</p>
+            <p className="mt-1 text-xs text-text-secondary">
+              Filed <time dateTime="2026-10-14">October 14, 2026</time>
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-text-secondary">
+              Seven states cite Ethical AI Departures in their complaints discussing
+              OpenAI staff departures and safety concerns.
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-text-secondary">
+              {[
+                ["Arizona", "Arizona", 51],
+                ["Idaho", "Idaho", 64],
+                ["Iowa", "Iowa", 43],
+                ["Kansas", "Kansas", 40],
+                ["Montana", "Montana", 54],
+                ["Nebraska", "Nebraska", 55],
+                ["West Virginia", "West-Virginia", 59],
+              ].map(([name, file, page], index) => (
+                <span key={name}>
+                  {index > 0 && " · "}
+                  <a
+                    href={`https://www.justsecurity.org/wp-content/uploads/2026/10/${file}.pdf#page=${page}`}
+                    className="underline decoration-border-light underline-offset-4 hover:text-text-primary hover:decoration-current"
+                    aria-label={`${name} complaint (PDF)`}
+                  >
+                    {name}
+                  </a>
+                </span>
+              ))}
+              {" "}<span className="text-xs">(PDFs)</span>
+            </p>
+          </li>
+          <li className="text-sm">
+            <p className="font-medium text-text-primary">
+              <a href="https://thezvi.substack.com/p/the-safety-culture-at-the-labs-is" className="underline decoration-border-light underline-offset-4 hover:decoration-current">
+                Zvi Mowshowitz
+              </a>
+            </p>
+            <p className="mt-1 text-xs text-text-secondary">
+              <time dateTime="2026-10-14">October 14, 2026</time>
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-text-secondary">
+              Links to the tracker and cites its departure count in an essay on
+              safety culture at AI labs.
+            </p>
+          </li>
+          <li className="text-sm">
+            <p className="font-medium text-text-primary">
+              <a href="https://theprint.in/tech/this-isnt-a-marketing-stunt-ai-could-kill-all-humans-anthropic-researcher-quits-sounds-alarm/3038001/" className="underline decoration-border-light underline-offset-4 hover:decoration-current">
+                ThePrint
+              </a>
+            </p>
+            <p className="mt-1 text-xs text-text-secondary">
+              <time dateTime="2026-09-09">September 9, 2026</time>
+            </p>
+            <p className="mt-2 text-sm leading-relaxed text-text-secondary">
+              References the tracker to place Coxon’s departure from Anthropic
+              alongside other safety- and ethics-linked departures.
+            </p>
+          </li>
+        </ul>
+      </details>
+
       {/* Media Inquiries */}
       <section className="mt-10">
         <ContactButton
