@@ -28,6 +28,11 @@ describe("GET /api/og", () => {
   it("returns 200 for homepage OG image", async () => {
     const res = await GET(makeRequest())
     expect(res.status).toBe(200)
+    const rendered = JSON.parse((res as unknown as { body: string }).body)
+    expect(rendered.options).toEqual({ width: 1200, height: 630 })
+    expect(rendered.element).toContain("Who left AI companies")
+    expect(rendered.element).toContain("—and why.")
+    expect(rendered.element).not.toContain("Whether they were right")
   })
 
   it("returns 200 for homepage with count", async () => {

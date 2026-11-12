@@ -23,6 +23,18 @@ export const metadata: Metadata = {
   },
   openGraph: {
     url: siteUrl,
+    type: "website",
+    siteName: "Ethical AI Departures",
+    images: [{
+      url: `${siteUrl}/api/og?v=home-2`,
+      width: 1200,
+      height: 630,
+      alt: "Ethical AI Departures — Who left AI companies—and why.",
+    }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [`${siteUrl}/api/og?v=home-2`],
   },
 }
 
