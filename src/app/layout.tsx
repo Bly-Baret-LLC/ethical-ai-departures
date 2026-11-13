@@ -65,6 +65,12 @@ export default function RootLayout({
       <body className={`${playfairDisplay.variable} antialiased`}>
         <Script
           async
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="3a7ot+yIJVmrvdBxdSqmHQ"
+          strategy="afterInteractive"
+        />
+        <Script
+          async
           src="https://plausible.io/js/pa-UvYovQn6Tzl2_07hOUOBB.js"
           strategy="afterInteractive"
         />
